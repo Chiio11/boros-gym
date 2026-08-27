@@ -603,33 +603,40 @@ async function iniciarCamara() {
         return;
     }
 
-    estadoCamara.innerText =
-        "🟡 SOLICITANDO CÁMARA...";
-
-    estadoCamara.style.color =
-        "#ffd000";
+    estadoCamara.innerText = "🟡 ABRIENDO CÁMARA...";
+    estadoCamara.style.color = "#ffd000";
 
     try {
 
-        scanner =
-            new Html5Qrcode("reader");
+        // Si quedó un lector anterior, lo limpiamos
+        if (scanner) {
+            try {
+                await scanner.stop();
+            } catch (e) {}
+
+            try {
+                scanner.clear();
+            } catch (e) {}
+
+            scanner = null;
+        }
+
+        scanner = new Html5Qrcode("reader");
 
         await scanner.start(
 
             {
-                facingMode: {
-                    ideal: "environment"
-                }
+                facingMode: "environment"
             },
 
             {
-                fps: 15,
+                fps: 10,
 
                 qrbox: function(width, height) {
 
                     const tamaño =
                         Math.floor(
-                            Math.min(width, height) * 0.85
+                            Math.min(width, height) * 0.75
                         );
 
                     return {
@@ -638,17 +645,7 @@ async function iniciarCamara() {
                     };
                 },
 
-                aspectRatio: 1.7777778,
-
-                disableFlip: false,
-
-                formatsToSupport: [
-                    Html5QrcodeSupportedFormats.QR_CODE
-                ],
-
-                experimentalFeatures: {
-                    useBarCodeDetectorIfSupported: true
-                }
+                aspectRatio: 1.0
 
             },
 
@@ -677,13 +674,8 @@ async function iniciarCamara() {
 
             function(errorMessage) {
 
-                // El lector sigue buscando.
-                // No mostramos cada error porque
-                // html5-qrcode genera muchos mientras busca.
-
-                console.log(
-                    "Buscando QR..."
-                );
+                // No mostrar errores normales
+                // mientras busca el QR.
 
             }
 
@@ -702,9 +694,11 @@ async function iniciarCamara() {
     catch(error) {
 
         console.error(
-            "ERROR CÁMARA:",
+            "ERROR AL ABRIR CÁMARA:",
             error
         );
+
+        camaraActiva = false;
 
         estadoCamara.innerText =
             "🔴 NO SE PUDO ACCEDER A LA CÁMARA";
@@ -718,7 +712,7 @@ async function iniciarCamara() {
             'NO SE PUDO ACCEDER A LA CÁMARA' +
             '<br><br>' +
             '<small>' +
-            'Revisá los permisos de cámara del navegador.' +
+            'Permití el acceso a la cámara en el navegador y volvé a intentar.' +
             '</small>' +
             '</div>';
 
@@ -1372,16 +1366,11 @@ window.addEventListener(
     "load",
     function() {
 
-        /*
-           En celular es mejor pedir
-           la cámara después de que
-           la página terminó de cargar.
-        */
+        estadoCamara.innerText =
+            "⚪ TOCÁ «ABRIR CÁMARA»";
 
-        setTimeout(
-            iniciarCamara,
-            700
-        );
+        estadoCamara.style.color =
+            "#aaa";
 
     }
 );
