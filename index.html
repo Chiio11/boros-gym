@@ -1,374 +1,676 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Boros Gym - Control de Acceso</title>
+<meta charset="UTF-8">
 
-  <style>
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+>
 
-    * {
-      box-sizing: border-box;
-    }
+<title>Boros Gym - Control de Acceso</title>
 
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      min-height: 100%;
-      background: #050505;
-      color: white;
-      font-family: Arial, Helvetica, sans-serif;
-    }
 
-    body {
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-    }
+<script src="https://unpkg.com/html5-qrcode"></script>
 
-    .contenedor {
-      width: 100%;
-      max-width: 1100px;
-      padding: 25px 20px 50px;
-    }
 
-    /* =========================
-       LOGO
-    ========================= */
+<style>
 
-    .logo {
-      text-align: center;
-      margin-bottom: 10px;
-    }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-    .logo-principal {
-      font-size: clamp(42px, 8vw, 82px);
-      font-weight: 900;
-      font-style: italic;
-      letter-spacing: 7px;
-      line-height: 0.9;
-      color: white;
-      text-shadow:
-        3px 3px 0 #e00000,
-        -2px -2px 0 #e00000;
-    }
 
-    .logo-sub {
-      margin-top: 10px;
-      font-size: clamp(12px, 2vw, 20px);
-      font-weight: bold;
-      letter-spacing: 7px;
-      color: #e00000;
-    }
+body {
 
-    .titulo {
-      text-align: center;
-      font-size: clamp(24px, 4vw, 42px);
-      font-weight: 900;
-      margin: 35px 0 25px;
-      letter-spacing: 2px;
-    }
+  background: #050505;
 
-    /* =========================
-       ESCANER
-    ========================= */
+  color: white;
 
-    .scanner-card {
-      border: 3px solid #e00000;
-      border-radius: 30px;
-      padding: 25px;
-      text-align: center;
-      background: #0d0d0d;
-      box-shadow:
-        0 0 25px rgba(220, 0, 0, 0.35);
-    }
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
 
-    .scanner-titulo {
-      font-size: clamp(24px, 4vw, 38px);
-      font-weight: 900;
-      margin-bottom: 20px;
-    }
+  min-height: 100vh;
 
-    #reader {
-      width: 100%;
-      max-width: 750px;
-      margin: auto;
-      overflow: hidden;
-      border-radius: 25px;
-      min-height: 300px;
-      background: #111;
-    }
+  padding: 20px;
 
-    #reader video {
-      width: 100% !important;
-      height: auto !important;
-      border-radius: 20px;
-    }
+}
 
-    .estado {
-      margin-top: 25px;
-      font-size: clamp(22px, 4vw, 34px);
-      font-weight: 900;
-    }
 
-    .estado.verde {
-      color: #00ff33;
-    }
+.contenedor {
 
-    .estado.rojo {
-      color: #ff2020;
-    }
+  width: 100%;
 
-    .subestado {
-      margin-top: 8px;
-      color: #aaa;
-      font-size: clamp(15px, 2.5vw, 22px);
-    }
+  max-width: 1100px;
 
-    /* =========================
-       RESULTADO
-    ========================= */
+  margin: auto;
 
-    #resultado {
-      margin-top: 30px;
-    }
+}
 
-    .resultado-card {
-      background: #101010;
-      border: 2px solid #333;
-      border-radius: 30px;
-      padding: 30px;
-      display: flex;
-      gap: 35px;
-      align-items: center;
-      text-align: left;
-      box-shadow: 0 0 25px rgba(255,255,255,0.05);
-    }
 
-    .foto {
-      width: 260px;
-      height: 320px;
-      object-fit: cover;
-      border-radius: 22px;
-      border: 3px solid #e00000;
-      flex-shrink: 0;
-    }
+/* =========================
+   LOGO
+========================= */
 
-    .datos {
-      flex: 1;
-    }
+.logo {
 
-    .nombre {
-      font-size: clamp(28px, 5vw, 50px);
-      font-weight: 900;
-      margin-bottom: 25px;
-    }
+  text-align: center;
 
-    .dato {
-      font-size: clamp(18px, 3vw, 27px);
-      padding: 14px 0;
-      border-bottom: 1px solid #333;
-    }
+  margin-bottom: 25px;
 
-    .dato b {
-      color: #999;
-      display: block;
-      font-size: 0.65em;
-      margin-bottom: 4px;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-    }
+}
 
-    .acceso {
-      margin-top: 30px;
-      padding: 20px;
-      border-radius: 18px;
-      text-align: center;
-      font-size: clamp(25px, 4vw, 42px);
-      font-weight: 900;
-    }
 
-    .permitido {
-      color: #00ff33;
-      border: 2px solid #00aa22;
-      background: rgba(0, 255, 50, 0.08);
-    }
+.logo h2 {
 
-    .denegado {
-      color: #ff2020;
-      border: 2px solid #aa0000;
-      background: rgba(255, 0, 0, 0.08);
-    }
+  font-size:
+    clamp(55px, 10vw, 100px);
 
-    /* =========================
-       ESTADISTICAS
-    ========================= */
+  font-weight: 900;
 
-    .estadisticas {
-      margin-top: 30px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-    }
+  font-style: italic;
 
-    .estadistica {
-      background: #0d0d0d;
-      border: 2px solid #333;
-      border-radius: 22px;
-      padding: 25px;
-      text-align: center;
-    }
+  letter-spacing: 8px;
 
-    .numero {
-      font-size: clamp(35px, 6vw, 60px);
-      font-weight: 900;
-    }
+  text-shadow:
+    4px 4px 0 #b00000;
 
-    .texto {
-      margin-top: 5px;
-      color: #aaa;
-      font-size: 16px;
-      font-weight: bold;
-      text-transform: uppercase;
-    }
+}
 
-    .numero.verde {
-      color: #00ff33;
-    }
 
-    .numero.rojo {
-      color: #ff2020;
-    }
+.logo p {
 
-    .footer {
-      text-align: center;
-      margin-top: 35px;
-      color: #888;
-      font-size: clamp(14px, 2vw, 20px);
-      letter-spacing: 4px;
-      font-weight: bold;
-    }
+  color: #ff7777;
 
-    /* =========================
-       MOVIL
-    ========================= */
+  font-size:
+    clamp(15px, 3vw, 28px);
 
-    @media (max-width: 700px) {
+  font-weight: bold;
 
-      .contenedor {
-        padding: 20px 12px 35px;
-      }
+  letter-spacing: 8px;
 
-      .scanner-card {
-        padding: 15px;
-        border-radius: 22px;
-      }
+}
 
-      #reader {
-        min-height: 250px;
-      }
 
-      .resultado-card {
-        flex-direction: column;
-        padding: 20px;
-        text-align: center;
-      }
+/* =========================
+   TITULO
+========================= */
 
-      .foto {
-        width: min(80vw, 300px);
-        height: min(95vw, 360px);
-      }
+h1 {
 
-      .datos {
-        width: 100%;
-      }
+  text-align: center;
 
-      .estadisticas {
-        gap: 8px;
-      }
+  font-size:
+    clamp(30px, 6vw, 60px);
 
-      .estadistica {
-        padding: 15px 5px;
-      }
+  margin: 35px 0;
 
-      .texto {
-        font-size: 11px;
-      }
+  font-weight: 900;
 
-    }
+}
 
-  </style>
 
-  <!-- LECTOR QR -->
-  <script src="https://unpkg.com/html5-qrcode"></script>
+/* =========================
+   ESCANER
+========================= */
+
+.scanner {
+
+  border: 4px solid #ff2525;
+
+  border-radius: 35px;
+
+  padding: 25px;
+
+  background: #090909;
+
+  box-shadow:
+    0 0 30px
+    rgba(255,0,0,.25);
+
+}
+
+
+.titulo-scanner {
+
+  text-align: center;
+
+  font-size:
+    clamp(28px, 5vw, 45px);
+
+  font-weight: 900;
+
+  margin-bottom: 25px;
+
+}
+
+
+#reader {
+
+  width: 100%;
+
+  max-width: 800px;
+
+  margin: auto;
+
+  overflow: hidden;
+
+  border-radius: 25px;
+
+  background: #000;
+
+}
+
+
+#reader video {
+
+  width: 100% !important;
+
+  height: auto !important;
+
+}
+
+
+#reader button {
+
+  background: #e60000 !important;
+
+  color: white !important;
+
+  border: none !important;
+
+  border-radius: 12px !important;
+
+  padding: 14px 20px !important;
+
+  font-size: 18px !important;
+
+  font-weight: bold !important;
+
+}
+
+
+.estado {
+
+  text-align: center;
+
+  margin-top: 25px;
+
+  font-size:
+    clamp(24px, 5vw, 42px);
+
+  font-weight: 900;
+
+}
+
+
+.verde {
+
+  color: #24ff43;
+
+}
+
+
+.rojo {
+
+  color: #ff3333;
+
+}
+
+
+.subestado {
+
+  text-align: center;
+
+  margin-top: 10px;
+
+  color: #aaa;
+
+  font-size:
+    clamp(15px, 3vw, 22px);
+
+}
+
+
+/* =========================
+   RESULTADO
+========================= */
+
+.resultado {
+
+  display: none;
+
+  margin-top: 25px;
+
+  padding: 30px;
+
+  border: 3px solid #333;
+
+  border-radius: 30px;
+
+  background: #101010;
+
+}
+
+
+.socio {
+
+  display: flex;
+
+  gap: 30px;
+
+  align-items: center;
+
+}
+
+
+.foto {
+
+  width: 250px;
+
+  height: 300px;
+
+  object-fit: cover;
+
+  border-radius: 20px;
+
+  background: #222;
+
+}
+
+
+.nombre {
+
+  font-size:
+    clamp(28px, 5vw, 50px);
+
+  font-weight: 900;
+
+  margin-bottom: 20px;
+
+}
+
+
+.dato {
+
+  font-size:
+    clamp(18px, 3vw, 27px);
+
+  margin: 12px 0;
+
+}
+
+
+.dato strong {
+
+  color: #ff3b3b;
+
+}
+
+
+.acceso {
+
+  margin-top: 25px;
+
+  padding: 25px;
+
+  border-radius: 20px;
+
+  text-align: center;
+
+  font-size:
+    clamp(28px, 5vw, 50px);
+
+  font-weight: 900;
+
+}
+
+
+.acceso-ok {
+
+  color: #21ff43;
+
+  border: 3px solid #21ff43;
+
+  background:
+    rgba(0,255,50,.06);
+
+}
+
+
+.acceso-no {
+
+  color: #ff3030;
+
+  border: 3px solid #ff3030;
+
+  background:
+    rgba(255,0,0,.06);
+
+}
+
+
+/* =========================
+   ESTADISTICAS
+========================= */
+
+.estadisticas {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 20px;
+
+  margin-top: 25px;
+
+}
+
+
+.estadistica {
+
+  text-align: center;
+
+  padding: 25px;
+
+  border: 2px solid #333;
+
+  border-radius: 20px;
+
+  background: #0e0e0e;
+
+}
+
+
+.numero {
+
+  font-size:
+    clamp(40px, 7vw, 65px);
+
+  font-weight: 900;
+
+}
+
+
+.etiqueta {
+
+  color: #aaa;
+
+  font-weight: bold;
+
+}
+
+
+#permitidas {
+
+  color: #20ff43;
+
+}
+
+
+#denegadas {
+
+  color: #ff3030;
+
+}
+
+
+/* =========================
+   BOTON
+========================= */
+
+#nuevo {
+
+  display: none;
+
+  width: 100%;
+
+  margin-top: 20px;
+
+  padding: 20px;
+
+  border: none;
+
+  border-radius: 15px;
+
+  background: #e60000;
+
+  color: white;
+
+  font-size: 22px;
+
+  font-weight: 900;
+
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer {
+
+  text-align: center;
+
+  margin-top: 35px;
+
+  color: #aaa;
+
+  letter-spacing: 4px;
+
+}
+
+
+.footer span {
+
+  color: red;
+
+}
+
+
+/* =========================
+   CELULAR
+========================= */
+
+@media(max-width:700px) {
+
+  body {
+
+    padding: 10px;
+
+  }
+
+
+  .scanner {
+
+    padding: 15px;
+
+    border-radius: 25px;
+
+  }
+
+
+  .socio {
+
+    flex-direction: column;
+
+    text-align: center;
+
+  }
+
+
+  .foto {
+
+    width: 75vw;
+
+    max-width: 300px;
+
+    height: 350px;
+
+  }
+
+
+  .estadisticas {
+
+    grid-template-columns: 1fr;
+
+  }
+
+}
+
+</style>
 
 </head>
 
+
 <body>
+
 
 <div class="contenedor">
 
-  <!-- LOGO -->
 
   <div class="logo">
 
-    <div class="logo-principal">
-      BOROS
-    </div>
+    <h2>BOROS</h2>
 
-    <div class="logo-sub">
-      STRENGTH & FITNESS
-    </div>
+    <p>STRENGTH & FITNESS</p>
 
   </div>
 
 
-  <div class="titulo">
+  <h1>
     CONTROL DE ACCESO
-  </div>
+  </h1>
 
 
-  <!-- ESCANER -->
+  <div class="scanner">
 
-  <div class="scanner-card">
 
-    <div class="scanner-titulo">
+    <div class="titulo-scanner">
       📷 ESCÁNER QR
     </div>
 
+
     <div id="reader"></div>
 
-    <div id="estado" class="estado verde">
-      🟢 LISTO PARA ESCANEAR
+
+    <div
+      id="estado"
+      class="estado verde"
+    >
+      🟢 INICIANDO CÁMARA...
     </div>
 
-    <div id="subestado" class="subestado">
-      Presentá el QR del socio frente a la cámara
+
+    <div
+      id="subestado"
+      class="subestado"
+    >
+      Preparando lector...
     </div>
+
+
+    <button
+      id="nuevo"
+      onclick="reiniciarScanner()"
+    >
+      📷 ESCANEAR OTRO SOCIO
+    </button>
+
 
   </div>
 
 
-  <!-- RESULTADO -->
+  <div
+    id="resultado"
+    class="resultado"
+  >
 
-  <div id="resultado"></div>
+
+    <div class="socio">
 
 
-  <!-- ESTADISTICAS -->
+      <img
+        id="foto"
+        class="foto"
+        alt="Foto del socio"
+      >
+
+
+      <div>
+
+
+        <div
+          id="nombre"
+          class="nombre"
+        ></div>
+
+
+        <div class="dato">
+          <strong>ID:</strong>
+          <span id="id"></span>
+        </div>
+
+
+        <div class="dato">
+          <strong>DNI:</strong>
+          <span id="dni"></span>
+        </div>
+
+
+        <div class="dato">
+          <strong>PLAN:</strong>
+          <span id="plan"></span>
+        </div>
+
+
+        <div class="dato">
+          <strong>VENCIMIENTO:</strong>
+          <span id="vencimiento"></span>
+        </div>
+
+
+        <div class="dato">
+          <strong>ESTADO:</strong>
+          <span id="estadoSocio"></span>
+        </div>
+
+
+      </div>
+
+    </div>
+
+
+    <div
+      id="acceso"
+      class="acceso"
+    ></div>
+
+
+  </div>
+
 
   <div class="estadisticas">
 
+
     <div class="estadistica">
 
-      <div id="entradas" class="numero">
+      <div
+        id="entradas"
+        class="numero"
+      >
         0
       </div>
 
-      <div class="texto">
-        Entradas hoy
+      <div class="etiqueta">
+        ENTRADAS HOY
       </div>
 
     </div>
@@ -376,12 +678,15 @@
 
     <div class="estadistica">
 
-      <div id="permitidas" class="numero verde">
+      <div
+        id="permitidas"
+        class="numero"
+      >
         0
       </div>
 
-      <div class="texto">
-        Permitidas
+      <div class="etiqueta">
+        PERMITIDAS
       </div>
 
     </div>
@@ -389,30 +694,51 @@
 
     <div class="estadistica">
 
-      <div id="denegadas" class="numero rojo">
+      <div
+        id="denegadas"
+        class="numero"
+      >
         0
       </div>
 
-      <div class="texto">
-        Denegadas
+      <div class="etiqueta">
+        DENEGADAS
       </div>
 
     </div>
+
 
   </div>
 
 
   <div class="footer">
-    BOROS • FUERZA • DISCIPLINA • RESULTADOS
+
+    BOROS
+
+    <span>•</span>
+
+    FUERZA
+
+    <span>•</span>
+
+    DISCIPLINA
+
+    <span>•</span>
+
+    RESULTADOS
+
   </div>
+
 
 </div>
 
 
+
 <script>
 
+
 /* =====================================================
-   URL DE APPS SCRIPT
+   URL DE TU APPS SCRIPT
 ===================================================== */
 
 const API_URL =
@@ -423,10 +749,14 @@ const API_URL =
    VARIABLES
 ===================================================== */
 
-let escaneando = true;
+let scanner = null;
+
+let procesando = false;
 
 let entradas = 0;
+
 let permitidas = 0;
+
 let denegadas = 0;
 
 
@@ -435,22 +765,38 @@ let denegadas = 0;
 ===================================================== */
 
 const estado =
-document.getElementById("estado");
+  document.getElementById("estado");
 
 const subestado =
-document.getElementById("subestado");
+  document.getElementById("subestado");
 
 const resultado =
-document.getElementById("resultado");
+  document.getElementById("resultado");
+
+const nuevo =
+  document.getElementById("nuevo");
 
 
 /* =====================================================
-   ESCANEO QR
+   INICIAR
+===================================================== */
+
+window.onload =
+  function() {
+
+    iniciarScanner();
+
+  };
+
+
+/* =====================================================
+   CÁMARA
 ===================================================== */
 
 function iniciarScanner() {
 
-  const scanner =
+
+  scanner =
     new Html5Qrcode("reader");
 
 
@@ -461,35 +807,73 @@ function iniciarScanner() {
     },
 
     {
+
       fps: 10,
-      qrbox: {
-        width: 300,
-        height: 300
-      },
 
-      aspectRatio: 1.0
+      qrbox:
+        function(
+          ancho,
+          alto
+        ) {
+
+          const tamaño =
+            Math.min(
+              ancho * 0.75,
+              alto * 0.75,
+              450
+            );
+
+          return {
+
+            width: tamaño,
+
+            height: tamaño
+
+          };
+
+        }
 
     },
 
-    function(decodedText) {
+    function(texto) {
 
-      if (!escaneando) return;
+      if (procesando) {
+        return;
+      }
 
-      escaneando = false;
 
-      procesarQR(decodedText);
+      procesando = true;
+
+
+      consultarQR(texto);
 
     },
 
-    function(errorMessage) {
+    function() {
 
-      // Ignorar errores normales del lector
+      /*
+       * No mostramos errores
+       * mientras busca el QR.
+       */
 
     }
 
   )
 
+  .then(function() {
+
+    estado.innerHTML =
+      "🟢 LISTO PARA ESCANEAR";
+
+    subestado.innerHTML =
+      "Presentá el QR del socio frente a la cámara.";
+
+  })
+
   .catch(function(error) {
+
+    console.error(error);
+
 
     estado.innerHTML =
       "🔴 NO SE PUDO ACCEDER A LA CÁMARA";
@@ -497,8 +881,9 @@ function iniciarScanner() {
     estado.className =
       "estado rojo";
 
+
     subestado.innerHTML =
-      "Comprobá que el navegador tenga permiso para usar la cámara.";
+      "Permití el uso de la cámara en el navegador.";
 
   });
 
@@ -509,110 +894,111 @@ function iniciarScanner() {
    PROCESAR QR
 ===================================================== */
 
-function procesarQR(textoQR) {
+function consultarQR(textoQR) {
+
+
+  let id =
+    String(textoQR)
+      .trim();
+
+
+  /*
+   * Si el QR contiene una URL
+   * con ?id=B001, extraemos B001.
+   */
+
+  try {
+
+    const url =
+      new URL(textoQR);
+
+
+    const parametro =
+      url.searchParams.get("id");
+
+
+    if (parametro) {
+
+      id =
+        parametro.trim();
+
+    }
+
+  } catch(error) {
+
+    /*
+     * Si no es una URL,
+     * usamos directamente el texto.
+     */
+
+  }
+
 
   estado.innerHTML =
-    "🟡 LEYENDO QR...";
+    "🟡 QR DETECTADO";
 
   estado.className =
     "estado";
 
+
   subestado.innerHTML =
-    "Consultando información del socio...";
+    "Consultando socio...";
+
+
+  llamarAPI(id);
+
+}
+
+
+/* =====================================================
+   LLAMAR APPS SCRIPT
+===================================================== */
+
+function llamarAPI(id) {
 
 
   /*
-   * Extraer ID
+   * Creamos un nombre único
+   * para la función JSONP.
    */
 
-  let id = textoQR.trim();
-function procesarQR(textoQR) {
-
-  estado.innerHTML = "🟡 LEYENDO QR...";
-  estado.className = "estado";
-  subestado.innerHTML = "Consultando información del socio...";
-
-  // ==========================================
-  // OBTENER ID DEL QR
-  // ==========================================
-
-  let id = textoQR.trim();
-
-  try {
-
-    const url = new URL(textoQR);
-
-    const parametro = url.searchParams.get("id");
-
-    if (parametro) {
-      id = parametro;
-    }
-
-  } catch (e) {
-
-    // Si el QR contiene directamente B001,
-    // usamos ese texto.
-
-  }
-
-  id = id.trim();
-
-  console.log("BOROS - ID ESCANEADO:", id);
-
-
-  // ==========================================
-  // CREAR CALLBACK
-  // ==========================================
-
   const callbackName =
-    "borosCallback_" + Date.now();
+    "borosCallback_" +
+    Date.now();
 
 
-  let respondio = false;
+  window[callbackName] =
+    function(respuesta) {
 
 
-  window[callbackName] = function(data) {
-
-    respondio = true;
-
-    console.log(
-      "BOROS - RESPUESTA RECIBIDA:",
-      data
-    );
-
-
-    try {
-
-      mostrarResultado(data);
-
-    } catch (error) {
-
-      console.error(
-        "BOROS - ERROR PROCESANDO RESPUESTA:",
-        error
+      console.log(
+        "Respuesta Boros:",
+        respuesta
       );
 
-      mostrarErrorConexion();
 
-    }
+      try {
+
+        mostrarResultado(
+          respuesta
+        );
+
+      } finally {
+
+        delete window[
+          callbackName
+        ];
+
+      }
+
+    };
 
 
-    delete window[callbackName];
+  const script =
+    document.createElement(
+      "script"
+    );
 
-
-    const script =
-      document.getElementById(callbackName);
-
-    if (script) {
-      script.remove();
-    }
-
-  };
-
-
-  // ==========================================
-  // ARMAR URL DE APPS SCRIPT
-  // ==========================================
 
   const url =
     API_URL +
@@ -620,99 +1006,74 @@ function procesarQR(textoQR) {
     "&id=" +
     encodeURIComponent(id) +
     "&callback=" +
-    encodeURIComponent(callbackName);
+    encodeURIComponent(
+      callbackName
+    );
 
-
-  console.log(
-    "BOROS - URL CONSULTADA:",
-    url
-  );
-
-
-  // ==========================================
-  // CREAR SCRIPT JSONP
-  // ==========================================
-
-  const script =
-    document.createElement("script");
-
-
-  script.id = callbackName;
 
   script.src = url;
 
-  script.async = true;
+
+  script.onerror =
+    function() {
 
 
-  // ==========================================
-  // ERROR DE CONEXIÓN
-  // ==========================================
-
-  script.onerror = function(error) {
-
-    console.error(
-      "BOROS - ERROR CARGANDO APPS SCRIPT:",
-      error
-    );
-
-    console.error(
-      "BOROS - URL:",
-      url
-    );
+      estado.innerHTML =
+        "🔴 ERROR DE CONEXIÓN";
 
 
-    if (!respondio) {
-
-      mostrarErrorConexion();
-
-    }
+      estado.className =
+        "estado rojo";
 
 
-    delete window[callbackName];
-
-    script.remove();
-
-  };
+      subestado.innerHTML =
+        "No se pudo comunicar con Apps Script.";
 
 
-  // ==========================================
-  // AGREGAR SCRIPT
-  // ==========================================
+      procesando = false;
 
-  document.head.appendChild(script);
+    };
 
 
-  // ==========================================
-  // TIEMPO MÁXIMO DE ESPERA
-  // ==========================================
-
-  setTimeout(function() {
-
-    if (!respondio) {
-
-      console.error(
-        "BOROS - APPS SCRIPT NO RESPONDIÓ"
-      );
-
-      console.error(
-        "BOROS - URL:",
-        url
-      );
+  document.body.appendChild(
+    script
+  );
 
 
-      mostrarErrorConexion();
+  /*
+   * Si después de 10 segundos
+   * no responde.
+   */
 
+  setTimeout(
+    function() {
 
-      delete window[callbackName];
+      if (
+        window[
+          callbackName
+        ]
+      ) {
 
+        estado.innerHTML =
+          "🔴 TIEMPO DE ESPERA AGOTADO";
 
-      if (script) {
-        script.remove();
+        estado.className =
+          "estado rojo";
+
+        subestado.innerHTML =
+          "Apps Script no respondió.";
+
+        delete window[
+          callbackName
+        ];
+
+        procesando = false;
+
       }
 
-    }
-
-  }, 10000);
+    },
+    10000
+  );
 
 }
 
@@ -721,19 +1082,16 @@ function procesarQR(textoQR) {
    MOSTRAR RESULTADO
 ===================================================== */
 
-function mostrarResultado(data) {
+function mostrarResultado(
+  socio
+) {
 
-  console.log("DATOS RECIBIDOS:", data);
 
-  if (!data) {
+  if (
+    !socio ||
+    !socio.encontrado
+  ) {
 
-    mostrarErrorConexion();
-
-    return;
-
-  }
-
-  if (!data.encontrado) {
 
     estado.innerHTML =
       "🔴 SOCIO NO ENCONTRADO";
@@ -741,74 +1099,126 @@ function mostrarResultado(data) {
     estado.className =
       "estado rojo";
 
+
     subestado.innerHTML =
-      data.mensaje ||
-      "El ID no existe en la planilla.";
+      socio &&
+      socio.mensaje
+        ? socio.mensaje
+        : "Revisá el QR.";
 
-    resultado.innerHTML = "";
 
-    escaneando = true;
+    nuevo.style.display =
+      "block";
+
+
+    procesando = false;
+
 
     return;
 
   }
 
 
+  resultado.style.display =
+    "block";
 
-  if (!data.encontrado) {
 
-    estado.innerHTML =
-      "🔴 SOCIO NO ENCONTRADO";
+  document.getElementById(
+    "nombre"
+  ).textContent =
+    (
+      socio.nombre || ""
+    )
+    +
+    " "
+    +
+    (
+      socio.apellido || ""
+    );
 
-    estado.className =
-      "estado rojo";
 
-    subestado.innerHTML =
-      data.mensaje ||
-      "El ID no existe en la planilla.";
+  document.getElementById(
+    "id"
+  ).textContent =
+    socio.id || "";
 
-    resultado.innerHTML = "";
 
-    setTimeout(resetearScanner, 3500);
+  document.getElementById(
+    "dni"
+  ).textContent =
+    socio.dni || "";
 
-    return;
 
-  }
+  document.getElementById(
+    "plan"
+  ).textContent =
+    socio.plan || "";
+
+
+  document.getElementById(
+    "vencimiento"
+  ).textContent =
+    socio.vencimiento || "";
+
+
+  document.getElementById(
+    "estadoSocio"
+  ).textContent =
+    socio.estado || "";
 
 
   /*
-   * Estadísticas
+   * FOTO
    */
 
-  entradas++;
+  const foto =
+    document.getElementById(
+      "foto"
+    );
 
 
-  if (data.permitido) {
+  if (
+    socio.foto &&
+    socio.foto.datos
+  ) {
 
-    permitidas++;
+    foto.src =
+      "data:" +
+      socio.foto.tipo +
+      ";base64," +
+      socio.foto.datos;
+
+    foto.style.display =
+      "block";
 
   } else {
 
-    denegadas++;
+    foto.style.display =
+      "none";
 
   }
 
 
-  document.getElementById("entradas")
-    .textContent = entradas;
-
-  document.getElementById("permitidas")
-    .textContent = permitidas;
-
-  document.getElementById("denegadas")
-    .textContent = denegadas;
-
-
   /*
-   * Estado
+   * ACCESO
    */
 
-  if (data.permitido) {
+  const acceso =
+    document.getElementById(
+      "acceso"
+    );
+
+
+  if (socio.permitido) {
+
+
+    acceso.className =
+      "acceso acceso-ok";
+
+
+    acceso.innerHTML =
+      "🟢 ACCESO PERMITIDO";
+
 
     estado.innerHTML =
       "🟢 ACCESO PERMITIDO";
@@ -816,7 +1226,24 @@ function mostrarResultado(data) {
     estado.className =
       "estado verde";
 
+
+    subestado.innerHTML =
+      "Entrada registrada correctamente.";
+
+
+    permitidas++;
+
+
   } else {
+
+
+    acceso.className =
+      "acceso acceso-no";
+
+
+    acceso.innerHTML =
+      "🔴 ACCESO DENEGADO";
+
 
     estado.innerHTML =
       "🔴 ACCESO DENEGADO";
@@ -824,141 +1251,57 @@ function mostrarResultado(data) {
     estado.className =
       "estado rojo";
 
-  }
+
+    subestado.innerHTML =
+      "La membresía no está vigente.";
 
 
-  subestado.innerHTML =
-    "Entrada registrada correctamente";
-
-
-  /*
-   * FOTO
-   */
-
-  let fotoHTML = "";
-
-
-  if (
-    data.foto &&
-    data.foto.datos
-  ) {
-
-    fotoHTML =
-      '<img class="foto" src="data:' +
-      data.foto.tipo +
-      ';base64,' +
-      data.foto.datos +
-      '" alt="Foto del socio">';
-
-  } else {
-
-    fotoHTML =
-      '<div class="foto" style="display:flex;align-items:center;justify-content:center;font-size:60px;">👤</div>';
+    denegadas++;
 
   }
 
 
-  /*
-   * RESULTADO
-   */
+  entradas++;
 
-  resultado.innerHTML =
 
-    '<div class="resultado-card">' +
+  actualizarEstadisticas();
 
-      fotoHTML +
 
-      '<div class="datos">' +
-
-        '<div class="nombre">' +
-          (data.nombre || "") +
-          " " +
-          (data.apellido || "") +
-        '</div>' +
-
-        '<div class="dato">' +
-          '<b>ID Socio</b>' +
-          (data.id || "") +
-        '</div>' +
-
-        '<div class="dato">' +
-          '<b>Plan</b>' +
-          (data.plan || "") +
-        '</div>' +
-
-        '<div class="dato">' +
-          '<b>Vencimiento</b>' +
-          (data.vencimiento || "") +
-        '</div>' +
-
-        '<div class="dato">' +
-          '<b>DNI</b>' +
-          (data.dni || "") +
-        '</div>' +
-
-        '<div class="acceso ' +
-          (data.permitido
-            ? "permitido"
-            : "denegado") +
-        '">' +
-
-          (
-            data.permitido
-              ? "✓ ACCESO PERMITIDO"
-              : "✕ ACCESO DENEGADO"
-          ) +
-
-        '</div>' +
-
-      '</div>' +
-
-    '</div>';
+  nuevo.style.display =
+    "block";
 
 
   /*
-   * Volver a escanear
+   * Detenemos el scanner
+   * para que no registre
+   * el mismo QR varias veces.
    */
 
-  setTimeout(
-    resetearScanner,
-    5000
-  );
+  if (scanner) {
+
+    scanner.pause(
+      true
+    );
+
+  }
 
 }
 
 
 /* =====================================================
-   ERROR DE CONEXION
+   REINICIAR
 ===================================================== */
 
-function mostrarErrorConexion() {
-
-  estado.innerHTML =
-    "🔴 NO SE PUDO CONECTAR CON EL SISTEMA";
-
-  estado.className =
-    "estado rojo";
-
-  subestado.innerHTML =
-    "Revisá la conexión con Apps Script.";
-
-  resultado.innerHTML = "";
-
-  setTimeout(
-    resetearScanner,
-    4000
-  );
-
-}
+function reiniciarScanner() {
 
 
-/* =====================================================
-   RESETEAR
-===================================================== */
+  resultado.style.display =
+    "none";
 
-function resetearScanner() {
 
-  escaneando = true;
+  nuevo.style.display =
+    "none";
+
 
   estado.innerHTML =
     "🟢 LISTO PARA ESCANEAR";
@@ -966,22 +1309,52 @@ function resetearScanner() {
   estado.className =
     "estado verde";
 
+
   subestado.innerHTML =
-    "Presentá el QR del socio frente a la cámara";
+    "Presentá el QR del socio frente a la cámara.";
+
+
+  procesando = false;
+
+
+  if (scanner) {
+
+    scanner.resume();
+
+  }
 
 }
 
 
 /* =====================================================
-   INICIAR
+   ESTADÍSTICAS
 ===================================================== */
 
-window.addEventListener(
-  "load",
-  iniciarScanner
-);
+function actualizarEstadisticas() {
+
+
+  document.getElementById(
+    "entradas"
+  ).textContent =
+    entradas;
+
+
+  document.getElementById(
+    "permitidas"
+  ).textContent =
+    permitidas;
+
+
+  document.getElementById(
+    "denegadas"
+  ).textContent =
+    denegadas;
+
+}
 
 </script>
 
+
 </body>
+
 </html>
