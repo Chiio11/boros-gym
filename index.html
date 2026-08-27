@@ -59,21 +59,24 @@ body{
 
 .titulo{
   text-align:center;
-  font-size:clamp(32px,6vw,58px);
+  font-size:clamp(28px,5vw,48px);
   font-weight:900;
   margin:12px 0 26px;
-  letter-spacing:2px;
+  letter-spacing:1px;
+  white-space:nowrap;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:20px;
 }
 
 .titulo::before,
 .titulo::after{
   content:"";
-  display:inline-block;
-  width:100px;
+  display:block;
+  flex:0 1 100px;
   height:2px;
   background:#ff1515;
-  vertical-align:middle;
-  margin:0 20px;
   box-shadow:0 0 10px rgba(255,0,0,.5);
 }
 
@@ -429,17 +432,19 @@ body{
     height:auto!important;
   }
 
-  .titulo{
-    font-size:31px;
-    margin:10px 0 20px;
-    white-space:nowrap;
-  }
+.titulo{
+  font-size:26px;
+  margin:10px 0 20px;
+  white-space:nowrap;
+  gap:8px;
+}
 
-  .titulo::before,
-  .titulo::after{
-    width:24px;
-    margin:0 7px;
-  }
+.titulo::before,
+.titulo::after{
+  width:auto;
+  flex:1 1 35px;
+  margin:0;
+}
 
   .paneles{
     display:grid !important;
