@@ -617,16 +617,20 @@ async function iniciarCamara() {
         await scanner.start(
 
             {
-                facingMode: "environment"
+                facingMode: {
+                    ideal: "environment"
+                }
             },
 
             {
-                fps: 10,
+                fps: 15,
 
                 qrbox: function(width, height) {
 
                     const tamaño =
-                        Math.min(width, height) * 0.75;
+                        Math.floor(
+                            Math.min(width, height) * 0.85
+                        );
 
                     return {
                         width: tamaño,
@@ -634,10 +638,26 @@ async function iniciarCamara() {
                     };
                 },
 
-                aspectRatio: 1.0
+                aspectRatio: 1.7777778,
+
+                disableFlip: false,
+
+                formatsToSupport: [
+                    Html5QrcodeSupportedFormats.QR_CODE
+                ],
+
+                experimentalFeatures: {
+                    useBarCodeDetectorIfSupported: true
+                }
+
             },
 
             function(decodedText) {
+
+                console.log(
+                    "📷 QR DETECTADO:",
+                    decodedText
+                );
 
                 if (procesando) {
                     return;
@@ -645,13 +665,26 @@ async function iniciarCamara() {
 
                 procesando = true;
 
+                estadoCamara.innerText =
+                    "🟡 QR DETECTADO";
+
+                estadoCamara.style.color =
+                    "#ffd000";
+
                 procesarQR(decodedText);
 
             },
 
             function(errorMessage) {
 
-                // Errores normales mientras busca QR.
+                // El lector sigue buscando.
+                // No mostramos cada error porque
+                // html5-qrcode genera muchos mientras busca.
+
+                console.log(
+                    "Buscando QR..."
+                );
+
             }
 
         );
