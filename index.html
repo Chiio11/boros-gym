@@ -120,20 +120,11 @@ body{min-height:100vh}
     align-items: stretch;
     box-sizing: border-box;
 }
-
-.paneles .scanner-card {
-    grid-column: 1;
-    width: 100%;
-    box-sizing: border-box;
-}
-
+.paneles .scanner-card,
 .paneles #resultado {
-    grid-column: 2;
-    grid-row: 1;
     width: 100%;
     min-width: 0;
     box-sizing: border-box;
-    margin: 0;
 }
 
 
@@ -555,15 +546,49 @@ body{min-height:100vh}
 
 <div class="paneles">
 
+    <!-- ESCÁNER -->
     <div class="scanner-card">
+<div class="scanner-card">
+  <div class="scanner-titulo">📷 ESCÁNER QR</div>
+
+  <div id="reader"></div>
+
+  <div id="estadoCamara" class="estado">⚪ TOCÁ «ABRIR CÁMARA»</div>
+
+  <div class="ayuda">Presentá el QR del socio frente a la cámara</div>
+
+  <div class="controles">
+    <button class="boton" id="abrirCamara">📷 ABRIR CÁMARA</button>
+    <button class="boton secundario" id="detenerCamara">⏹️ DETENER</button>
+  </div>
+
+  <div class="manual">
+    <div class="manual-titulo">Si el QR no funciona, ingresá el ID del socio manualmente</div>
+
+    <div class="manual-contenedor">
+      <input id="idManual" type="text" placeholder="Ejemplo: B001" autocomplete="off">
+      <button id="buscarManual">🔎 BUSCAR</button>
+    </div>
+  </div>
+</div>
+
+<div class="paneles">
+
+    <!-- ESCÁNER -->
+    <div class="scanner-card">
+        ...
+        <div id="reader"></div>
         ...
     </div>
 
+    <!-- RESULTADO -->
     <div id="resultado">
         ...
     </div>
 
 </div>
+
+    <div id="resultado">
 
         <div class="socio-card">
 
