@@ -743,267 +743,148 @@ async function detenerCamara() {
 
 function procesarQR(textoQR) {
 
-    let id =
-        String(textoQR).trim();
+  estado.innerHTML = "🟡 LEYENDO QR...";
+  estado.className = "estado";
+  subestado.innerHTML = "Consultando información del socio...";
 
-    /*
-       Si el QR contiene una URL como:
+  let id = String(textoQR || "").trim();
 
-       https://chiio11.github.io/boros-gym/?id=B001
+  // Si el QR contiene una URL, intentar obtener ?id=
+  try {
+    const url = new URL(id);
+    const parametro = url.searchParams.get("id");
 
-       extraemos solamente B001.
-    */
+    if (parametro) {
+      id = parametro.trim();
+    }
+  } catch (e) {
+    // El QR puede contener directamente B001
+  }
+
+  if (!id) {
+    mostrarErrorConexion();
+    return;
+  }
+
+  console.log("ID DETECTADO:", id);
+
+  // Nombre único para la función de respuesta
+  const callbackName =
+    "borosCallback_" +
+    Date.now() +
+    "_" +
+    Math.floor(Math.random() * 10000);
+
+  let terminado = false;
+
+  // Función que recibe la respuesta de Apps Script
+  window[callbackName] = function(data) {
+
+    if (terminado) return;
+
+    terminado = true;
+
+    console.log("RESPUESTA DE APPS SCRIPT:", data);
 
     try {
 
-        if (
-            id.startsWith("http://") ||
-            id.startsWith("https://")
-        ) {
+      mostrarResultado(data);
 
-            const url =
-                new URL(id);
+    } catch (error) {
 
-            const parametro =
-                url.searchParams.get("id");
+      console.error(
+        "ERROR PROCESANDO RESPUESTA:",
+        error
+      );
 
-            if (parametro) {
-
-                id = parametro;
-            }
-        }
+      mostrarErrorConexion();
 
     }
 
-    catch(error) {
+    limpiar();
 
-        console.log(
-            "QR no es una URL:",
-            error
-        );
-    }
+  };
 
-    id =
-        id
-        .trim()
-        .toUpperCase();
+  // Crear script para JSONP
+  const script =
+    document.createElement("script");
 
-    console.log(
-        "QR DETECTADO:",
-        id
+  script.id = callbackName;
+
+  script.async = true;
+
+  script.src =
+    API_URL +
+    "?api=1" +
+    "&id=" +
+    encodeURIComponent(id) +
+    "&callback=" +
+    encodeURIComponent(callbackName) +
+    "&_=" +
+    Date.now();
+
+  console.log(
+    "CONSULTANDO APPS SCRIPT:",
+    script.src
+  );
+
+  // Si el navegador no puede cargar Apps Script
+  script.onerror = function(error) {
+
+    if (terminado) return;
+
+    terminado = true;
+
+    console.error(
+      "ERROR CARGANDO APPS SCRIPT:",
+      error
     );
 
-    consultarSocio(id);
-}
+    mostrarErrorConexion();
+
+    limpiar();
+
+  };
+
+  // Tiempo máximo de espera
+  const temporizador =
+    setTimeout(function() {
+
+      if (terminado) return;
+
+      terminado = true;
+
+      console.error(
+        "APPS SCRIPT NO RESPONDIÓ EN 15 SEGUNDOS"
+      );
+
+      mostrarErrorConexion();
+
+      limpiar();
+
+    }, 15000);
 
 
-/* =====================================================
-   CONSULTAR SOCIO
-   JSONP
-===================================================== */
+  function limpiar() {
 
-function consultarSocio(id) {
+    clearTimeout(temporizador);
 
-    if (!id) {
-
-        mostrarError(
-            "INGRESÁ UN ID DE SOCIO"
-        );
-
-        procesando = false;
-
-        return;
+    if (window[callbackName]) {
+      delete window[callbackName];
     }
 
+    const elemento =
+      document.getElementById(callbackName);
 
-    mostrarCargando();
+    if (elemento) {
+      elemento.remove();
+    }
 
+  }
 
-    /*
-       Nombre único para la función callback
-    */
 
-    const callbackName =
-        "borosCallback_" +
-        Date.now();
+  document.body.appendChild(script);
 
-
-    /*
-       Esta función recibe directamente:
-
-       {
-           encontrado: true,
-           id: "B001",
-           ...
-       }
-    */
-
-    window[callbackName] =
-        function(respuesta) {
-
-            console.log(
-                "RESPUESTA APPS SCRIPT:",
-                respuesta
-            );
-
-            try {
-
-                mostrarResultado(
-                    respuesta
-                );
-
-            }
-
-            catch(error) {
-
-                console.error(
-                    "ERROR PROCESANDO RESPUESTA:",
-                    error
-                );
-
-                mostrarError(
-                    "ERROR PROCESANDO LA RESPUESTA"
-                );
-
-                procesando = false;
-            }
-
-
-            delete window[callbackName];
-
-        };
-
-
-    /*
-       Creamos el script JSONP.
-
-       IMPORTANTE:
-       No usamos fetch().
-       No usamos XMLHttpRequest().
-       No usamos CORS.
-
-       Apps Script devuelve:
-
-       callback({...})
-
-    */
-
-    const script =
-        document.createElement("script");
-
-
-    script.src =
-        API_URL +
-        "?api=1" +
-        "&id=" +
-        encodeURIComponent(id) +
-        "&callback=" +
-        encodeURIComponent(callbackName);
-
-
-    script.async = true;
-
-
-    script.onerror =
-        function() {
-
-            console.error(
-                "NO SE PUDO CARGAR APPS SCRIPT:",
-                script.src
-            );
-
-            mostrarError(
-                "NO SE PUDO CONECTAR CON APPS SCRIPT"
-            );
-
-            delete window[callbackName];
-
-            procesando = false;
-        };
-
-
-    /*
-       Si en 15 segundos no llega respuesta,
-       mostramos error.
-    */
-
-    const tiempoEspera =
-        setTimeout(function() {
-
-            if (
-                typeof window[callbackName] ===
-                "function"
-            ) {
-
-                console.error(
-                    "TIMEOUT APPS SCRIPT"
-                );
-
-                mostrarError(
-                    "APPS SCRIPT NO RESPONDIÓ"
-                );
-
-                delete window[callbackName];
-
-                procesando = false;
-            }
-
-        }, 15000);
-
-
-    /*
-       Cuando llegue respuesta,
-       cancelamos el timeout.
-    */
-
-    const originalCallback =
-        window[callbackName];
-
-
-    window[callbackName] =
-        function(respuesta) {
-
-            clearTimeout(
-                tiempoEspera
-            );
-
-            originalCallback(
-                respuesta
-            );
-        };
-
-
-    document.body.appendChild(
-        script
-    );
-}
-
-
-/* =====================================================
-   CARGANDO
-===================================================== */
-
-function mostrarCargando() {
-
-    resultado.innerHTML =
-
-        '<div class="socio-card">' +
-
-        '<div class="acceso">' +
-
-        '🔍<br><br>' +
-
-        'VERIFICANDO SOCIO...' +
-
-        '<small>' +
-
-        'Consultando membresía' +
-
-        '</small>' +
-
-        '</div>' +
-
-        '</div>';
 }
 
 
