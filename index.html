@@ -526,93 +526,193 @@ function procesarQR(textoQR) {
    */
 
   let id = textoQR.trim();
+function procesarQR(textoQR) {
 
+  estado.innerHTML = "🟡 LEYENDO QR...";
+  estado.className = "estado";
+  subestado.innerHTML = "Consultando información del socio...";
+
+  // ==========================================
+  // OBTENER ID DEL QR
+  // ==========================================
+
+  let id = textoQR.trim();
 
   try {
 
-    const url =
-      new URL(textoQR);
+    const url = new URL(textoQR);
 
-    const parametro =
-      url.searchParams.get("id");
+    const parametro = url.searchParams.get("id");
 
     if (parametro) {
-
       id = parametro;
-
     }
 
   } catch (e) {
 
-    // Si no es una URL, usamos directamente el texto
+    // Si el QR contiene directamente B001,
+    // usamos ese texto.
 
   }
 
+  id = id.trim();
 
-  /*
-   * JSONP
-   */
+  console.log("BOROS - ID ESCANEADO:", id);
+
+
+  // ==========================================
+  // CREAR CALLBACK
+  // ==========================================
 
   const callbackName =
-    "borosCallback_" +
-    Date.now();
+    "borosCallback_" + Date.now();
 
 
-  window[callbackName] =
-    function(data) {
-
-      try {
-
-        mostrarResultado(data);
-
-      } finally {
-
-        delete window[callbackName];
-
-        const script =
-          document.getElementById(callbackName);
-
-        if (script) {
-
-          script.remove();
-
-        }
-
-      }
-
-    };
+  let respondio = false;
 
 
-  const script =
-    document.createElement("script");
+  window[callbackName] = function(data) {
+
+    respondio = true;
+
+    console.log(
+      "BOROS - RESPUESTA RECIBIDA:",
+      data
+    );
 
 
-  script.id =
-    callbackName;
+    try {
+
+      mostrarResultado(data);
+
+    } catch (error) {
+
+      console.error(
+        "BOROS - ERROR PROCESANDO RESPUESTA:",
+        error
+      );
+
+      mostrarErrorConexion();
+
+    }
 
 
-  script.src =
+    delete window[callbackName];
+
+
+    const script =
+      document.getElementById(callbackName);
+
+    if (script) {
+      script.remove();
+    }
+
+  };
+
+
+  // ==========================================
+  // ARMAR URL DE APPS SCRIPT
+  // ==========================================
+
+  const url =
     API_URL +
     "?api=1" +
     "&id=" +
     encodeURIComponent(id) +
     "&callback=" +
-    callbackName;
+    encodeURIComponent(callbackName);
 
 
-  script.onerror =
-    function() {
+  console.log(
+    "BOROS - URL CONSULTADA:",
+    url
+  );
 
-      delete window[callbackName];
 
-      script.remove();
+  // ==========================================
+  // CREAR SCRIPT JSONP
+  // ==========================================
+
+  const script =
+    document.createElement("script");
+
+
+  script.id = callbackName;
+
+  script.src = url;
+
+  script.async = true;
+
+
+  // ==========================================
+  // ERROR DE CONEXIÓN
+  // ==========================================
+
+  script.onerror = function(error) {
+
+    console.error(
+      "BOROS - ERROR CARGANDO APPS SCRIPT:",
+      error
+    );
+
+    console.error(
+      "BOROS - URL:",
+      url
+    );
+
+
+    if (!respondio) {
 
       mostrarErrorConexion();
 
-    };
+    }
 
 
-  document.body.appendChild(script);
+    delete window[callbackName];
+
+    script.remove();
+
+  };
+
+
+  // ==========================================
+  // AGREGAR SCRIPT
+  // ==========================================
+
+  document.head.appendChild(script);
+
+
+  // ==========================================
+  // TIEMPO MÁXIMO DE ESPERA
+  // ==========================================
+
+  setTimeout(function() {
+
+    if (!respondio) {
+
+      console.error(
+        "BOROS - APPS SCRIPT NO RESPONDIÓ"
+      );
+
+      console.error(
+        "BOROS - URL:",
+        url
+      );
+
+
+      mostrarErrorConexion();
+
+
+      delete window[callbackName];
+
+
+      if (script) {
+        script.remove();
+      }
+
+    }
+
+  }, 10000);
 
 }
 
