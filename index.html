@@ -1,2 +1,1011 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+  <title>Boros Gym - Control de Acceso</title>
+
+  <script src="https://unpkg.com/html5-qrcode"></script>
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100%;
+      background: #050505;
+      color: white;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+    }
+
+    .contenedor {
+      width: 100%;
+      max-width: 900px;
+      margin: auto;
+      padding: 20px 14px 40px;
+    }
+
+    /* LOGO */
+
+    .logo {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .logo-principal {
+      font-size: clamp(48px, 14vw, 90px);
+      font-weight: 900;
+      font-style: italic;
+      letter-spacing: 7px;
+      color: #e51b23;
+      line-height: 1;
+      text-shadow:
+        3px 3px 0 #650000,
+        0 0 20px rgba(229,27,35,.35);
+    }
+
+    .logo-sub {
+      margin-top: 10px;
+      font-size: clamp(12px, 3vw, 19px);
+      font-weight: bold;
+      letter-spacing: 5px;
+      color: white;
+    }
+
+    .titulo {
+      text-align: center;
+      margin: 25px 0 18px;
+      font-size: clamp(22px, 6vw, 34px);
+      font-weight: 900;
+      letter-spacing: 2px;
+    }
+
+    /* ESCANER */
+
+    .scanner-card {
+      background: #101010;
+      border: 3px solid #d71920;
+      border-radius: 24px;
+      padding: 15px;
+      box-shadow: 0 0 30px rgba(215,25,32,.22);
+    }
+
+    .scanner-titulo {
+      text-align: center;
+      font-size: clamp(20px, 5vw, 28px);
+      font-weight: 900;
+      margin-bottom: 15px;
+    }
+
+    #reader {
+      width: 100%;
+      max-width: 700px;
+      margin: auto;
+      overflow: hidden;
+      border-radius: 18px;
+    }
+
+    #reader video {
+      width: 100% !important;
+      border-radius: 18px;
+    }
+
+    .estado {
+      text-align: center;
+      margin-top: 16px;
+      font-size: clamp(20px, 5vw, 30px);
+      font-weight: 900;
+    }
+
+    .ayuda {
+      text-align: center;
+      margin-top: 7px;
+      color: #999;
+      font-size: 15px;
+    }
+
+    /* RESULTADO */
+
+    #resultado {
+      margin-top: 20px;
+    }
+
+    .socio-card {
+      background: #101010;
+      border: 2px solid #333;
+      border-radius: 24px;
+      padding: 20px;
+    }
+
+    .socio-contenido {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+    }
+
+    .foto-container {
+      width: 280px;
+      flex-shrink: 0;
+    }
+
+    .foto {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border-radius: 20px;
+      border: 4px solid #d71920;
+    }
+
+    .datos {
+      flex: 1;
+    }
+
+    .nombre {
+      font-size: clamp(25px, 5vw, 40px);
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 15px;
+    }
+
+    .dato {
+      padding: 11px 0;
+      border-bottom: 1px solid #333;
+      font-size: clamp(17px, 3vw, 23px);
+    }
+
+    .dato span {
+      display: block;
+      color: #888;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+
+    .acceso {
+      margin-top: 22px;
+      padding: 22px 12px;
+      border-radius: 18px;
+      text-align: center;
+      font-size: clamp(25px, 6vw, 40px);
+      font-weight: 900;
+    }
+
+    .permitido {
+      color: #00e640;
+      border: 3px solid #00a832;
+      background: rgba(0,180,60,.10);
+    }
+
+    .denegado {
+      color: #ff3030;
+      border: 3px solid #b00000;
+      background: rgba(180,0,0,.10);
+    }
+
+    .acceso small {
+      display: block;
+      margin-top: 8px;
+      color: #bbb;
+      font-size: 15px;
+      font-weight: normal;
+    }
+
+    .error {
+      background: #100000;
+      border: 3px solid #c00000;
+      border-radius: 20px;
+      padding: 35px 20px;
+      text-align: center;
+      color: #ff3030;
+      font-size: 25px;
+      font-weight: 900;
+    }
+
+    /* ESTADISTICAS */
+
+    .estadisticas {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .estadistica {
+      background: #101010;
+      border: 1px solid #333;
+      border-radius: 16px;
+      padding: 15px 5px;
+      text-align: center;
+      color: #888;
+      font-size: 11px;
+      font-weight: bold;
+    }
+
+    .numero {
+      display: block;
+      margin-top: 5px;
+      color: white;
+      font-size: 28px;
+      font-weight: 900;
+    }
+
+    .verde {
+      color: #00e640;
+    }
+
+    .rojo {
+      color: #e51b23;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 25px;
+      color: #666;
+      font-size: 13px;
+      letter-spacing: 2px;
+    }
+
+    /* CELULAR */
+
+    @media (max-width: 650px) {
+
+      .contenedor {
+        padding: 15px 8px 30px;
+      }
+
+      .logo-principal {
+        font-size: 48px;
+      }
+
+      .scanner-card {
+        padding: 10px;
+      }
+
+      .socio-contenido {
+        flex-direction: column;
+      }
+
+      .foto-container {
+        width: 80%;
+        max-width: 330px;
+      }
+
+      .datos {
+        width: 100%;
+        text-align: center;
+      }
+
+      .dato {
+        text-align: left;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+<div class="contenedor">
+
+
+  <!-- LOGO -->
+
+  <div class="logo">
+
+    <div class="logo-principal">
+      BOROS
+    </div>
+
+    <div class="logo-sub">
+      STRENGTH & FITNESS
+    </div>
+
+  </div>
+
+
+  <div class="titulo">
+    CONTROL DE ACCESO
+  </div>
+
+
+  <!-- ESCANER -->
+
+  <div class="scanner-card">
+
+    <div class="scanner-titulo">
+      📷 ESCÁNER QR
+    </div>
+
+    <div id="reader"></div>
+
+    <div
+      id="estadoCamara"
+      class="estado">
+
+      INICIANDO CÁMARA...
+
+    </div>
+
+    <div class="ayuda">
+      Presentá el QR del socio frente a la cámara
+    </div>
+
+  </div>
+
+
+  <!-- RESULTADO -->
+
+  <div id="resultado"></div>
+
+
+  <!-- ESTADISTICAS -->
+
+  <div class="estadisticas">
+
+    <div class="estadistica">
+
+      ENTRADAS HOY
+
+      <span
+        id="entradasHoy"
+        class="numero">
+
+        0
+
+      </span>
+
+    </div>
+
+
+    <div class="estadistica">
+
+      PERMITIDAS
+
+      <span
+        id="permitidas"
+        class="numero verde">
+
+        0
+
+      </span>
+
+    </div>
+
+
+    <div class="estadistica">
+
+      DENEGADAS
+
+      <span
+        id="denegadas"
+        class="numero rojo">
+
+        0
+
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <div class="footer">
+
+    BOROS • FUERZA • DISCIPLINA • RESULTADOS
+
+  </div>
+
+
+</div>
+
+
+
+<script>
+
+
+/* =====================================================
+   CONFIGURACIÓN
+===================================================== */
+
+
+/*
+   ESTA ES LA URL DE TU APPS SCRIPT
+*/
+
 const API_URL =
   "https://script.google.com/macros/s/AKfycbwWuTDND-A06UgrvhlZ5Uifo3YsiiuRHbVlPFAGXykmaVQR5h6IuPpehLCLP7KiJYXC/exec";
+
+
+/* =====================================================
+   VARIABLES
+===================================================== */
+
+let scanner = null;
+
+let procesando = false;
+
+let entradasHoy = 0;
+
+let permitidas = 0;
+
+let denegadas = 0;
+
+
+
+/* =====================================================
+   INICIAR CÁMARA
+===================================================== */
+
+function iniciarCamara() {
+
+
+  const estado =
+    document.getElementById("estadoCamara");
+
+
+  estado.innerText =
+    "SOLICITANDO CÁMARA...";
+
+
+  scanner =
+    new Html5Qrcode("reader");
+
+
+  scanner.start(
+
+    {
+      facingMode: "environment"
+    },
+
+    {
+      fps: 10,
+
+      qrbox: function(width, height) {
+
+        const tamaño =
+          Math.min(width, height) * 0.70;
+
+        return {
+          width: tamaño,
+          height: tamaño
+        };
+
+      },
+
+      aspectRatio: 1.0
+
+    },
+
+    function(decodedText) {
+
+      if (procesando) {
+        return;
+      }
+
+      procesando = true;
+
+      procesarQR(decodedText);
+
+    },
+
+    function(errorMessage) {
+
+      // No mostramos los errores normales
+      // mientras busca un QR.
+
+    }
+
+  )
+
+  .then(function() {
+
+    estado.innerText =
+      "🟢 LISTO PARA ESCANEAR";
+
+    estado.style.color =
+      "#00e640";
+
+  })
+
+  .catch(function(error) {
+
+    console.log(error);
+
+    estado.innerText =
+      "🔴 NO SE PUDO ACCEDER A LA CÁMARA";
+
+    estado.style.color =
+      "#ff3030";
+
+    document.getElementById("resultado").innerHTML =
+
+      '<div class="error">' +
+
+        '🔴<br><br>' +
+
+        'NO SE PUDO ACCEDER A LA CÁMARA' +
+
+        '<br><br>' +
+
+        '<small>' +
+
+          'Revisá los permisos de cámara del navegador.' +
+
+        '</small>' +
+
+      '</div>';
+
+  });
+
+}
+
+
+
+/* =====================================================
+   PROCESAR QR
+===================================================== */
+
+function procesarQR(textoQR) {
+
+
+  let id =
+    String(textoQR).trim();
+
+
+  /*
+     Si el QR contiene:
+
+     https://chiio11.github.io/boros-gym/?id=B001
+
+     extraemos B001.
+  */
+
+  try {
+
+    if (
+      id.startsWith("http://") ||
+      id.startsWith("https://")
+    ) {
+
+      const url =
+        new URL(id);
+
+      const parametro =
+        url.searchParams.get("id");
+
+      if (parametro) {
+
+        id = parametro;
+
+      }
+
+    }
+
+  } catch (error) {
+
+    // Si no es URL usamos el contenido directamente.
+
+  }
+
+
+  id =
+    id
+      .trim()
+      .toUpperCase();
+
+
+  consultarSocio(id);
+
+}
+
+
+
+/* =====================================================
+   CONSULTAR APPS SCRIPT
+===================================================== */
+
+function consultarSocio(id) {
+
+
+  mostrarCargando();
+
+
+  const callbackName =
+    "borosCallback_" +
+    Date.now();
+
+
+  window[callbackName] =
+    function(resultado) {
+
+
+      try {
+
+        mostrarResultado(resultado);
+
+      }
+
+      finally {
+
+        delete window[callbackName];
+
+      }
+
+
+    };
+
+
+  const script =
+    document.createElement("script");
+
+
+  script.src =
+
+    API_URL +
+
+    "?api=1" +
+
+    "&id=" +
+    encodeURIComponent(id) +
+
+    "&callback=" +
+    callbackName;
+
+
+  script.onerror =
+    function() {
+
+      mostrarError(
+        "NO SE PUDO CONECTAR CON APPS SCRIPT"
+      );
+
+      delete window[callbackName];
+
+      procesando = false;
+
+    };
+
+
+  document.body.appendChild(script);
+
+}
+
+
+
+/* =====================================================
+   CARGANDO
+===================================================== */
+
+function mostrarCargando() {
+
+
+  document.getElementById("resultado").innerHTML =
+
+    '<div class="socio-card">' +
+
+      '<div class="acceso">' +
+
+        '🔍<br><br>' +
+
+        'VERIFICANDO SOCIO...' +
+
+        '<small>' +
+
+          'Consultando membresía' +
+
+        '</small>' +
+
+      '</div>' +
+
+    '</div>';
+
+}
+
+
+
+/* =====================================================
+   MOSTRAR RESULTADO
+===================================================== */
+
+function mostrarResultado(resultado) {
+
+
+  if (!resultado) {
+
+    mostrarError(
+      "NO SE RECIBIÓ RESPUESTA"
+    );
+
+    procesando = false;
+
+    return;
+
+  }
+
+
+  if (!resultado.encontrado) {
+
+    mostrarError(
+      resultado.mensaje ||
+      "SOCIO NO ENCONTRADO"
+    );
+
+    denegadas++;
+
+    entradasHoy++;
+
+    actualizarEstadisticas();
+
+    volverAlEscaner();
+
+    return;
+
+  }
+
+
+  entradasHoy++;
+
+
+  if (resultado.permitido) {
+
+    permitidas++;
+
+  }
+
+  else {
+
+    denegadas++;
+
+  }
+
+
+  actualizarEstadisticas();
+
+
+  let fotoHTML = "";
+
+
+  if (
+    resultado.foto &&
+    resultado.foto.datos
+  ) {
+
+    fotoHTML =
+
+      '<div class="foto-container">' +
+
+        '<img ' +
+
+          'class="foto" ' +
+
+          'src="data:' +
+
+            resultado.foto.tipo +
+
+            ';base64,' +
+
+            resultado.foto.datos +
+
+          '" ' +
+
+          'alt="Foto del socio">' +
+
+      '</div>';
+
+  }
+
+
+  const claseEstado =
+    resultado.permitido
+      ? "permitido"
+      : "denegado";
+
+
+  const icono =
+    resultado.permitido
+      ? "🟢"
+      : "🔴";
+
+
+  const texto =
+    resultado.permitido
+      ? "ACCESO PERMITIDO"
+      : "ACCESO DENEGADO";
+
+
+  const mensaje =
+    resultado.permitido
+      ? "Entrada registrada correctamente"
+      : "Membresía vencida";
+
+
+  document.getElementById("resultado").innerHTML =
+
+    '<div class="socio-card">' +
+
+      '<div class="socio-contenido">' +
+
+        fotoHTML +
+
+        '<div class="datos">' +
+
+          '<div class="nombre">' +
+
+            resultado.nombre +
+
+            ' ' +
+
+            resultado.apellido +
+
+          '</div>' +
+
+
+          '<div class="dato">' +
+
+            '<span>ID SOCIO</span>' +
+
+            resultado.id +
+
+          '</div>' +
+
+
+          '<div class="dato">' +
+
+            '<span>PLAN</span>' +
+
+            resultado.plan +
+
+          '</div>' +
+
+
+          '<div class="dato">' +
+
+            '<span>VENCIMIENTO</span>' +
+
+            resultado.vencimiento +
+
+          '</div>' +
+
+
+          '<div class="dato">' +
+
+            '<span>DNI</span>' +
+
+            resultado.dni +
+
+          '</div>' +
+
+        '</div>' +
+
+      '</div>' +
+
+
+      '<div class="acceso ' +
+
+        claseEstado +
+
+      '">' +
+
+        icono +
+
+        ' ' +
+
+        texto +
+
+        '<small>' +
+
+          mensaje +
+
+        '</small>' +
+
+      '</div>' +
+
+    '</div>';
+
+
+  volverAlEscaner();
+
+}
+
+
+
+/* =====================================================
+   ERROR
+===================================================== */
+
+function mostrarError(mensaje) {
+
+
+  document.getElementById("resultado").innerHTML =
+
+    '<div class="error">' +
+
+      '🔴<br><br>' +
+
+      mensaje +
+
+    '</div>';
+
+}
+
+
+
+/* =====================================================
+   VOLVER AL ESCÁNER
+===================================================== */
+
+function volverAlEscaner() {
+
+
+  setTimeout(function() {
+
+    document.getElementById("resultado").innerHTML = "";
+
+    procesando = false;
+
+  }, 5000);
+
+}
+
+
+
+/* =====================================================
+   ESTADISTICAS
+===================================================== */
+
+function actualizarEstadisticas() {
+
+
+  document.getElementById("entradasHoy")
+    .innerText = entradasHoy;
+
+
+  document.getElementById("permitidas")
+    .innerText = permitidas;
+
+
+  document.getElementById("denegadas")
+    .innerText = denegadas;
+
+}
+
+
+
+/* =====================================================
+   ARRANCAR
+===================================================== */
+
+window.addEventListener(
+  "load",
+  function() {
+
+    iniciarCamara();
+
+  }
+);
+
+
+</script>
+
+</body>
+</html>
