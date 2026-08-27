@@ -1,27 +1,15 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Boros Gym - Control de Acceso</title>
 
-
-<!-- Librería para leer QR -->
-<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
-
+<!-- Lector QR -->
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
 <style>
-
-/* =====================================================
-   GENERAL
-===================================================== */
 
 * {
     box-sizing: border-box;
@@ -31,8 +19,6 @@ html,
 body {
     margin: 0;
     padding: 0;
-    width: 100%;
-    min-height: 100%;
     background: #050505;
     color: white;
     font-family: Arial, Helvetica, sans-serif;
@@ -42,969 +28,396 @@ body {
     min-height: 100vh;
 }
 
-
-/* =====================================================
-   CONTENEDOR
-===================================================== */
-
 .contenedor {
-
     width: 100%;
     max-width: 1100px;
-
-    margin: 0 auto;
-
-    padding:
-        25px
-        25px
-        50px
-        25px;
-
+    margin: auto;
+    padding: 25px 20px 40px;
 }
 
-
-/* =====================================================
+/* =========================
    LOGO
-===================================================== */
+========================= */
 
 .logo {
-
     text-align: center;
-
-    margin-bottom: 25px;
-
+    margin-bottom: 20px;
 }
 
 .logo-principal {
-
-    font-size: 72px;
-
+    font-size: clamp(55px, 9vw, 95px);
     font-weight: 900;
-
-    letter-spacing: 8px;
-
-    line-height: 1;
-
     font-style: italic;
-
-    color: white;
-
-    text-shadow:
-        3px 3px 0 #e50914,
-        0 0 20px rgba(255,0,0,.25);
-
+    letter-spacing: 8px;
+    line-height: 0.9;
 }
 
 .logo-sub {
-
-    margin-top: 8px;
-
-    font-size: 20px;
-
+    margin-top: 12px;
+    color: #ff4b4b;
+    font-size: clamp(14px, 2.5vw, 24px);
     font-weight: bold;
-
-    letter-spacing: 8px;
-
-    color: #ff6b72;
-
+    letter-spacing: 7px;
 }
 
-
-/* =====================================================
+/* =========================
    TITULO
-===================================================== */
+========================= */
 
 .titulo {
-
     text-align: center;
-
-    font-size: 38px;
-
+    font-size: clamp(32px, 6vw, 58px);
     font-weight: 900;
-
-    letter-spacing: 3px;
-
-    margin:
-        30px
-        0
-        25px
-        0;
-
+    margin: 35px 0;
 }
 
+/* =========================
+   ESCANER
+========================= */
 
-/* =====================================================
-   CAJA PRINCIPAL
-===================================================== */
-
-.panel {
-
+.scanner-card {
     width: 100%;
-
-    border:
-        3px solid
-        #ff202a;
-
-    border-radius: 30px;
-
-    padding: 30px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #111111,
-            #050505
-        );
-
-    box-shadow:
-        0 0 25px
-        rgba(255,0,0,.25);
-
+    border: 4px solid #ff2020;
+    border-radius: 35px;
+    padding: 25px;
+    background: #080808;
+    box-shadow: 0 0 30px rgba(255,0,0,.25);
 }
 
-
-/* =====================================================
-   TITULO ESCANER
-===================================================== */
-
-.titulo-escaner {
-
+.scanner-titulo {
     text-align: center;
-
-    font-size: 34px;
-
+    font-size: clamp(28px, 5vw, 48px);
     font-weight: 900;
-
     margin-bottom: 25px;
-
 }
 
-
-/* =====================================================
-   CAMARA
-===================================================== */
-
-.camara-container {
-
+#reader {
     width: 100%;
-
-    max-width: 800px;
-
-    margin:
-        0 auto
-        25px
-        auto;
-
-    position: relative;
-
-    overflow: hidden;
-
+    max-width: 850px;
+    margin: auto;
     border-radius: 25px;
-
-    background: #000;
-
-    border:
-        2px solid
-        #222;
-
+    overflow: hidden;
+    background: #111;
 }
 
-
-/*
-   Video
-*/
-
-#video {
-
-    display: block;
-
-    width: 100%;
-
-    height: auto;
-
-    min-height: 300px;
-
-    max-height: 600px;
-
-    object-fit: cover;
-
-    background: #000;
-
+/* Oculta algunos textos/botones propios del lector */
+#reader img {
+    max-width: 100%;
 }
 
-
-/*
-   Marco del QR
-*/
-
-.marco-qr {
-
-    position: absolute;
-
-    width: 55%;
-
-    aspect-ratio: 1 / 1;
-
-    left: 22.5%;
-
-    top: 15%;
-
-    border:
-        4px solid
-        rgba(255,255,255,.9);
-
-    border-radius: 10px;
-
-    pointer-events: none;
-
+#reader video {
+    width: 100% !important;
+    height: auto !important;
+    border-radius: 20px;
 }
-
-
-/* =====================================================
-   ESTADO
-===================================================== */
 
 .estado {
-
     text-align: center;
-
-    margin:
-        15px
-        0
-        25px;
-
-}
-
-.estado-principal {
-
-    font-size: 32px;
-
+    margin-top: 25px;
+    font-size: clamp(24px, 5vw, 42px);
     font-weight: 900;
-
+    color: #00ed45;
 }
 
-.estado-sub {
-
-    margin-top: 8px;
-
-    font-size: 18px;
-
-    color: #aaa;
-
+.ayuda {
+    text-align: center;
+    margin-top: 10px;
+    color: #bbb;
+    font-size: clamp(16px, 3vw, 24px);
 }
 
-.estado.ok .estado-principal {
+/* =========================
+   CONTROLES
+========================= */
 
-    color: #22ff45;
-
-}
-
-.estado.error .estado-principal {
-
-    color: #ff4141;
-
-}
-
-.estado.buscando .estado-principal {
-
-    color: #ffd000;
-
-}
-
-
-/* =====================================================
-   BOTONES
-===================================================== */
-
-.botones {
-
+.controles {
+    margin-top: 25px;
     display: flex;
-
-    justify-content: center;
-
-    gap: 15px;
-
     flex-wrap: wrap;
-
-    margin-bottom: 30px;
-
+    gap: 15px;
+    justify-content: center;
 }
 
-button {
-
+.boton {
     border: none;
-
-    border-radius: 16px;
-
-    padding:
-        18px
-        30px;
-
-    font-size: 20px;
-
+    border-radius: 18px;
+    padding: 18px 28px;
+    font-size: 22px;
     font-weight: 900;
-
     cursor: pointer;
-
     color: white;
-
     background: #ed1c24;
-
-    box-shadow:
-        0 5px 20px
-        rgba(255,0,0,.25);
-
-    transition: .2s;
-
 }
 
-button:hover {
-
-    transform: scale(1.03);
-
+.boton:hover {
+    background: #ff3030;
 }
 
-button:active {
-
-    transform: scale(.98);
-
+.boton.secundario {
+    background: #222;
+    border: 2px solid #555;
 }
-
-.btn-detener {
-
-    background: #242424;
-
-    border:
-        2px solid
-        #555;
-
-}
-
-
-/* =====================================================
-   BUSQUEDA MANUAL
-===================================================== */
 
 .manual {
-
-    border-top:
-        1px solid
-        #333;
-
-    padding-top: 30px;
-
-    text-align: center;
-
+    margin-top: 30px;
+    padding-top: 25px;
+    border-top: 2px solid #333;
 }
 
 .manual-titulo {
-
-    font-size: 24px;
-
-    font-weight: bold;
-
-    margin-bottom: 10px;
-
-}
-
-.manual-sub {
-
-    color: #aaa;
-
-    font-size: 17px;
-
-    margin-bottom: 20px;
-
-}
-
-.manual-form {
-
-    display: flex;
-
-    gap: 12px;
-
-    justify-content: center;
-
-}
-
-#inputID {
-
-    width: 100%;
-
-    max-width: 500px;
-
-    padding: 18px;
-
-    border-radius: 15px;
-
-    border:
-        2px solid
-        #555;
-
-    background: #111;
-
-    color: white;
-
-    font-size: 22px;
-
     text-align: center;
-
-    outline: none;
-
+    font-size: clamp(20px, 4vw, 30px);
+    margin-bottom: 15px;
+    color: #ddd;
 }
 
-#inputID:focus {
-
-    border-color: #ff202a;
-
+.manual-contenedor {
+    display: flex;
+    gap: 12px;
 }
 
-.btn-buscar {
-
-    min-width: 150px;
-
+#idManual {
+    flex: 1;
+    min-width: 0;
+    background: #111;
+    color: white;
+    border: 2px solid #555;
+    border-radius: 15px;
+    padding: 18px;
+    font-size: 22px;
+    text-transform: uppercase;
 }
 
+#buscarManual {
+    background: #ed1c24;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    padding: 0 28px;
+    font-size: 20px;
+    font-weight: 900;
+}
 
-/* =====================================================
+/* =========================
    RESULTADO
-===================================================== */
+========================= */
 
 #resultado {
-
-    margin-top: 30px;
-
+    margin-top: 25px;
 }
 
-
-/* =====================================================
-   TARJETA SOCIO
-===================================================== */
-
-.tarjeta-socio {
-
-    border:
-        2px solid
-        #333;
-
-    border-radius: 25px;
-
+.socio-card {
+    background: #101010;
+    border: 3px solid #333;
+    border-radius: 30px;
     padding: 25px;
-
-    background:
-        linear-gradient(
-            145deg,
-            #151515,
-            #080808
-        );
-
 }
 
-
-/* =====================================================
-   DATOS
-===================================================== */
-
-.datos-superiores {
-
+.socio-contenido {
     display: flex;
-
-    gap: 25px;
-
     align-items: center;
-
+    gap: 30px;
 }
-
 
 .foto-container {
-
-    width: 220px;
-
-    min-width: 220px;
-
-    height: 280px;
-
-    border-radius: 20px;
-
-    overflow: hidden;
-
-    background: #111;
-
+    width: 300px;
+    flex-shrink: 0;
 }
 
-.foto-socio {
-
+.foto {
     width: 100%;
-
-    height: 100%;
-
+    aspect-ratio: 1 / 1;
     object-fit: cover;
-
+    border-radius: 22px;
+    border: 4px solid #e51b23;
 }
 
-
-.datos-socio {
-
+.datos {
     flex: 1;
-
 }
 
 .nombre {
-
-    font-size: 36px;
-
+    font-size: clamp(28px, 5vw, 45px);
     font-weight: 900;
-
-    margin-bottom: 15px;
-
-}
-
-
-.id-socio {
-
-    display: inline-block;
-
-    background: #e21b23;
-
-    border-radius: 10px;
-
-    padding:
-        8px
-        18px;
-
-    font-size: 25px;
-
-    font-weight: 900;
-
     margin-bottom: 20px;
-
 }
-
 
 .dato {
-
-    padding:
-        12px
-        0;
-
-    border-bottom:
-        1px solid
-        #292929;
-
+    padding: 12px 0;
+    border-bottom: 1px solid #333;
+    font-size: clamp(18px, 3vw, 25px);
 }
 
 .dato span {
-
     display: block;
-
-    color: #999;
-
-    font-size: 14px;
-
-    margin-bottom: 4px;
-
+    color: #888;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    margin-bottom: 5px;
 }
 
-.dato strong {
-
-    font-size: 22px;
-
-}
-
-
-/* =====================================================
-   ESTADO ACCESO
-===================================================== */
-
-.estado-acceso {
-
+.acceso {
     margin-top: 25px;
-
-    padding: 22px;
-
-    border-radius: 18px;
-
-    text-align: center;
-
-    font-size: 30px;
-
-    font-weight: 900;
-
-}
-
-.estado-acceso.permitido {
-
-    color: #25ff45;
-
-    border:
-        2px solid
-        #20a830;
-
-    background:
-        rgba(0,120,0,.15);
-
-}
-
-.estado-acceso.denegado {
-
-    color: #ff3030;
-
-    border:
-        2px solid
-        #aa2222;
-
-    background:
-        rgba(120,0,0,.15);
-
-}
-
-
-/* =====================================================
-   ERROR SOCIO
-===================================================== */
-
-.error-socio {
-
-    text-align: center;
-
-    border:
-        2px solid
-        #d82029;
-
+    padding: 25px;
     border-radius: 20px;
-
-    padding: 30px;
-
+    text-align: center;
+    font-size: clamp(28px, 6vw, 45px);
+    font-weight: 900;
 }
 
-.error-socio h2 {
-
-    color: #ff4141;
-
-    font-size: 30px;
-
-}
-
-.error-socio p {
-
-    color: #aaa;
-
+.acceso small {
+    display: block;
+    margin-top: 10px;
+    color: #bbb;
     font-size: 18px;
-
+    font-weight: normal;
 }
 
+.permitido {
+    color: #00ed45;
+    border: 3px solid #00a832;
+    background: rgba(0,180,60,.10);
+}
 
-/* =====================================================
+.denegado {
+    color: #ff3030;
+    border: 3px solid #b00000;
+    background: rgba(180,0,0,.10);
+}
+
+.error {
+    background: #150000;
+    border: 3px solid #d00000;
+    border-radius: 25px;
+    padding: 30px 20px;
+    text-align: center;
+    color: #ff4040;
+    font-size: clamp(20px, 4vw, 32px);
+    font-weight: 900;
+}
+
+/* =========================
    ESTADISTICAS
-===================================================== */
+========================= */
 
 .estadisticas {
-
     display: grid;
-
-    grid-template-columns:
-        repeat(3, 1fr);
-
+    grid-template-columns: repeat(3, 1fr);
     gap: 15px;
-
-    margin-top: 30px;
-
+    margin-top: 25px;
 }
 
-.stat {
-
-    text-align: center;
-
-    padding: 25px 10px;
-
-    border:
-        2px solid
-        #333;
-
+.estadistica {
+    background: #101010;
+    border: 2px solid #333;
     border-radius: 20px;
-
-    background: #0c0c0c;
-
+    padding: 20px 10px;
+    text-align: center;
+    color: #999;
+    font-size: 15px;
+    font-weight: bold;
 }
 
-.stat-numero {
-
-    font-size: 42px;
-
+.numero {
+    display: block;
+    margin-top: 8px;
+    color: white;
+    font-size: 38px;
     font-weight: 900;
-
 }
 
-.stat-titulo {
-
-    color: #aaa;
-
-    font-size: 16px;
-
-    margin-top: 5px;
-
+.verde {
+    color: #00ed45;
 }
 
-.stat.permitidas .stat-numero {
-
-    color: #22ff45;
-
-}
-
-.stat.denegadas .stat-numero {
-
+.rojo {
     color: #ff3030;
-
 }
 
-
-/* =====================================================
+/* =========================
    FOOTER
-===================================================== */
+========================= */
 
 .footer {
-
     text-align: center;
-
-    margin-top: 35px;
-
+    margin-top: 30px;
     color: #777;
-
-    font-size: 17px;
-
+    font-size: 15px;
     letter-spacing: 3px;
-
 }
 
-.footer span {
-
-    color: #e21b23;
-
-}
-
-
-/* =====================================================
-   CANVAS OCULTO
-===================================================== */
-
-#canvas {
-
-    display: none;
-
-}
-
-
-/* =====================================================
+/* =========================
    CELULAR
-===================================================== */
+========================= */
 
-@media (max-width: 700px) {
-
+@media (max-width: 650px) {
 
     .contenedor {
-
-        padding:
-            15px
-            12px
-            40px;
-
+        padding: 18px 10px 30px;
     }
 
-
-    .logo-principal {
-
-        font-size: 50px;
-
-        letter-spacing: 5px;
-
+    .scanner-card {
+        padding: 12px;
+        border-radius: 25px;
     }
 
-
-    .logo-sub {
-
-        font-size: 14px;
-
-        letter-spacing: 5px;
-
+    .scanner-titulo {
+        margin-bottom: 15px;
     }
 
-
-    .titulo {
-
-        font-size: 28px;
-
-        margin-top: 25px;
-
+    #reader {
+        border-radius: 18px;
     }
 
-
-    .panel {
-
-        padding: 15px;
-
-        border-radius: 22px;
-
-    }
-
-
-    .titulo-escaner {
-
-        font-size: 27px;
-
-    }
-
-
-    #video {
-
-        min-height: 250px;
-
-    }
-
-
-    .estado-principal {
-
-        font-size: 24px;
-
-    }
-
-
-    .estado-sub {
-
-        font-size: 15px;
-
-    }
-
-
-    .botones {
-
+    .socio-contenido {
         flex-direction: column;
-
     }
-
-
-    button {
-
-        width: 100%;
-
-        font-size: 21px;
-
-    }
-
-
-    .manual-form {
-
-        flex-direction: column;
-
-    }
-
-
-    #inputID {
-
-        max-width: none;
-
-        font-size: 22px;
-
-    }
-
-
-    .btn-buscar {
-
-        width: 100%;
-
-    }
-
-
-    .datos-superiores {
-
-        flex-direction: column;
-
-    }
-
 
     .foto-container {
-
-        width: 100%;
-
-        max-width: 300px;
-
-        height: 350px;
-
+        width: 85%;
+        max-width: 330px;
     }
 
-
-    .datos-socio {
-
+    .datos {
         width: 100%;
-
         text-align: center;
-
     }
 
-
-    .nombre {
-
-        font-size: 28px;
-
+    .dato {
+        text-align: left;
     }
 
-
-    .estado-acceso {
-
-        font-size: 23px;
-
+    .manual-contenedor {
+        flex-direction: column;
     }
 
+    #buscarManual {
+        min-height: 60px;
+    }
 
     .estadisticas {
-
-        grid-template-columns: 1fr;
-
+        gap: 7px;
     }
 
-}
-
-
-/* =====================================================
-   CELULARES MUY PEQUEÑOS
-===================================================== */
-
-@media (max-width: 400px) {
-
-    .logo-principal {
-
-        font-size: 42px;
-
+    .estadistica {
+        padding: 15px 5px;
+        font-size: 11px;
     }
 
-    .titulo {
-
-        font-size: 24px;
-
+    .numero {
+        font-size: 30px;
     }
-
-    .titulo-escaner {
-
-        font-size: 23px;
-
-    }
-
 }
 
 </style>
-
 </head>
-
 
 <body>
 
-
 <div class="contenedor">
 
-
-    <!-- =================================================
-         LOGO
-    ================================================== -->
-
+    <!-- LOGO -->
     <div class="logo">
 
         <div class="logo-principal">
@@ -1017,135 +430,68 @@ button:active {
 
     </div>
 
-
-    <!-- =================================================
-         TITULO
-    ================================================== -->
-
     <div class="titulo">
         CONTROL DE ACCESO
     </div>
 
 
-    <!-- =================================================
-         PANEL
-    ================================================== -->
+    <!-- =========================
+         ESCANER
+    ========================== -->
 
-    <div class="panel">
+    <div class="scanner-card">
 
-
-        <div class="titulo-escaner">
-
+        <div class="scanner-titulo">
             📷 ESCÁNER QR
-
         </div>
 
+        <div id="reader"></div>
 
-        <!-- =================================================
-             CAMARA
-        ================================================== -->
-
-        <div class="camara-container">
-
-            <video
-                id="video"
-                autoplay
-                playsinline
-                muted
-            ></video>
-
-            <div class="marco-qr"></div>
-
+        <div id="estadoCamara" class="estado">
+            PREPARANDO CÁMARA...
         </div>
 
-
-        <canvas id="canvas"></canvas>
-
-
-        <!-- =================================================
-             ESTADO
-        ================================================== -->
-
-        <div
-            id="estado"
-            class="estado ok"
-        >
-
-            <div
-                id="estadoPrincipal"
-                class="estado-principal"
-            >
-                🟢 LISTO PARA ESCANEAR
-            </div>
-
-            <div
-                id="estadoSub"
-                class="estado-sub"
-            >
-                Presentá el QR del socio frente a la cámara
-            </div>
-
+        <div class="ayuda">
+            Presentá el QR del socio frente a la cámara
         </div>
 
-
-        <!-- =================================================
-             BOTONES
-        ================================================== -->
-
-        <div class="botones">
+        <div class="controles">
 
             <button
-                id="abrirCamara"
-            >
+                class="boton"
+                id="abrirCamara">
                 📷 ABRIR CÁMARA
             </button>
 
-
             <button
-                id="detenerCamara"
-                class="btn-detener"
-                style="display:none;"
-            >
+                class="boton secundario"
+                id="detenerCamara">
                 ⏹️ DETENER
             </button>
 
         </div>
 
 
-        <!-- =================================================
-             BUSQUEDA MANUAL
-        ================================================== -->
+        <!-- =========================
+             CONSULTA MANUAL
+        ========================== -->
 
         <div class="manual">
 
             <div class="manual-titulo">
-
-                🔎 Búsqueda manual
-
+                Si el QR no funciona, ingresá el ID del socio manualmente
             </div>
 
-            <div class="manual-sub">
-
-                Si el QR no funciona, ingresá el ID del socio
-
-            </div>
-
-
-            <div class="manual-form">
+            <div class="manual-contenedor">
 
                 <input
-                    id="inputID"
+                    id="idManual"
                     type="text"
                     placeholder="Ejemplo: B001"
-                    autocomplete="off"
-                    autocapitalize="characters"
-                >
-
+                    autocomplete="off">
 
                 <button
-                    id="buscar"
-                    class="btn-buscar"
-                >
+                    id="buscarManual">
                     🔎 BUSCAR
                 </button>
 
@@ -1153,105 +499,63 @@ button:active {
 
         </div>
 
-
     </div>
 
 
-    <!-- =================================================
-         RESULTADO
-    ================================================== -->
+    <!-- RESULTADO -->
 
     <div id="resultado"></div>
 
 
-    <!-- =================================================
-         ESTADISTICAS
-    ================================================== -->
+    <!-- ESTADISTICAS -->
 
     <div class="estadisticas">
 
-
-        <div class="stat">
-
-            <div
+        <div class="estadistica">
+            ENTRADAS HOY
+            <span
                 id="entradasHoy"
-                class="stat-numero"
-            >
+                class="numero">
                 0
-            </div>
-
-            <div class="stat-titulo">
-                ENTRADAS HOY
-            </div>
-
+            </span>
         </div>
 
-
-        <div class="stat permitidas">
-
-            <div
+        <div class="estadistica">
+            PERMITIDAS
+            <span
                 id="permitidas"
-                class="stat-numero"
-            >
+                class="numero verde">
                 0
-            </div>
-
-            <div class="stat-titulo">
-                PERMITIDAS
-            </div>
-
+            </span>
         </div>
 
-
-        <div class="stat denegadas">
-
-            <div
+        <div class="estadistica">
+            DENEGADAS
+            <span
                 id="denegadas"
-                class="stat-numero"
-            >
+                class="numero rojo">
                 0
-            </div>
-
-            <div class="stat-titulo">
-                DENEGADAS
-            </div>
-
+            </span>
         </div>
-
 
     </div>
 
-
-    <!-- =================================================
-         FOOTER
-    ================================================== -->
 
     <div class="footer">
-
-        BOROS
-        <span>•</span>
-        FUERZA
-        <span>•</span>
-        DISCIPLINA
-        <span>•</span>
-        RESULTADOS
-
+        BOROS • FUERZA • DISCIPLINA • RESULTADOS
     </div>
 
-
 </div>
-
 
 
 <script>
 
 /* =====================================================
-   CONFIGURACION
+   CONFIGURACIÓN
 ===================================================== */
 
-
 /*
-   ESTA ES TU URL ACTUAL DE APPS SCRIPT
+   ESTA ES LA URL NUEVA DE TU APPS SCRIPT
 */
 
 const API_URL =
@@ -1259,215 +563,264 @@ const API_URL =
 
 
 /* =====================================================
+   VARIABLES
+===================================================== */
+
+let scanner = null;
+
+let camaraActiva = false;
+
+let procesando = false;
+
+let entradasHoy = 0;
+
+let permitidas = 0;
+
+let denegadas = 0;
+
+
+/* =====================================================
    ELEMENTOS
 ===================================================== */
 
-const video =
-    document.getElementById("video");
-
-const canvas =
-    document.getElementById("canvas");
-
-const ctx =
-    canvas.getContext(
-        "2d",
-        {
-            willReadFrequently: true
-        }
-    );
-
-
-const estado =
-    document.getElementById("estado");
-
-const estadoPrincipal =
-    document.getElementById("estadoPrincipal");
-
-const estadoSub =
-    document.getElementById("estadoSub");
-
-const inputID =
-    document.getElementById("inputID");
-
-const botonBuscar =
-    document.getElementById("buscar");
-
-const botonAbrir =
-    document.getElementById("abrirCamara");
-
-const botonDetener =
-    document.getElementById("detenerCamara");
+const estadoCamara =
+    document.getElementById("estadoCamara");
 
 const resultado =
     document.getElementById("resultado");
 
-
-/* =====================================================
-   VARIABLES
-===================================================== */
-
-let stream = null;
-
-let escaneando = false;
-
-let ultimoQR = "";
-
-let ultimoQRTiempo = 0;
+const idManual =
+    document.getElementById("idManual");
 
 
 /* =====================================================
-   ESTADO
+   INICIAR CÁMARA
 ===================================================== */
 
-function cambiarEstado(
-    principal,
-    secundario,
-    tipo
-) {
+async function iniciarCamara() {
 
-    estadoPrincipal.innerText =
-        principal;
+    if (camaraActiva) {
+        return;
+    }
 
-    estadoSub.innerText =
-        secundario || "";
+    estadoCamara.innerText =
+        "🟡 SOLICITANDO CÁMARA...";
 
+    estadoCamara.style.color =
+        "#ffd000";
 
-    estado.className =
-        "estado " +
-        (tipo || "");
+    try {
 
+        scanner =
+            new Html5Qrcode("reader");
+
+        await scanner.start(
+
+            {
+                facingMode: "environment"
+            },
+
+            {
+                fps: 10,
+
+                qrbox: function(width, height) {
+
+                    const tamaño =
+                        Math.min(width, height) * 0.75;
+
+                    return {
+                        width: tamaño,
+                        height: tamaño
+                    };
+                },
+
+                aspectRatio: 1.0
+            },
+
+            function(decodedText) {
+
+                if (procesando) {
+                    return;
+                }
+
+                procesando = true;
+
+                procesarQR(decodedText);
+
+            },
+
+            function(errorMessage) {
+
+                // Errores normales mientras busca QR.
+            }
+
+        );
+
+        camaraActiva = true;
+
+        estadoCamara.innerText =
+            "🟢 LISTO PARA ESCANEAR";
+
+        estadoCamara.style.color =
+            "#00ed45";
+
+    }
+
+    catch(error) {
+
+        console.error(
+            "ERROR CÁMARA:",
+            error
+        );
+
+        estadoCamara.innerText =
+            "🔴 NO SE PUDO ACCEDER A LA CÁMARA";
+
+        estadoCamara.style.color =
+            "#ff3030";
+
+        resultado.innerHTML =
+            '<div class="error">' +
+            '📷<br><br>' +
+            'NO SE PUDO ACCEDER A LA CÁMARA' +
+            '<br><br>' +
+            '<small>' +
+            'Revisá los permisos de cámara del navegador.' +
+            '</small>' +
+            '</div>';
+
+        procesando = false;
+    }
 }
 
 
 /* =====================================================
-   EXTRAER ID
+   DETENER CÁMARA
 ===================================================== */
 
-function extraerID(texto) {
+async function detenerCamara() {
 
-    if (!texto) {
-        return "";
+    if (!scanner) {
+        return;
     }
 
+    try {
 
-    texto =
-        String(texto)
-            .trim();
+        if (camaraActiva) {
 
+            await scanner.stop();
 
-    /*
-       QR DIRECTO
+        }
 
-       Ejemplo:
-
-       B001
-    */
-
-    if (
-        /^[A-Za-z0-9_-]+$/.test(texto)
-    ) {
-
-        return texto
-            .toUpperCase();
+        scanner.clear();
 
     }
 
+    catch(error) {
+
+        console.log(
+            "Error deteniendo cámara:",
+            error
+        );
+
+    }
+
+    scanner = null;
+
+    camaraActiva = false;
+
+    estadoCamara.innerText =
+        "⚪ CÁMARA DETENIDA";
+
+    estadoCamara.style.color =
+        "#aaa";
+}
+
+
+/* =====================================================
+   PROCESAR QR
+===================================================== */
+
+function procesarQR(textoQR) {
+
+    let id =
+        String(textoQR).trim();
 
     /*
-       QR COMO URL
+       Si el QR contiene una URL como:
 
-       Ejemplo:
+       https://chiio11.github.io/boros-gym/?id=B001
 
-       https://.../?id=B001
+       extraemos solamente B001.
     */
 
     try {
 
-        const url =
-            new URL(texto);
+        if (
+            id.startsWith("http://") ||
+            id.startsWith("https://")
+        ) {
 
-        const id =
-            url.searchParams.get("id");
+            const url =
+                new URL(id);
 
+            const parametro =
+                url.searchParams.get("id");
 
-        if (id) {
+            if (parametro) {
 
-            return id
-                .trim()
-                .toUpperCase();
-
+                id = parametro;
+            }
         }
 
     }
 
-    catch (error) {
+    catch(error) {
 
         console.log(
-            "No es URL:",
-            texto
+            "QR no es una URL:",
+            error
         );
-
     }
 
-
-    /*
-       BUSCAR id=
-    */
-
-    const encontrado =
-        texto.match(
-            /id=([A-Za-z0-9_-]+)/i
-        );
-
-
-    if (encontrado) {
-
-        return encontrado[1]
-            .toUpperCase();
-
-    }
-
-
-    return texto
+    id =
+        id
+        .trim()
         .toUpperCase();
 
+    console.log(
+        "QR DETECTADO:",
+        id
+    );
+
+    consultarSocio(id);
 }
 
 
 /* =====================================================
    CONSULTAR SOCIO
+   JSONP
 ===================================================== */
 
 function consultarSocio(id) {
 
-    id =
-        String(id || "")
-            .trim()
-            .toUpperCase();
-
-
     if (!id) {
 
-        cambiarEstado(
-            "🔴 ID VACÍO",
-            "Ingresá el ID del socio",
-            "error"
+        mostrarError(
+            "INGRESÁ UN ID DE SOCIO"
         );
 
-        return;
+        procesando = false;
 
+        return;
     }
 
 
-    cambiarEstado(
-        "🟡 CONSULTANDO...",
-        "Buscando " + id,
-        "buscando"
-    );
+    mostrarCargando();
 
 
     /*
-       Nombre único para JSONP
+       Nombre único para la función callback
     */
 
     const callbackName =
@@ -1475,129 +828,69 @@ function consultarSocio(id) {
         Date.now();
 
 
-    const script =
-        document.createElement("script");
-
-
-    let terminado = false;
-
-
     /*
-       FUNCION QUE RECIBE
-       LA RESPUESTA DE APPS SCRIPT
+       Esta función recibe directamente:
+
+       {
+           encontrado: true,
+           id: "B001",
+           ...
+       }
     */
 
     window[callbackName] =
-        function(data) {
-
-            terminado = true;
-
+        function(respuesta) {
 
             console.log(
                 "RESPUESTA APPS SCRIPT:",
-                data
+                respuesta
             );
-
 
             try {
 
-                if (!data) {
-
-                    throw new Error(
-                        "Respuesta vacía"
-                    );
-
-                }
-
-
-                if (
-                    data.encontrado === false
-                ) {
-
-                    cambiarEstado(
-                        "🔴 SOCIO NO ENCONTRADO",
-                        data.mensaje ||
-                        "Verificá el ID",
-                        "error"
-                    );
-
-
-                    mostrarNoEncontrado();
-
-                    return;
-
-                }
-
-
-                if (
-                    data.encontrado === true
-                ) {
-
-                    mostrarSocio(data);
-
-
-                    if (
-                        data.estado === "VIGENTE"
-                    ) {
-
-                        cambiarEstado(
-                            "🟢 ACCESO PERMITIDO",
-                            "Entrada registrada correctamente",
-                            "ok"
-                        );
-
-                    }
-
-                    else {
-
-                        cambiarEstado(
-                            "🔴 ACCESO DENEGADO",
-                            "La membresía está vencida",
-                            "error"
-                        );
-
-                    }
-
-
-                    return;
-
-                }
-
-
-                cambiarEstado(
-                    "🔴 RESPUESTA INVÁLIDA",
-                    "Apps Script respondió algo inesperado",
-                    "error"
+                mostrarResultado(
+                    respuesta
                 );
 
             }
 
-            catch (error) {
+            catch(error) {
 
                 console.error(
+                    "ERROR PROCESANDO RESPUESTA:",
                     error
                 );
 
-                cambiarEstado(
-                    "🔴 ERROR",
-                    error.message,
-                    "error"
+                mostrarError(
+                    "ERROR PROCESANDO LA RESPUESTA"
                 );
 
+                procesando = false;
             }
 
-            finally {
 
-                limpiar();
-
-            }
+            delete window[callbackName];
 
         };
 
 
     /*
-       URL JSONP
+       Creamos el script JSONP.
+
+       IMPORTANTE:
+       No usamos fetch().
+       No usamos XMLHttpRequest().
+       No usamos CORS.
+
+       Apps Script devuelve:
+
+       callback({...})
+
     */
+
+    const script =
+        document.createElement("script");
+
 
     script.src =
         API_URL +
@@ -1608,343 +901,475 @@ function consultarSocio(id) {
         encodeURIComponent(callbackName);
 
 
-    /*
-       SI NO CARGA EL SCRIPT
-    */
+    script.async = true;
+
 
     script.onerror =
         function() {
 
-            if (terminado) {
-                return;
-            }
-
-
             console.error(
-                "No se pudo cargar Apps Script"
+                "NO SE PUDO CARGAR APPS SCRIPT:",
+                script.src
             );
 
-
-            cambiarEstado(
-                "🔴 NO SE PUDO CONECTAR",
-                "No se pudo comunicar con Apps Script",
-                "error"
+            mostrarError(
+                "NO SE PUDO CONECTAR CON APPS SCRIPT"
             );
 
+            delete window[callbackName];
 
-            limpiar();
-
+            procesando = false;
         };
 
 
     /*
-       SEGURIDAD
+       Si en 15 segundos no llega respuesta,
+       mostramos error.
     */
 
-    const timeout =
-        setTimeout(
-            function() {
+    const tiempoEspera =
+        setTimeout(function() {
 
-                if (terminado) {
-                    return;
-                }
+            if (
+                typeof window[callbackName] ===
+                "function"
+            ) {
 
-
-                cambiarEstado(
-                    "🔴 TIEMPO AGOTADO",
-                    "Apps Script no respondió",
-                    "error"
+                console.error(
+                    "TIMEOUT APPS SCRIPT"
                 );
 
+                mostrarError(
+                    "APPS SCRIPT NO RESPONDIÓ"
+                );
 
-                limpiar();
+                delete window[callbackName];
 
-            },
-            15000
-        );
+                procesando = false;
+            }
 
-
-    function limpiar() {
-
-        clearTimeout(timeout);
-
-
-        try {
-
-            delete window[callbackName];
-
-        }
-
-        catch (e) {}
+        }, 15000);
 
 
-        if (
-            script.parentNode
-        ) {
+    /*
+       Cuando llegue respuesta,
+       cancelamos el timeout.
+    */
 
-            script.parentNode
-                .removeChild(script);
+    const originalCallback =
+        window[callbackName];
 
-        }
 
-    }
+    window[callbackName] =
+        function(respuesta) {
+
+            clearTimeout(
+                tiempoEspera
+            );
+
+            originalCallback(
+                respuesta
+            );
+        };
 
 
     document.body.appendChild(
         script
     );
-
 }
 
 
 /* =====================================================
-   MOSTRAR SOCIO
+   CARGANDO
 ===================================================== */
 
-function mostrarSocio(socio) {
-
-    let foto = "";
-
-
-    if (
-        socio.foto &&
-        socio.foto.datos &&
-        socio.foto.tipo
-    ) {
-
-        foto =
-            `
-            <img
-                class="foto-socio"
-                src="data:${socio.foto.tipo};base64,${socio.foto.datos}"
-            >
-            `;
-
-    }
-
-
-    const vigente =
-        socio.estado === "VIGENTE";
-
+function mostrarCargando() {
 
     resultado.innerHTML =
 
-        `
-        <div class="tarjeta-socio">
+        '<div class="socio-card">' +
 
-            <div class="datos-superiores">
+        '<div class="acceso">' +
 
+        '🔍<br><br>' +
 
-                <div class="foto-container">
+        'VERIFICANDO SOCIO...' +
 
-                    ${foto}
+        '<small>' +
 
-                </div>
+        'Consultando membresía' +
 
+        '</small>' +
 
-                <div class="datos-socio">
+        '</div>' +
 
-
-                    <div class="nombre">
-
-                        ${
-                            socio.nombre || ""
-                        }
-
-                        ${
-                            socio.apellido || ""
-                        }
-
-                    </div>
+        '</div>';
+}
 
 
-                    <div class="id-socio">
+/* =====================================================
+   MOSTRAR RESULTADO
+===================================================== */
 
-                        ${
-                            socio.id || ""
-                        }
+function mostrarResultado(respuesta) {
 
-                    </div>
+    if (!respuesta) {
 
+        mostrarError(
+            "NO SE RECIBIÓ RESPUESTA"
+        );
 
-                    <div class="dato">
+        procesando = false;
 
-                        <span>
-                            PLAN
-                        </span>
-
-                        <strong>
-                            ${
-                                socio.plan || "-"
-                            }
-                        </strong>
-
-                    </div>
+        return;
+    }
 
 
-                    <div class="dato">
-
-                        <span>
-                            INICIO
-                        </span>
-
-                        <strong>
-                            ${
-                                socio.inicio || "-"
-                            }
-                        </strong>
-
-                    </div>
-
-
-                    <div class="dato">
-
-                        <span>
-                            VENCIMIENTO
-                        </span>
-
-                        <strong>
-                            ${
-                                socio.vencimiento || "-"
-                            }
-                        </strong>
-
-                    </div>
-
-
-                    <div class="dato">
-
-                        <span>
-                            DNI
-                        </span>
-
-                        <strong>
-                            ${
-                                socio.dni || "-"
-                            }
-                        </strong>
-
-                    </div>
-
-
-                </div>
-
-
-            </div>
-
-
-            <div
-                class="estado-acceso
-                ${
-                    vigente
-                    ? "permitido"
-                    : "denegado"
-                }"
-            >
-
-                ${
-                    vigente
-                    ? "✓ ACCESO PERMITIDO"
-                    : "✕ ACCESO DENEGADO"
-                }
-
-            </div>
-
-
-        </div>
-        `;
+    console.log(
+        "RESULTADO:",
+        respuesta
+    );
 
 
     /*
-       Actualizar estadísticas
+       SOCIO NO ENCONTRADO
     */
 
-    const entradas =
-        document.getElementById(
-            "entradasHoy"
+    if (!respuesta.encontrado) {
+
+        entradasHoy++;
+
+        denegadas++;
+
+        actualizarEstadisticas();
+
+        mostrarError(
+            respuesta.mensaje ||
+            "SOCIO NO ENCONTRADO"
         );
 
-    const permitidas =
-        document.getElementById(
-            "permitidas"
-        );
+        finalizarConsulta();
 
-    const denegadas =
-        document.getElementById(
-            "denegadas"
-        );
+        return;
+    }
 
 
-    let e =
-        parseInt(
-            entradas.innerText
-        ) || 0;
+    /*
+       SOCIO ENCONTRADO
+    */
+
+    entradasHoy++;
 
 
-    let p =
-        parseInt(
-            permitidas.innerText
-        ) || 0;
+    if (respuesta.permitido) {
 
+        permitidas++;
 
-    let d =
-        parseInt(
-            denegadas.innerText
-        ) || 0;
-
-
-    e++;
-
-
-    if (vigente) {
-        p++;
     }
 
     else {
-        d++;
+
+        denegadas++;
+
     }
 
 
-    entradas.innerText = e;
+    actualizarEstadisticas();
 
-    permitidas.innerText = p;
 
-    denegadas.innerText = d;
+    /*
+       FOTO
+    */
 
+    let fotoHTML = "";
+
+
+    if (
+        respuesta.foto &&
+        respuesta.foto.datos
+    ) {
+
+        const tipo =
+            respuesta.foto.tipo ||
+            "image/jpeg";
+
+        fotoHTML =
+
+            '<div class="foto-container">' +
+
+            '<img ' +
+
+            'class="foto" ' +
+
+            'src="data:' +
+
+            tipo +
+
+            ';base64,' +
+
+            respuesta.foto.datos +
+
+            '" ' +
+
+            'alt="Foto del socio">' +
+
+            '</div>';
+    }
+
+
+    /*
+       ESTADO
+    */
+
+    const permitido =
+        Boolean(
+            respuesta.permitido
+        );
+
+
+    const claseEstado =
+        permitido
+        ? "permitido"
+        : "denegado";
+
+
+    const icono =
+        permitido
+        ? "🟢"
+        : "🔴";
+
+
+    const texto =
+        permitido
+        ? "ACCESO PERMITIDO"
+        : "ACCESO DENEGADO";
+
+
+    const mensaje =
+        permitido
+        ? "Entrada registrada correctamente"
+        : "Membresía vencida";
+
+
+    /*
+       MOSTRAR TARJETA
+    */
+
+    resultado.innerHTML =
+
+        '<div class="socio-card">' +
+
+        '<div class="socio-contenido">' +
+
+        fotoHTML +
+
+        '<div class="datos">' +
+
+        '<div class="nombre">' +
+
+        escaparHTML(
+            respuesta.nombre || ""
+        ) +
+
+        " " +
+
+        escaparHTML(
+            respuesta.apellido || ""
+        ) +
+
+        '</div>' +
+
+
+        '<div class="dato">' +
+
+        '<span>ID SOCIO</span>' +
+
+        escaparHTML(
+            respuesta.id || ""
+        ) +
+
+        '</div>' +
+
+
+        '<div class="dato">' +
+
+        '<span>PLAN</span>' +
+
+        escaparHTML(
+            respuesta.plan || ""
+        ) +
+
+        '</div>' +
+
+
+        '<div class="dato">' +
+
+        '<span>VENCIMIENTO</span>' +
+
+        escaparHTML(
+            respuesta.vencimiento || ""
+        ) +
+
+        '</div>' +
+
+
+        '<div class="dato">' +
+
+        '<span>DNI</span>' +
+
+        escaparHTML(
+            respuesta.dni || ""
+        ) +
+
+        '</div>' +
+
+
+        '</div>' +
+
+        '</div>' +
+
+
+        '<div class="acceso ' +
+
+        claseEstado +
+
+        '">' +
+
+        icono +
+
+        " " +
+
+        texto +
+
+        '<small>' +
+
+        mensaje +
+
+        '</small>' +
+
+        '</div>' +
+
+        '</div>';
+
+
+    /*
+       Después de mostrar el resultado,
+       volvemos al escáner.
+    */
+
+    setTimeout(
+        finalizarConsulta,
+        5000
+    );
 }
 
 
 /* =====================================================
-   NO ENCONTRADO
+   ESCAPAR HTML
 ===================================================== */
 
-function mostrarNoEncontrado() {
+function escaparHTML(valor) {
+
+    return String(valor)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+}
+
+
+/* =====================================================
+   ERROR
+===================================================== */
+
+function mostrarError(mensaje) {
 
     resultado.innerHTML =
 
-        `
-        <div class="error-socio">
+        '<div class="error">' +
 
-            <div
-                style="
-                    font-size:60px;
-                    color:#ff3030;
-                "
-            >
-                ✕
-            </div>
+        '🔴<br><br>' +
 
-            <h2>
-                SOCIO NO ENCONTRADO
-            </h2>
+        escaparHTML(
+            mensaje
+        ) +
 
-            <p>
-                Verificá que el ID sea correcto.
-            </p>
+        '</div>';
+}
 
-        </div>
-        `;
 
+/* =====================================================
+   FINALIZAR CONSULTA
+===================================================== */
+
+async function finalizarConsulta() {
+
+    procesando = false;
+
+    /*
+       Limpiamos el campo manual
+    */
+
+    idManual.value = "";
+
+
+    /*
+       Volvemos a iniciar la cámara
+    */
+
+    if (!camaraActiva) {
+
+        setTimeout(
+            iniciarCamara,
+            1000
+        );
+    }
+}
+
+
+/* =====================================================
+   ESTADISTICAS
+===================================================== */
+
+function actualizarEstadisticas() {
+
+    document.getElementById(
+        "entradasHoy"
+    ).innerText =
+        entradasHoy;
+
+
+    document.getElementById(
+        "permitidas"
+    ).innerText =
+        permitidas;
+
+
+    document.getElementById(
+        "denegadas"
+    ).innerText =
+        denegadas;
 }
 
 
@@ -1955,53 +1380,62 @@ function mostrarNoEncontrado() {
 function buscarManual() {
 
     const id =
-        inputID.value
-            .trim();
+        idManual.value
+        .trim()
+        .toUpperCase();
 
 
     if (!id) {
 
-        cambiarEstado(
-            "🔴 FALTA EL ID",
-            "Ingresá algo como B001",
-            "error"
+        mostrarError(
+            "INGRESÁ EL ID DEL SOCIO"
         );
 
-        inputID.focus();
-
         return;
-
     }
 
 
-    /*
-       Detener cámara mientras
-       consultamos
-    */
+    if (procesando) {
 
-    detenerCamara();
+        return;
+    }
 
+
+    procesando = true;
 
     consultarSocio(id);
-
 }
 
 
 /* =====================================================
-   BOTON BUSCAR
+   BOTONES
 ===================================================== */
 
-botonBuscar.addEventListener(
-    "click",
-    buscarManual
-);
+document
+    .getElementById("abrirCamara")
+    .addEventListener(
+        "click",
+        iniciarCamara
+    );
 
 
-/* =====================================================
-   ENTER
-===================================================== */
+document
+    .getElementById("detenerCamara")
+    .addEventListener(
+        "click",
+        detenerCamara
+    );
 
-inputID.addEventListener(
+
+document
+    .getElementById("buscarManual")
+    .addEventListener(
+        "click",
+        buscarManual
+    );
+
+
+idManual.addEventListener(
     "keydown",
     function(event) {
 
@@ -2010,7 +1444,6 @@ inputID.addEventListener(
         ) {
 
             buscarManual();
-
         }
 
     }
@@ -2018,392 +1451,28 @@ inputID.addEventListener(
 
 
 /* =====================================================
-   ABRIR CAMARA
+   INICIAR
 ===================================================== */
 
-async function abrirCamara() {
-
-    try {
-
-        if (
-            !navigator.mediaDevices ||
-            !navigator.mediaDevices.getUserMedia
-        ) {
-
-            throw new Error(
-                "El navegador no permite acceder a la cámara."
-            );
-
-        }
-
-
-        cambiarEstado(
-            "🟡 ABRIENDO CÁMARA...",
-            "Esperá un momento",
-            "buscando"
-        );
-
-
-        stream =
-            await navigator.mediaDevices
-                .getUserMedia({
-
-                    video: {
-
-                        facingMode: {
-                            ideal: "environment"
-                        },
-
-                        width: {
-                            ideal: 1280
-                        },
-
-                        height: {
-                            ideal: 720
-                        }
-
-                    },
-
-                    audio: false
-
-                });
-
-
-        video.srcObject =
-            stream;
-
-
-        await video.play();
-
-
-        escaneando = true;
-
-
-        botonAbrir.style.display =
-            "none";
-
-
-        botonDetener.style.display =
-            "block";
-
-
-        cambiarEstado(
-            "🟢 LISTO PARA ESCANEAR",
-            "Presentá el QR del socio frente a la cámara",
-            "ok"
-        );
-
-
-        escanear();
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "CAMARA:",
-            error
-        );
-
-
-        cambiarEstado(
-            "🔴 NO SE PUDO ACCEDER A LA CÁMARA",
-            error.message ||
-            "Revisá los permisos del navegador",
-            "error"
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   DETENER CAMARA
-===================================================== */
-
-function detenerCamara() {
-
-    escaneando = false;
-
-
-    if (stream) {
-
-        stream
-            .getTracks()
-            .forEach(
-                function(track) {
-
-                    track.stop();
-
-                }
-            );
-
-        stream = null;
-
-    }
-
-
-    if (video) {
-
-        video.srcObject =
-            null;
-
-    }
-
-
-    botonAbrir.style.display =
-        "block";
-
-
-    botonDetener.style.display =
-        "none";
-
-}
-
-
-botonAbrir.addEventListener(
-    "click",
-    abrirCamara
-);
-
-
-botonDetener.addEventListener(
-    "click",
+window.addEventListener(
+    "load",
     function() {
 
-        detenerCamara();
+        /*
+           En celular es mejor pedir
+           la cámara después de que
+           la página terminó de cargar.
+        */
 
-
-        cambiarEstado(
-            "⚪ CÁMARA DETENIDA",
-            "Presioná ABRIR CÁMARA para volver a utilizarla",
-            ""
+        setTimeout(
+            iniciarCamara,
+            700
         );
 
     }
-);
-
-
-/* =====================================================
-   ESCANEAR QR
-===================================================== */
-
-function escanear() {
-
-    if (!escaneando) {
-        return;
-    }
-
-
-    if (
-        video.readyState <
-        2
-    ) {
-
-        requestAnimationFrame(
-            escanear
-        );
-
-        return;
-
-    }
-
-
-    const ancho =
-        video.videoWidth;
-
-    const alto =
-        video.videoHeight;
-
-
-    if (
-        !ancho ||
-        !alto
-    ) {
-
-        requestAnimationFrame(
-            escanear
-        );
-
-        return;
-
-    }
-
-
-    canvas.width =
-        ancho;
-
-    canvas.height =
-        alto;
-
-
-    ctx.drawImage(
-        video,
-        0,
-        0,
-        ancho,
-        alto
-    );
-
-
-    /*
-       jsQR
-    */
-
-    try {
-
-        if (
-            typeof jsQR ===
-            "function"
-        ) {
-
-            const imagen =
-                ctx.getImageData(
-                    0,
-                    0,
-                    ancho,
-                    alto
-                );
-
-
-            const codigo =
-                jsQR(
-                    imagen.data,
-                    imagen.width,
-                    imagen.height,
-                    {
-                        inversionAttempts:
-                            "attemptBoth"
-                    }
-                );
-
-
-            if (
-                codigo &&
-                codigo.data
-            ) {
-
-                procesarQR(
-                    codigo.data
-                );
-
-                return;
-
-            }
-
-        }
-
-    }
-
-    catch (error) {
-
-        console.log(
-            "Error jsQR:",
-            error
-        );
-
-    }
-
-
-    /*
-       Continuar escaneando
-    */
-
-    if (escaneando) {
-
-        requestAnimationFrame(
-            escanear
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   PROCESAR QR
-===================================================== */
-
-function procesarQR(texto) {
-
-    const ahora =
-        Date.now();
-
-
-    /*
-       Evitar leer el mismo QR
-       muchas veces
-    */
-
-    if (
-        texto === ultimoQR &&
-        ahora - ultimoQRTiempo < 3000
-    ) {
-
-        return;
-
-    }
-
-
-    ultimoQR =
-        texto;
-
-    ultimoQRTiempo =
-        ahora;
-
-
-    console.log(
-        "QR DETECTADO:",
-        texto
-    );
-
-
-    const id =
-        extraerID(texto);
-
-
-    if (!id) {
-
-        cambiarEstado(
-            "🔴 QR INVÁLIDO",
-            "No se pudo obtener el ID",
-            "error"
-        );
-
-        return;
-
-    }
-
-
-    escaneando = false;
-
-
-    cambiarEstado(
-        "🟢 QR DETECTADO",
-        "ID: " + id,
-        "buscando"
-    );
-
-
-    consultarSocio(id);
-
-}
-
-
-/* =====================================================
-   ESTADO INICIAL
-===================================================== */
-
-cambiarEstado(
-    "🟢 LISTO PARA ESCANEAR",
-    "Presentá el QR del socio frente a la cámara",
-    "ok"
 );
 
 </script>
 
-
 </body>
-
 </html>
