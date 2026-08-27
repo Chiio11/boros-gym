@@ -770,28 +770,193 @@ async function detenerCamara() {
 
 function procesarQR(textoQR) {
 
-  estado.innerHTML = "🟡 LEYENDO QR...";
-  estado.className = "estado";
-  subestado.innerHTML = "Consultando información del socio...";
+    let id = String(textoQR).trim();
 
-  let id = String(textoQR || "").trim();
+    console.log("QR ORIGINAL:", id);
 
-  // Si el QR contiene una URL, intentar obtener ?id=
-  try {
-    const url = new URL(id);
-    const parametro = url.searchParams.get("id");
+    // Si el QR contiene una URL
+    try {
 
-    if (parametro) {
-      id = parametro.trim();
+        if (
+            id.startsWith("http://") ||
+            id.startsWith("https://")
+        ) {
+
+            const url = new URL(id);
+
+            const parametro =
+                url.searchParams.get("id");
+
+            if (parametro) {
+                id = parametro;
+            }
+        }
+
+    } catch (error) {
+
+        console.log(
+            "El QR no contiene una URL:",
+            error
+        );
+
     }
-  } catch (e) {
-    // El QR puede contener directamente B001
-  }
 
-  if (!id) {
-    mostrarErrorConexion();
-    return;
-  }
+    id = id.trim().toUpperCase();
+
+    console.log(
+        "ID FINAL DETECTADO:",
+        id
+    );
+
+    estadoCamara.innerText =
+        "🟡 QR DETECTADO — VERIFICANDO...";
+
+    estadoCamara.style.color =
+        "#ffd000";
+
+    consultarSocio(id);
+}
+
+
+/* =====================================================
+   CONSULTAR SOCIO
+   ===================================================== */
+
+function consultarSocio(id) {
+
+    if (!id) {
+
+        mostrarError(
+            "NO SE PUDO OBTENER EL ID DEL QR"
+        );
+
+        procesando = false;
+
+        return;
+    }
+
+    console.log(
+        "CONSULTANDO SOCIO:",
+        id
+    );
+
+    mostrarCargando();
+
+
+    // Nombre único del callback
+    const callbackName =
+        "borosCallback_" +
+        Date.now();
+
+
+    // Creamos el callback ANTES de cargar Apps Script
+    window[callbackName] =
+        function(respuesta) {
+
+            console.log(
+                "✅ RESPUESTA DE APPS SCRIPT:",
+                respuesta
+            );
+
+            clearTimeout(timeout);
+
+            try {
+
+                mostrarResultado(
+                    respuesta
+                );
+
+            } catch (error) {
+
+                console.error(
+                    "ERROR MOSTRANDO RESULTADO:",
+                    error
+                );
+
+                mostrarError(
+                    "ERROR PROCESANDO LA RESPUESTA"
+                );
+
+                procesando = false;
+            }
+
+            delete window[callbackName];
+
+        };
+
+
+    // Creamos la llamada JSONP
+    const script =
+        document.createElement("script");
+
+
+    const url =
+        API_URL +
+        "?api=1" +
+        "&id=" +
+        encodeURIComponent(id) +
+        "&callback=" +
+        encodeURIComponent(callbackName) +
+        "&t=" +
+        Date.now();
+
+
+    console.log(
+        "URL APPS SCRIPT:",
+        url
+    );
+
+
+    script.src = url;
+
+    script.async = true;
+
+
+    // Si Apps Script no responde
+    script.onerror =
+        function() {
+
+            clearTimeout(timeout);
+
+            console.error(
+                "❌ ERROR CARGANDO APPS SCRIPT"
+            );
+
+            mostrarError(
+                "NO SE PUDO CONECTAR CON APPS SCRIPT"
+            );
+
+            delete window[callbackName];
+
+            procesando = false;
+        };
+
+
+    // Timeout de seguridad
+    const timeout =
+        setTimeout(
+            function() {
+
+                console.error(
+                    "❌ APPS SCRIPT NO RESPONDIÓ"
+                );
+
+                mostrarError(
+                    "APPS SCRIPT NO RESPONDIÓ"
+                );
+
+                delete window[callbackName];
+
+                procesando = false;
+
+            },
+            15000
+        );
+
+
+    // Cargamos el script
+    document.body.appendChild(script);
+}
 
   console.log("ID DETECTADO:", id);
 
