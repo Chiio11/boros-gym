@@ -115,8 +115,14 @@ body{min-height:100vh}
 .paneles {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 18px;
+    gap: 12px;
+    width: 100%;
     align-items: stretch;
+}
+.paneles .scanner-card,
+.paneles #resultado {
+    width: 100%;
+    box-sizing: border-box;
 }
 
 
@@ -433,7 +439,7 @@ body{min-height:100vh}
    CELULAR
 ===================================================== */
 
-@media(max-width:800px) {
+@media(max-width:700px) {
 
     .contenedor {
         padding: 15px 10px 30px;
@@ -451,7 +457,8 @@ body{min-height:100vh}
     }
 
     .paneles {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
     }
 
     .scanner-card {
@@ -560,6 +567,20 @@ body{min-height:100vh}
 
 <div class="paneles">
 
+    <!-- ESCÁNER -->
+    <div class="scanner-card">
+        ...
+        <div id="reader"></div>
+        ...
+    </div>
+
+    <!-- RESULTADO -->
+    <div id="resultado">
+        ...
+    </div>
+
+</div>
+    
     <div id="resultado">
 
         <div class="socio-card">
