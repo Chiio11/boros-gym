@@ -647,6 +647,866 @@
 
 <script>
 
+const API_URL =
+"https://script.google.com/macros/s/AKfycbwVF61K5oldfMH1murcWrLTKjzrR78MwmBHPb4mA6kv3X2SjEKwXrRSfwSxkid7IrD_/exec";
+
+
+let scanner = null;
+let escaneando = false;
+
+
+/* =====================================================
+   ELEMENTOS
+===================================================== */
+
+const video = document.getElementById("video");
+const canvas = document.getElementById("canvas");
+
+const estado = document.getElementById("estado");
+const resultado = document.getElementById("resultado");
+
+const inputID = document.getElementById("inputID");
+const botonBuscar = document.getElementById("buscar");
+
+const botonCamara = document.getElementById("abrirCamara");
+const botonDetener = document.getElementById("detenerCamara");
+
+
+/* =====================================================
+   MOSTRAR ESTADO
+===================================================== */
+
+function mostrarEstado(texto, tipo = "normal") {
+
+    if (!estado) return;
+
+    estado.innerText = texto;
+
+    estado.className = "";
+
+    if (tipo === "ok") {
+        estado.classList.add("ok");
+    }
+
+    if (tipo === "error") {
+        estado.classList.add("error");
+    }
+
+    if (tipo === "buscando") {
+        estado.classList.add("buscando");
+    }
+}
+
+
+/* =====================================================
+   EXTRAER ID DEL QR
+===================================================== */
+
+function extraerID(texto) {
+
+    texto = String(texto || "").trim();
+
+    if (!texto) {
+        return "";
+    }
+
+
+    /*
+       CASO 1:
+       QR contiene directamente B001
+    */
+
+    if (/^[A-Za-z0-9_-]+$/.test(texto)) {
+
+        return texto.toUpperCase();
+
+    }
+
+
+    /*
+       CASO 2:
+       QR contiene una URL con ?id=B001
+    */
+
+    try {
+
+        const url = new URL(texto);
+
+        const id =
+            url.searchParams.get("id");
+
+        if (id) {
+
+            return id
+                .trim()
+                .toUpperCase();
+
+        }
+
+    } catch (error) {
+
+        console.log(
+            "El QR no es una URL:",
+            texto
+        );
+
+    }
+
+
+    /*
+       CASO 3:
+       Buscar id= dentro del texto
+    */
+
+    const encontrado =
+        texto.match(
+            /(?:id=|ID=)([A-Za-z0-9_-]+)/i
+        );
+
+    if (encontrado) {
+
+        return encontrado[1]
+            .trim()
+            .toUpperCase();
+
+    }
+
+
+    return texto.toUpperCase();
+
+}
+
+
+/* =====================================================
+   CONSULTAR SOCIO
+===================================================== */
+
+function consultarSocio(id) {
+
+    id =
+        String(id || "")
+            .trim()
+            .toUpperCase();
+
+
+    if (!id) {
+
+        mostrarEstado(
+            "INGRESÁ UN ID DE SOCIO",
+            "error"
+        );
+
+        return;
+
+    }
+
+
+    mostrarEstado(
+        "CONSULTANDO SOCIO...",
+        "buscando"
+    );
+
+
+    const callbackName =
+        "borosCallback_" +
+        Date.now();
+
+
+    /*
+       Esta función queda disponible
+       globalmente para JSONP.
+    */
+
+    window[callbackName] =
+        function(data) {
+
+            console.log(
+                "Respuesta Apps Script:",
+                data
+            );
+
+
+            try {
+
+                if (
+                    !data ||
+                    typeof data !== "object"
+                ) {
+
+                    mostrarEstado(
+                        "RESPUESTA INVÁLIDA DEL SISTEMA",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                if (!data.encontrado) {
+
+                    mostrarEstado(
+                        data.mensaje ||
+                        "SOCIO NO ENCONTRADO",
+                        "error"
+                    );
+
+                    mostrarResultadoNoEncontrado();
+
+                    return;
+
+                }
+
+
+                mostrarSocio(data);
+
+                mostrarEstado(
+                    data.permitido
+                        ? "ACCESO PERMITIDO"
+                        : "ACCESO DENEGADO",
+                    data.permitido
+                        ? "ok"
+                        : "error"
+                );
+
+            }
+
+            catch (error) {
+
+                console.error(error);
+
+                mostrarEstado(
+                    "ERROR PROCESANDO LA RESPUESTA",
+                    "error"
+                );
+
+            }
+
+
+            limpiarCallback(
+                callbackName,
+                script
+            );
+
+        };
+
+
+    const script =
+        document.createElement("script");
+
+
+    script.src =
+        API_URL +
+        "?api=1" +
+        "&id=" +
+        encodeURIComponent(id) +
+        "&callback=" +
+        encodeURIComponent(callbackName);
+
+
+    script.onerror =
+        function(error) {
+
+            console.error(
+                "Error cargando Apps Script:",
+                error
+            );
+
+
+            mostrarEstado(
+                "NO SE PUDO CONECTAR CON EL SISTEMA",
+                "error"
+            );
+
+
+            limpiarCallback(
+                callbackName,
+                script
+            );
+
+        };
+
+
+    document.body.appendChild(script);
+
+}
+
+
+/* =====================================================
+   LIMPIAR JSONP
+===================================================== */
+
+function limpiarCallback(
+    callbackName,
+    script
+) {
+
+    try {
+
+        delete window[callbackName];
+
+    }
+
+    catch (error) {
+
+        console.log(error);
+
+    }
+
+
+    if (script && script.parentNode) {
+
+        script.parentNode.removeChild(script);
+
+    }
+
+}
+
+
+/* =====================================================
+   MOSTRAR SOCIO
+===================================================== */
+
+function mostrarSocio(socio) {
+
+    if (!resultado) return;
+
+
+    let fotoHTML = "";
+
+
+    if (
+        socio.foto &&
+        socio.foto.datos &&
+        socio.foto.tipo
+    ) {
+
+        fotoHTML =
+            `
+            <img
+                src="data:${socio.foto.tipo};base64,${socio.foto.datos}"
+                class="foto-socio"
+            >
+            `;
+
+    }
+
+
+    const permitido =
+        socio.permitido !== false &&
+        socio.estado === "VIGENTE";
+
+
+    resultado.innerHTML =
+
+        `
+        <div class="tarjeta-socio">
+
+            <div class="foto-container">
+
+                ${fotoHTML}
+
+            </div>
+
+
+            <div class="datos-socio">
+
+                <h2>
+                    ${socio.nombre || ""}
+                    ${socio.apellido || ""}
+                </h2>
+
+
+                <div class="id-socio">
+
+                    ${socio.id || ""}
+
+                </div>
+
+
+                <div class="dato">
+
+                    <span>PLAN</span>
+
+                    <strong>
+                        ${socio.plan || "-"}
+                    </strong>
+
+                </div>
+
+
+                <div class="dato">
+
+                    <span>VENCIMIENTO</span>
+
+                    <strong>
+                        ${socio.vencimiento || "-"}
+                    </strong>
+
+                </div>
+
+
+                <div class="dato">
+
+                    <span>DNI</span>
+
+                    <strong>
+                        ${socio.dni || "-"}
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+
+            <div
+                class="estado-acceso
+                ${permitido ? "permitido" : "denegado"}"
+            >
+
+                ${
+                    permitido
+                    ? "✓ ACCESO PERMITIDO"
+                    : "✕ ACCESO DENEGADO"
+                }
+
+            </div>
+
+        </div>
+        `;
+
+}
+
+
+/* =====================================================
+   SOCIO NO ENCONTRADO
+===================================================== */
+
+function mostrarResultadoNoEncontrado() {
+
+    if (!resultado) return;
+
+
+    resultado.innerHTML =
+
+        `
+        <div class="error-socio">
+
+            <div class="icono-error">
+                ✕
+            </div>
+
+            <h2>
+                SOCIO NO ENCONTRADO
+            </h2>
+
+            <p>
+                Verificá el ID del socio.
+            </p>
+
+        </div>
+        `;
+
+}
+
+
+/* =====================================================
+   BUSCAR MANUALMENTE
+===================================================== */
+
+function buscarManual() {
+
+    if (!inputID) return;
+
+
+    const id =
+        inputID.value.trim();
+
+
+    if (!id) {
+
+        mostrarEstado(
+            "INGRESÁ EL ID DEL SOCIO",
+            "error"
+        );
+
+        inputID.focus();
+
+        return;
+
+    }
+
+
+    consultarSocio(id);
+
+}
+
+
+/* =====================================================
+   BOTÓN BUSCAR
+===================================================== */
+
+if (botonBuscar) {
+
+    botonBuscar.addEventListener(
+        "click",
+        buscarManual
+    );
+
+}
+
+
+/* =====================================================
+   ENTER EN ID
+===================================================== */
+
+if (inputID) {
+
+    inputID.addEventListener(
+        "keydown",
+        function(event) {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                buscarManual();
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   CÁMARA
+===================================================== */
+
+async function abrirCamara() {
+
+    try {
+
+        mostrarEstado(
+            "ABRIENDO CÁMARA...",
+            "buscando"
+        );
+
+
+        const stream =
+            await navigator.mediaDevices
+                .getUserMedia({
+
+                    video: {
+
+                        facingMode: {
+                            ideal: "environment"
+                        },
+
+                        width: {
+                            ideal: 1280
+                        },
+
+                        height: {
+                            ideal: 720
+                        }
+
+                    },
+
+                    audio: false
+
+                });
+
+
+        video.srcObject = stream;
+
+        await video.play();
+
+
+        escaneando = true;
+
+
+        mostrarEstado(
+            "LISTO PARA ESCANEAR",
+            "ok"
+        );
+
+
+        botonCamara.style.display =
+            "none";
+
+
+        botonDetener.style.display =
+            "block";
+
+
+        escanearQR();
+
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Error cámara:",
+            error
+        );
+
+
+        mostrarEstado(
+            "NO SE PUDO ACCEDER A LA CÁMARA",
+            "error"
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   DETENER CÁMARA
+===================================================== */
+
+function detenerCamara() {
+
+    escaneando = false;
+
+
+    if (
+        video &&
+        video.srcObject
+    ) {
+
+        const tracks =
+            video.srcObject.getTracks();
+
+
+        tracks.forEach(
+            track => track.stop()
+        );
+
+
+        video.srcObject = null;
+
+    }
+
+
+    botonCamara.style.display =
+        "block";
+
+
+    botonDetener.style.display =
+        "none";
+
+
+    mostrarEstado(
+        "CÁMARA DETENIDA"
+    );
+
+}
+
+
+/* =====================================================
+   ESCANEAR QR
+===================================================== */
+
+function escanearQR() {
+
+    if (!escaneando) return;
+
+
+    if (
+        !video ||
+        video.readyState <
+        2
+    ) {
+
+        requestAnimationFrame(
+            escanearQR
+        );
+
+        return;
+
+    }
+
+
+    if (
+        !canvas
+    ) {
+
+        console.error(
+            "No existe canvas"
+        );
+
+        return;
+
+    }
+
+
+    const contexto =
+        canvas.getContext(
+            "2d",
+            {
+                willReadFrequently: true
+            }
+        );
+
+
+    canvas.width =
+        video.videoWidth;
+
+
+    canvas.height =
+        video.videoHeight;
+
+
+    contexto.drawImage(
+        video,
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+
+    try {
+
+        if (
+            "BarcodeDetector"
+            in window
+        ) {
+
+            if (!window.borosDetector) {
+
+                window.borosDetector =
+                    new BarcodeDetector({
+                        formats: ["qr_code"]
+                    });
+
+            }
+
+
+            window.borosDetector
+                .detect(canvas)
+                .then(
+                    resultados => {
+
+                        if (
+                            resultados &&
+                            resultados.length > 0
+                        ) {
+
+                            const texto =
+                                resultados[0].rawValue;
+
+
+                            console.log(
+                                "QR DETECTADO:",
+                                texto
+                            );
+
+
+                            const id =
+                                extraerID(texto);
+
+
+                            if (id) {
+
+                                escaneando =
+                                    false;
+
+
+                                mostrarEstado(
+                                    "QR DETECTADO: " + id,
+                                    "buscando"
+                                );
+
+
+                                consultarSocio(id);
+
+                            }
+
+                        }
+
+                    }
+                )
+                .catch(
+                    error => {
+
+                        console.log(
+                            "BarcodeDetector:",
+                            error
+                        );
+
+                    }
+                );
+
+        }
+
+    }
+
+    catch (error) {
+
+        console.log(error);
+
+    }
+
+
+    if (escaneando) {
+
+        requestAnimationFrame(
+            escanearQR
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   BOTONES CÁMARA
+===================================================== */
+
+if (botonCamara) {
+
+    botonCamara.addEventListener(
+        "click",
+        abrirCamara
+    );
+
+}
+
+
+if (botonDetener) {
+
+    botonDetener.addEventListener(
+        "click",
+        detenerCamara
+    );
+
+}
+
+
+/* =====================================================
+   INICIO
+===================================================== */
+
+if (botonDetener) {
+
+    botonDetener.style.display =
+        "none";
+
+}
+
+
+mostrarEstado(
+    "LISTO PARA ESCANEAR"
+);
+
+</script>
+
   /* =====================================================
      URL DE APPS SCRIPT
   ===================================================== */
