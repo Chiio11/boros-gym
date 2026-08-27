@@ -623,6 +623,8 @@ function procesarQR(textoQR) {
 
 function mostrarResultado(data) {
 
+  console.log("DATOS RECIBIDOS:", data);
+
   if (!data) {
 
     mostrarErrorConexion();
@@ -630,6 +632,27 @@ function mostrarResultado(data) {
     return;
 
   }
+
+  if (!data.encontrado) {
+
+    estado.innerHTML =
+      "🔴 SOCIO NO ENCONTRADO";
+
+    estado.className =
+      "estado rojo";
+
+    subestado.innerHTML =
+      data.mensaje ||
+      "El ID no existe en la planilla.";
+
+    resultado.innerHTML = "";
+
+    escaneando = true;
+
+    return;
+
+  }
+
 
 
   if (!data.encontrado) {
