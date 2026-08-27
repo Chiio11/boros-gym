@@ -62,11 +62,11 @@ body{min-height:100vh}
 }
 
 .logo img {
-    display: block;
-    width: min(100%, 750px);
+    width: 100%;
+    max-width: 300px;
     height: auto;
+    display: block;
     margin: 0 auto;
-    object-fit: contain;
 }
 
  .logo-icono {
@@ -559,58 +559,6 @@ body{min-height:100vh}
 </div>
 
 <div class="paneles">
-
-    <div class="scanner-card">
-
-        <div class="scanner-titulo">
-            📷 ESCÁNER QR
-        </div>
-
-        <div id="reader"></div>
-
-        <div id="estadoCamara" class="estado">
-            ⚪ TOCÁ «ABRIR CÁMARA»
-        </div>
-
-        <div class="ayuda">
-            Presentá el QR del socio frente a la cámara
-        </div>
-
-        <div class="controles">
-            <button class="boton" id="abrirCamara">
-                📷 ABRIR CÁMARA
-            </button>
-
-            <button class="boton secundario" id="detenerCamara">
-                ⏹️ DETENER
-            </button>
-        </div>
-
-        <div class="manual">
-
-            <div class="manual-titulo">
-                Si el QR no funciona, ingresá el ID del socio manualmente
-            </div>
-
-            <div class="manual-contenedor">
-
-                <input
-                    id="idManual"
-                    type="text"
-                    placeholder="Ejemplo: B001"
-                    autocomplete="off"
-                >
-
-                <button id="buscarManual">
-                    🔎 BUSCAR
-                </button>
-
-            </div>
-
-        </div>
-
-    </div>
-
 
     <div id="resultado">
 
