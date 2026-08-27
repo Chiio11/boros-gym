@@ -626,33 +626,34 @@ function procesarQR(textoQR) {
 
 function consultarSocio(id) {
 
-
   mostrarCargando();
 
-
   const callbackName =
-    "borosCallback_" +
-    Date.now();
+    "borosCallback_" + Date.now();
 
+  window[callbackName] = function(resultado) {
 
-  window[callbackName] =
-    function(resultado) {
+    console.log("Respuesta recibida:", resultado);
 
+    try {
 
-      try {
+      mostrarResultado(resultado);
 
-        mostrarResultado(resultado);
+    } catch (error) {
 
-      }
+      mostrarError(
+        "ERROR PROCESANDO LA RESPUESTA"
+      );
 
-      finally {
+      console.error(error);
 
-        delete window[callbackName];
+    }
 
-      }
+    delete window[callbackName];
 
+    procesando = false;
 
-    };
+  };
 
 
   const script =
@@ -660,30 +661,33 @@ function consultarSocio(id) {
 
 
   script.src =
-
     API_URL +
-
     "?api=1" +
-
     "&id=" +
     encodeURIComponent(id) +
-
     "&callback=" +
-    callbackName;
+    encodeURIComponent(callbackName);
 
 
-  script.onerror =
-    function() {
+  script.async = true;
 
-      mostrarError(
-        "NO SE PUDO CONECTAR CON APPS SCRIPT"
-      );
 
-      delete window[callbackName];
+  script.onerror = function() {
 
-      procesando = false;
+    console.error(
+      "No se pudo cargar:",
+      script.src
+    );
 
-    };
+    mostrarError(
+      "NO SE PUDO CONECTAR CON EL SISTEMA"
+    );
+
+    delete window[callbackName];
+
+    procesando = false;
+
+  };
 
 
   document.body.appendChild(script);
