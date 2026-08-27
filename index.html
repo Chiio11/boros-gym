@@ -12,9 +12,48 @@
 html,body{margin:0;padding:0;background:#050505;color:#fff;font-family:Arial,Helvetica,sans-serif}
 body{min-height:100vh}
 .contenedor{width:100%;max-width:1100px;margin:auto;padding:25px 20px 40px}
-.logo{text-align:center;margin-bottom:20px}
-.logo-principal{font-size:clamp(55px,9vw,95px);font-weight:900;font-style:italic;letter-spacing:8px;line-height:.9}
-.logo-sub{margin-top:12px;color:#ff4b4b;font-size:clamp(14px,2.5vw,24px);font-weight:bold;letter-spacing:7px}
+.logo {
+    text-align: center;
+    margin-bottom: 10px;
+    padding-top: 5px;
+    position: relative;
+}
+
+.logo-principal {
+    font-size: clamp(70px, 12vw, 125px);
+    font-weight: 1000;
+    font-style: normal;
+    letter-spacing: 10px;
+    line-height: 0.85;
+    color: #ff1515;
+    text-shadow:
+        0 0 5px rgba(255, 0, 0, 0.5),
+        0 0 20px rgba(255, 0, 0, 0.25);
+}
+
+.logo-sub {
+    margin-top: 15px;
+    color: #ff2020;
+    font-size: clamp(17px, 3vw, 28px);
+    font-weight: 900;
+    letter-spacing: 10px;
+    text-transform: uppercase;
+}
+
+.logo-frase {
+    margin-top: 12px;
+    color: #ff2020;
+    font-size: clamp(12px, 2vw, 18px);
+    font-weight: 800;
+    letter-spacing: 5px;
+}
+
+.logo-frase::before,
+.logo-frase::after {
+    content: "━━";
+    margin: 0 15px;
+    color: #ff2020;
+}
 .titulo{text-align:center;font-size:clamp(32px,6vw,58px);font-weight:900;margin:35px 0}
 .scanner-card{width:100%;border:4px solid #ff2020;border-radius:35px;padding:25px;background:#080808;box-shadow:0 0 30px rgba(255,0,0,.25)}
 .scanner-titulo{text-align:center;font-size:clamp(28px,5vw,48px);font-weight:900;margin-bottom:25px}
@@ -72,9 +111,21 @@ body{min-height:100vh}
 <body>
 <div class="contenedor">
 
+<!-- LOGO BOROS -->
 <div class="logo">
-  <div class="logo-principal">BOROS</div>
-  <div class="logo-sub">STRENGTH & FITNESS</div>
+
+    <div class="logo-principal">
+        BOROS
+    </div>
+
+    <div class="logo-sub">
+        FITNESS GYM
+    </div>
+
+    <div class="logo-frase">
+        FUERZA • DISCIPLINA • EVOLUCIÓN
+    </div>
+
 </div>
 
 <div class="titulo">CONTROL DE ACCESO</div>
