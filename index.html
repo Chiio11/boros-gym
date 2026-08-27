@@ -530,19 +530,19 @@ body{min-height:100vh}
  .estadistica{padding:15px 5px;font-size:11px}
  .numero{font-size:30px}
 }
-    /* =========================================
-   BOROS - DISTRIBUCIÓN ESCÁNER / RESULTADO
+/* =========================================
+   BOROS - ESCÁNER + RESULTADO
    ========================================= */
 
 .paneles {
     display: grid !important;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    grid-template-columns: 1fr 1fr !important;
     gap: 12px !important;
     width: 100% !important;
     align-items: stretch !important;
 }
 
-.paneles .scanner-card {
+.paneles > .scanner-card {
     grid-column: 1 !important;
     grid-row: 1 !important;
     width: 100% !important;
@@ -550,20 +550,34 @@ body{min-height:100vh}
     box-sizing: border-box !important;
 }
 
-.paneles .resultado {
+.paneles > #resultado {
     grid-column: 2 !important;
     grid-row: 1 !important;
     width: 100% !important;
     min-width: 0 !important;
     box-sizing: border-box !important;
+    margin: 0 !important;
 }
 
-/* Evita que el resultado se vaya abajo */
-.paneles .resultado {
-    align-self: stretch !important;
-}
+/* CELULAR */
+@media (max-width: 700px) {
 
-/* En celulares también quedan lado a lado */
+    .paneles {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 8px !important;
+    }
+
+    .paneles > .scanner-card {
+        grid-column: 1 !important;
+        grid-row: 1 !important;
+    }
+
+    .paneles > #resultado {
+        grid-column: 2 !important;
+        grid-row: 1 !important;
+    }
+}
 @media (max-width: 700px) {
     .paneles {
         grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
@@ -595,8 +609,15 @@ body{min-height:100vh}
 
 <div class="paneles">
 
-    <!-- ESCÁNER -->
-<div class="scanner-card">
+    <div class="scanner-card">
+        ...
+    </div>
+
+    <div id="resultado">
+        ...
+    </div>
+
+</div>
   <div class="scanner-titulo">📷 ESCÁNER QR</div>
 
   <div id="reader"></div>
