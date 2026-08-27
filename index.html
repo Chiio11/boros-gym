@@ -1,12 +1,9 @@
-```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Boros Gym - Control de Acceso</title>
-
 <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 
 <style>
@@ -29,25 +26,28 @@ body{
 
 .contenedor{
   width:100%;
-  max-width:1400px;
+  max-width:1100px;
   margin:auto;
-  padding:25px 20px 40px;
+  padding:20px 20px 40px;
 }
 
 
 /* =====================================================
-   LOGO BOROS
+   LOGO
 ===================================================== */
 
 .logo{
   text-align:center;
-  margin-bottom:20px;
+  margin:0 auto 18px;
+  padding-top:0;
 }
 
-.logo-imagen{
+.logo img{
   display:block;
-  width:min(700px,85%);
-  max-height:180px;
+  width:100%;
+  max-width:520px;
+  height:auto;
+  max-height:300px;
   object-fit:contain;
   margin:0 auto;
 }
@@ -61,7 +61,20 @@ body{
   text-align:center;
   font-size:clamp(32px,6vw,58px);
   font-weight:900;
-  margin:35px 0;
+  margin:12px 0 26px;
+  letter-spacing:2px;
+}
+
+.titulo::before,
+.titulo::after{
+  content:"";
+  display:inline-block;
+  width:100px;
+  height:2px;
+  background:#ff1515;
+  vertical-align:middle;
+  margin:0 20px;
+  box-shadow:0 0 10px rgba(255,0,0,.5);
 }
 
 
@@ -70,18 +83,27 @@ body{
 ===================================================== */
 
 .paneles{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+  gap:12px !important;
+  width:100% !important;
+  align-items:stretch !important;
+}
 
-  display:grid;
+.paneles > .scanner-card{
+  grid-column:1 !important;
+  grid-row:1 !important;
+  width:100% !important;
+  min-width:0 !important;
+}
 
-  grid-template-columns:
-    minmax(0,1fr)
-    minmax(0,1fr);
-
-  gap:20px;
-
-  width:100%;
-
-  align-items:stretch;
+.paneles > #resultado{
+  grid-column:2 !important;
+  grid-row:1 !important;
+  width:100% !important;
+  min-width:0 !important;
+  min-height:100% !important;
+  margin:0 !important;
 }
 
 
@@ -90,48 +112,30 @@ body{
 ===================================================== */
 
 .scanner-card{
-
-  width:100%;
-
-  border:4px solid #ff2020;
-
-  border-radius:35px;
-
-  padding:25px;
-
-  background:#080808;
-
+  border:2px solid #d90000;
+  border-radius:20px;
+  padding:20px;
+  background:linear-gradient(145deg,#090909,#020202);
   box-shadow:
-    0 0 30px rgba(255,0,0,.25);
-
+    0 0 20px rgba(255,0,0,.12),
+    inset 0 0 20px rgba(255,0,0,.03);
 }
 
 .scanner-titulo{
-
   text-align:center;
-
-  font-size:clamp(28px,5vw,48px);
-
+  font-size:clamp(24px,4vw,36px);
   font-weight:900;
-
-  margin-bottom:25px;
-
+  margin-bottom:20px;
+  color:#ff2020;
 }
 
 #reader{
-
   width:100%;
-
-  max-width:850px;
-
+  max-width:600px;
   margin:auto;
-
-  border-radius:25px;
-
+  border-radius:18px;
   overflow:hidden;
-
-  background:#111;
-
+  background:#050505;
 }
 
 #reader img{
@@ -139,85 +143,58 @@ body{
 }
 
 #reader video{
-
   width:100%!important;
-
   height:auto!important;
-
-  border-radius:20px;
-
+  border-radius:15px;
 }
 
 .estado{
-
   text-align:center;
-
-  margin-top:25px;
-
-  font-size:clamp(24px,5vw,42px);
-
+  margin-top:18px;
+  font-size:clamp(20px,4vw,30px);
   font-weight:900;
-
   color:#00ed45;
-
 }
 
 .ayuda{
-
   text-align:center;
-
-  margin-top:10px;
-
-  color:#bbb;
-
-  font-size:clamp(16px,3vw,24px);
-
+  margin-top:8px;
+  color:#aaa;
+  font-size:16px;
 }
 
+
+/* =====================================================
+   BOTONES
+===================================================== */
+
 .controles{
-
-  margin-top:25px;
-
+  margin-top:20px;
   display:flex;
-
   flex-wrap:wrap;
-
-  gap:15px;
-
+  gap:10px;
   justify-content:center;
-
 }
 
 .boton{
-
   border:none;
-
-  border-radius:18px;
-
-  padding:18px 28px;
-
-  font-size:22px;
-
+  border-radius:10px;
+  padding:14px 22px;
+  font-size:17px;
   font-weight:900;
-
   cursor:pointer;
-
   color:#fff;
-
   background:#ed1c24;
-
 }
 
 .boton:hover{
   background:#ff3030;
+  transform:translateY(-1px);
 }
 
 .boton.secundario{
-
-  background:#222;
-
-  border:2px solid #555;
-
+  background:#111;
+  border:1px solid #555;
 }
 
 
@@ -226,370 +203,159 @@ body{
 ===================================================== */
 
 .manual{
-
-  margin-top:30px;
-
-  padding-top:25px;
-
-  border-top:2px solid #333;
-
+  margin-top:22px;
+  padding-top:18px;
+  border-top:1px solid #333;
 }
 
 .manual-titulo{
-
   text-align:center;
-
-  font-size:clamp(20px,4vw,30px);
-
-  margin-bottom:15px;
-
-  color:#ddd;
-
+  font-size:16px;
+  margin-bottom:12px;
+  color:#ccc;
 }
 
 .manual-contenedor{
-
   display:flex;
-
-  gap:12px;
-
+  gap:8px;
 }
 
 #idManual{
-
   flex:1;
-
   min-width:0;
-
-  background:#111;
-
+  background:#0b0b0b;
   color:#fff;
-
-  border:2px solid #555;
-
-  border-radius:15px;
-
-  padding:18px;
-
-  font-size:22px;
-
+  border:1px solid #555;
+  border-radius:10px;
+  padding:14px;
+  font-size:18px;
   text-transform:uppercase;
-
 }
 
 #buscarManual{
-
   background:#ed1c24;
-
   color:#fff;
-
   border:none;
-
-  border-radius:15px;
-
-  padding:0 28px;
-
-  font-size:20px;
-
+  border-radius:10px;
+  padding:0 22px;
+  font-size:17px;
   font-weight:900;
-
   cursor:pointer;
-
 }
 
 
 /* =====================================================
-   PANEL DE RESULTADO
+   RESULTADO
 ===================================================== */
 
 #resultado{
-
-  width:100%;
-
-  min-width:0;
-
+  height:100%;
 }
-
-
-/* =====================================================
-   RESULTADO INICIAL
-===================================================== */
-
-.resultado-inicial{
-
-  width:100%;
-
-  min-height:100%;
-
-  background:#101010;
-
-  border:3px solid #333;
-
-  border-radius:30px;
-
-  padding:30px;
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:center;
-
-  text-align:center;
-
-}
-
-.resultado-inicial-contenido{
-
-  width:100%;
-
-}
-
-.resultado-inicial-icono{
-
-  font-size:90px;
-
-  margin-bottom:25px;
-
-}
-
-.resultado-inicial-titulo{
-
-  font-size:clamp(28px,5vw,45px);
-
-  font-weight:900;
-
-  margin-bottom:15px;
-
-}
-
-.resultado-inicial-texto{
-
-  color:#888;
-
-  font-size:clamp(17px,3vw,23px);
-
-}
-
-
-/* =====================================================
-   TARJETA SOCIO
-===================================================== */
 
 .socio-card{
-
-  width:100%;
-
-  background:#101010;
-
-  border:3px solid #333;
-
-  border-radius:30px;
-
-  padding:25px;
-
+  height:100%;
+  min-height:100%;
+  background:linear-gradient(145deg,#090909,#020202);
+  border:2px solid #d90000;
+  border-radius:20px;
+  padding:20px;
+  box-shadow:
+    0 0 20px rgba(255,0,0,.12),
+    inset 0 0 20px rgba(255,0,0,.03);
 }
 
 .socio-contenido{
-
   display:flex;
-
   align-items:center;
-
-  gap:30px;
-
+  gap:20px;
 }
 
 .foto-container{
-
-  width:300px;
-
+  width:180px;
   flex-shrink:0;
-
 }
 
 .foto{
-
   width:100%;
-
   aspect-ratio:1/1;
-
   object-fit:cover;
-
-  border-radius:22px;
-
-  border:4px solid #e51b23;
-
+  border-radius:15px;
+  border:2px solid #e51b23;
 }
 
 .datos{
-
   flex:1;
-
-  min-width:0;
-
 }
 
 .nombre{
-
-  font-size:clamp(28px,5vw,45px);
-
+  font-size:clamp(24px,4vw,36px);
   font-weight:900;
-
-  margin-bottom:20px;
-
-  word-wrap:break-word;
-
+  margin-bottom:15px;
 }
 
 .dato{
-
-  padding:12px 0;
-
-  border-bottom:1px solid #333;
-
-  font-size:clamp(18px,3vw,25px);
-
+  padding:9px 0;
+  border-bottom:1px solid #292929;
+  font-size:18px;
 }
 
 .dato span{
-
   display:block;
-
-  color:#888;
-
-  font-size:13px;
-
+  color:#777;
+  font-size:11px;
   font-weight:bold;
-
   letter-spacing:2px;
-
-  margin-bottom:5px;
-
+  margin-bottom:3px;
 }
 
+
+/* =====================================================
+   ESTADO DE ACCESO
+===================================================== */
+
 .acceso{
-
-  margin-top:25px;
-
-  padding:25px;
-
-  border-radius:20px;
-
+  margin-top:20px;
+  padding:20px;
+  border-radius:15px;
   text-align:center;
-
-  font-size:clamp(28px,6vw,45px);
-
+  font-size:clamp(24px,4vw,36px);
   font-weight:900;
-
 }
 
 .acceso small{
-
   display:block;
-
-  margin-top:10px;
-
-  color:#bbb;
-
-  font-size:18px;
-
+  margin-top:8px;
+  color:#aaa;
+  font-size:15px;
   font-weight:normal;
-
 }
 
 .permitido{
-
   color:#00ed45;
-
-  border:3px solid #00a832;
-
-  background:rgba(0,180,60,.10);
-
+  border:2px solid #00a832;
+  background:rgba(0,180,60,.08);
 }
 
 .denegado{
-
   color:#ff3030;
-
-  border:3px solid #b00000;
-
-  background:rgba(180,0,0,.10);
-
+  border:2px solid #b00000;
+  background:rgba(180,0,0,.08);
 }
-
-
-/* =====================================================
-   CARGANDO
-===================================================== */
-
-.cargando{
-
-  background:#101010;
-
-  border:3px solid #333;
-
-  border-radius:30px;
-
-  min-height:100%;
-
-  padding:40px;
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:center;
-
-  text-align:center;
-
-}
-
-.cargando-contenido{
-
-  font-size:clamp(28px,5vw,45px);
-
-  font-weight:900;
-
-}
-
-.cargando-contenido small{
-
-  display:block;
-
-  margin-top:15px;
-
-  color:#bbb;
-
-  font-size:18px;
-
-  font-weight:normal;
-
-}
-
-
-/* =====================================================
-   ERROR
-===================================================== */
 
 .error{
-
-  background:#150000;
-
-  border:3px solid #d00000;
-
-  border-radius:25px;
-
+  height:100%;
+  min-height:250px;
+  background:#080000;
+  border:2px solid #d00000;
+  border-radius:20px;
   padding:30px 20px;
-
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
   text-align:center;
-
   color:#ff4040;
-
-  font-size:clamp(20px,4vw,32px);
-
+  font-size:clamp(20px,3vw,30px);
   font-weight:900;
-
 }
 
 
@@ -598,50 +364,30 @@ body{
 ===================================================== */
 
 .estadisticas{
-
   display:grid;
-
-  grid-template-columns:
-    repeat(3,1fr);
-
+  grid-template-columns:repeat(3,1fr);
   gap:15px;
-
-  margin-top:25px;
-
+  margin-top:18px;
 }
 
 .estadistica{
-
-  background:#101010;
-
-  border:2px solid #333;
-
-  border-radius:20px;
-
-  padding:20px 10px;
-
+  background:#080808;
+  border:1px solid #333;
+  border-radius:15px;
+  padding:18px 10px;
   text-align:center;
-
-  color:#999;
-
-  font-size:15px;
-
+  color:#888;
+  font-size:13px;
   font-weight:bold;
-
+  letter-spacing:1px;
 }
 
 .numero{
-
   display:block;
-
-  margin-top:8px;
-
+  margin-top:7px;
   color:#fff;
-
   font-size:38px;
-
   font-weight:900;
-
 }
 
 .verde{
@@ -652,212 +398,178 @@ body{
   color:#ff3030;
 }
 
-
-/* =====================================================
-   FOOTER
-===================================================== */
-
 .footer{
-
   text-align:center;
-
-  margin-top:30px;
-
-  color:#777;
-
-  font-size:15px;
-
+  margin-top:22px;
+  color:#555;
+  font-size:12px;
   letter-spacing:3px;
-
-}
-
-
-/* =====================================================
-   TABLET
-===================================================== */
-
-@media(max-width:1000px){
-
-  .paneles{
-
-    grid-template-columns:
-      minmax(0,1fr)
-      minmax(0,1fr);
-
-    gap:12px;
-
-  }
-
-  .scanner-card{
-
-    padding:15px;
-
-    border-radius:25px;
-
-  }
-
-  .socio-card{
-
-    padding:18px;
-
-    border-radius:25px;
-
-  }
-
-  .socio-contenido{
-
-    flex-direction:column;
-
-    gap:20px;
-
-  }
-
-  .foto-container{
-
-    width:75%;
-
-    max-width:280px;
-
-  }
-
-  .datos{
-
-    width:100%;
-
-    text-align:center;
-
-  }
-
-  .dato{
-
-    text-align:left;
-
-  }
-
 }
 
 
 /* =====================================================
    CELULAR
+   LOS DOS PANELES SIGUEN UNO AL LADO DEL OTRO
 ===================================================== */
 
-@media(max-width:650px){
+@media(max-width:700px){
 
   .contenedor{
+    padding:12px 10px 30px;
+  }
 
-    padding:18px 10px 30px;
+  .logo{
+    margin-bottom:12px;
+  }
 
+  .logo img{
+    width:min(88vw,420px)!important;
+    max-width:420px!important;
+    max-height:360px!important;
+    height:auto!important;
+  }
+
+  .titulo{
+    font-size:31px;
+    margin:10px 0 20px;
+    white-space:nowrap;
+  }
+
+  .titulo::before,
+  .titulo::after{
+    width:24px;
+    margin:0 7px;
   }
 
   .paneles{
-
-    grid-template-columns:1fr;
-
-    gap:15px;
-
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr) !important;
+    gap:8px !important;
+    align-items:stretch !important;
   }
 
-  .scanner-card{
+  .paneles > .scanner-card{
+    grid-column:1 !important;
+    grid-row:1 !important;
+    padding:12px !important;
+    border-radius:18px !important;
+  }
 
-    padding:12px;
-
-    border-radius:25px;
-
+  .paneles > #resultado{
+    grid-column:2 !important;
+    grid-row:1 !important;
+    display:block !important;
+    width:100% !important;
+    min-width:0 !important;
   }
 
   .scanner-titulo{
-
-    margin-bottom:15px;
-
+    font-size:22px;
+    margin-bottom:12px;
   }
 
-  #reader{
-
-    border-radius:18px;
-
+  .estado{
+    font-size:18px;
   }
 
-  .socio-contenido{
-
-    flex-direction:column;
-
+  .ayuda{
+    font-size:12px;
   }
 
-  .foto-container{
-
-    width:85%;
-
-    max-width:330px;
-
+  .controles{
+    gap:6px;
+    margin-top:12px;
   }
 
-  .datos{
-
-    width:100%;
-
-    text-align:center;
-
+  .boton{
+    padding:10px 7px;
+    font-size:11px;
   }
 
-  .dato{
+  .manual{
+    margin-top:14px;
+    padding-top:12px;
+  }
 
-    text-align:left;
-
+  .manual-titulo{
+    font-size:10px;
+    margin-bottom:8px;
   }
 
   .manual-contenedor{
-
+    display:flex;
     flex-direction:column;
+    gap:5px;
+  }
 
+  #idManual{
+    padding:10px 8px;
+    font-size:12px;
   }
 
   #buscarManual{
+    min-height:42px;
+    padding:0 10px;
+    font-size:12px;
+  }
 
-    min-height:60px;
+  .socio-card{
+    padding:12px;
+    border-radius:18px;
+  }
 
+  .socio-contenido{
+    flex-direction:column;
+    gap:10px;
+  }
+
+  .foto-container{
+    width:85%;
+    max-width:150px;
+  }
+
+  .datos{
+    width:100%;
+    text-align:center;
+  }
+
+  .nombre{
+    font-size:19px;
+    margin-bottom:8px;
+  }
+
+  .dato{
+    font-size:12px;
+    padding:6px 0;
+    text-align:left;
+  }
+
+  .acceso{
+    margin-top:12px;
+    padding:12px 5px;
+    font-size:18px;
+  }
+
+  .acceso small{
+    font-size:10px;
   }
 
   .estadisticas{
-
     gap:7px;
-
   }
 
   .estadistica{
-
-    padding:15px 5px;
-
-    font-size:11px;
-
+    padding:14px 5px;
+    font-size:10px;
   }
 
   .numero{
-
     font-size:30px;
-
   }
 
-  .resultado-inicial{
-
-    min-height:400px;
-
-  }
-
-}
-
-
-/* =====================================================
-   PANTALLAS GRANDES
-===================================================== */
-
-@media(min-width:1200px){
-
-  .scanner-card,
-  .socio-card,
-  .resultado-inicial{
-
-    min-height:650px;
-
+  .footer{
+    font-size:9px;
+    letter-spacing:2px;
   }
 
 }
@@ -871,213 +583,170 @@ body{
 <div class="contenedor">
 
 
-<!-- =====================================================
-     LOGO
-===================================================== -->
+  <!-- =====================================================
+       LOGO
+  ====================================================== -->
 
-<div class="logo">
-  <img src="logo-boros.png" alt="BOROS" class="logo-imagen">
-</div>
-
-
-<!-- =====================================================
-     TITULO
-===================================================== -->
-
-<div class="titulo">
-  CONTROL DE ACCESO
-</div>
-
-
-<!-- =====================================================
-     ESCANER + RESULTADO
-===================================================== -->
-
-<div class="paneles">
-
-
-<!-- =====================================================
-     ESCANER
-===================================================== -->
-
-<div class="scanner-card">
-
-  <div class="scanner-titulo">
-    📷 ESCÁNER QR
+  <div class="logo">
+    <img src="logo-boros.png" alt="BOROS Fitness Gym">
   </div>
 
 
-  <div id="reader"></div>
+  <!-- =====================================================
+       TITULO
+  ====================================================== -->
 
-
-  <div id="estadoCamara" class="estado">
-    ⚪ TOCÁ «ABRIR CÁMARA»
+  <div class="titulo">
+    CONTROL DE ACCESO
   </div>
 
 
-  <div class="ayuda">
-    Presentá el QR del socio frente a la cámara
-  </div>
+  <!-- =====================================================
+       ESCANER + RESULTADO
+  ====================================================== -->
+
+  <div class="paneles">
 
 
-  <div class="controles">
+    <!-- ===================================================
+         ESCANER
+    ==================================================== -->
 
-    <button
-      class="boton"
-      id="abrirCamara"
-      type="button">
+    <div class="scanner-card">
 
-      📷 ABRIR CÁMARA
-
-    </button>
-
-
-    <button
-      class="boton secundario"
-      id="detenerCamara"
-      type="button">
-
-      ⏹️ DETENER
-
-    </button>
-
-  </div>
-
-
-  <!-- =================================================
-       BUSQUEDA MANUAL
-  ================================================== -->
-
-  <div class="manual">
-
-    <div class="manual-titulo">
-
-      Si el QR no funciona,
-      ingresá el ID del socio manualmente
-
-    </div>
-
-
-    <div class="manual-contenedor">
-
-      <input
-        id="idManual"
-        type="text"
-        placeholder="Ejemplo: B001"
-        autocomplete="off"
-      >
-
-
-      <button
-        id="buscarManual"
-        type="button">
-
-        🔎 BUSCAR
-
-      </button>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- =====================================================
-     RESULTADO
-===================================================== -->
-
-<div id="resultado">
-
-  <div class="resultado-inicial">
-
-    <div class="resultado-inicial-contenido">
-
-      <div class="resultado-inicial-icono">
-        👤
+      <div class="scanner-titulo">
+        📷 ESCÁNER QR
       </div>
 
-      <div class="resultado-inicial-titulo">
-        RESULTADO DEL SOCIO
+      <div id="reader"></div>
+
+      <div id="estadoCamara" class="estado">
+        ⚪ TOCÁ «ABRIR CÁMARA»
       </div>
 
-      <div class="resultado-inicial-texto">
-        Escaneá el código QR del socio
-        para consultar su membresía
+      <div class="ayuda">
+        Presentá el QR del socio frente a la cámara
+      </div>
+
+      <div class="controles">
+
+        <button
+          class="boton"
+          id="abrirCamara">
+          📷 ABRIR CÁMARA
+        </button>
+
+        <button
+          class="boton secundario"
+          id="detenerCamara">
+          ⏹️ DETENER
+        </button>
+
+      </div>
+
+
+      <!-- ===============================================
+           BUSQUEDA MANUAL
+      ================================================ -->
+
+      <div class="manual">
+
+        <div class="manual-titulo">
+          Si el QR no funciona, ingresá el ID del socio manualmente
+        </div>
+
+        <div class="manual-contenedor">
+
+          <input
+            id="idManual"
+            type="text"
+            placeholder="Ejemplo: B001"
+            autocomplete="off">
+
+          <button id="buscarManual">
+            🔎 BUSCAR
+          </button>
+
+        </div>
+
       </div>
 
     </div>
 
-  </div>
 
-</div>
+    <!-- =================================================
+         RESULTADO
+    ================================================== -->
 
+    <div id="resultado">
 
-</div>
+      <div class="socio-card">
 
+        <div class="acceso">
 
-<!-- =====================================================
-     ESTADISTICAS
-===================================================== -->
+          👤
 
-<div class="estadisticas">
+          <br><br>
 
-  <div class="estadistica">
+          ESCANEÁ UN QR
 
-    ENTRADAS HOY
+          <small>
+            o buscá un socio manualmente
+          </small>
 
-    <span
-      id="entradasHoy"
-      class="numero">
+        </div>
 
-      0
+      </div>
 
-    </span>
+    </div>
 
-  </div>
-
-
-  <div class="estadistica">
-
-    PERMITIDAS
-
-    <span
-      id="permitidas"
-      class="numero verde">
-
-      0
-
-    </span>
 
   </div>
 
 
-  <div class="estadistica">
+  <!-- =====================================================
+       ESTADISTICAS
+  ====================================================== -->
 
-    DENEGADAS
+  <div class="estadisticas">
 
-    <span
-      id="denegadas"
-      class="numero rojo">
+    <div class="estadistica">
+      ENTRADAS HOY
+      <span
+        id="entradasHoy"
+        class="numero">
+        0
+      </span>
+    </div>
 
-      0
+    <div class="estadistica">
+      PERMITIDAS
+      <span
+        id="permitidas"
+        class="numero verde">
+        0
+      </span>
+    </div>
 
-    </span>
+    <div class="estadistica">
+      DENEGADAS
+      <span
+        id="denegadas"
+        class="numero rojo">
+        0
+      </span>
+    </div>
 
   </div>
 
-</div>
 
+  <!-- =====================================================
+       FOOTER
+  ====================================================== -->
 
-<!-- =====================================================
-     FOOTER
-===================================================== -->
-
-<div class="footer">
-
-  BOROS • FUERZA • DISCIPLINA • RESULTADOS
-
-</div>
+  <div class="footer">
+    BOROS • FUERZA • DISCIPLINA • RESULTADOS
+  </div>
 
 
 </div>
@@ -1116,13 +785,13 @@ let denegadas = 0;
 ===================================================== */
 
 const estadoCamara =
-  document.getElementById("estadoCamara");
+document.getElementById("estadoCamara");
 
 const resultado =
-  document.getElementById("resultado");
+document.getElementById("resultado");
 
 const idManual =
-  document.getElementById("idManual");
+document.getElementById("idManual");
 
 
 /* =====================================================
@@ -1131,8 +800,9 @@ const idManual =
 
 async function iniciarCamara(){
 
-  if(camaraActiva) return;
-
+  if(camaraActiva){
+    return;
+  }
 
   estadoCamara.innerText =
     "🟡 SOLICITANDO CÁMARA...";
@@ -1154,7 +824,6 @@ async function iniciarCamara(){
       }catch(e){}
 
       scanner = null;
-
     }
 
 
@@ -1168,26 +837,22 @@ async function iniciarCamara(){
         facingMode:"environment"
       },
 
-
       {
-
         fps:10,
-
 
         qrbox:function(width,height){
 
           const size =
             Math.floor(
-              Math.min(width,height) * 0.75
+              Math.min(width,height)*0.75
             );
 
-          return {
+          return{
             width:size,
             height:size
           };
 
         },
-
 
         aspectRatio:1.0
 
@@ -1196,21 +861,19 @@ async function iniciarCamara(){
 
       function(decodedText){
 
-        if(procesando) return;
-
+        if(procesando){
+          return;
+        }
 
         procesando = true;
-
 
         console.log(
           "📷 QR DETECTADO:",
           decodedText
         );
 
-
         estadoCamara.innerText =
           "🟡 QR DETECTADO — VERIFICANDO...";
-
 
         estadoCamara.style.color =
           "#ffd000";
@@ -1223,8 +886,10 @@ async function iniciarCamara(){
 
       function(errorMessage){
 
-        // Normal:
-        // el lector sigue buscando un QR.
+        /*
+          Normal:
+          el lector continúa buscando un QR.
+        */
 
       }
 
@@ -1237,7 +902,6 @@ async function iniciarCamara(){
     estadoCamara.innerText =
       "🟢 LISTO PARA ESCANEAR";
 
-
     estadoCamara.style.color =
       "#00ed45";
 
@@ -1249,13 +913,11 @@ async function iniciarCamara(){
       error
     );
 
-
     camaraActiva = false;
 
 
     estadoCamara.innerText =
       "🔴 NO SE PUDO ACCEDER A LA CÁMARA";
-
 
     estadoCamara.style.color =
       "#ff3030";
@@ -1279,7 +941,9 @@ async function iniciarCamara(){
 
 async function detenerCamara(){
 
-  if(!scanner) return;
+  if(!scanner){
+    return;
+  }
 
 
   try{
@@ -1290,9 +954,7 @@ async function detenerCamara(){
 
     }
 
-
     scanner.clear();
-
 
   }catch(e){
 
@@ -1311,7 +973,6 @@ async function detenerCamara(){
 
   estadoCamara.innerText =
     "⚪ CÁMARA DETENIDA";
-
 
   estadoCamara.style.color =
     "#aaa";
@@ -1344,7 +1005,6 @@ function procesarQR(textoQR){
 
       const url =
         new URL(id);
-
 
       const parametro =
         url.searchParams.get("id");
@@ -1384,9 +1044,7 @@ function procesarQR(textoQR){
       "NO SE PUDO OBTENER EL ID DEL QR"
     );
 
-
     procesando = false;
-
 
     return;
 
@@ -1399,7 +1057,8 @@ function procesarQR(textoQR){
 
 
 /* =====================================================
-   CONSULTAR SOCIO - JSONP
+   CONSULTAR SOCIO
+   JSONP
 ===================================================== */
 
 function consultarSocio(id){
@@ -1410,9 +1069,7 @@ function consultarSocio(id){
       "INGRESÁ UN ID DE SOCIO"
     );
 
-
     procesando = false;
-
 
     return;
 
@@ -1429,7 +1086,8 @@ function consultarSocio(id){
 
 
   const callbackName =
-    "borosCallback_" + Date.now();
+    "borosCallback_" +
+    Date.now();
 
 
   let terminado = false;
@@ -1437,8 +1095,9 @@ function consultarSocio(id){
 
   function limpiar(){
 
-    if(terminado) return;
-
+    if(terminado){
+      return;
+    }
 
     terminado = true;
 
@@ -1473,7 +1132,6 @@ function consultarSocio(id){
           respuesta
         );
 
-
       }catch(error){
 
         console.error(
@@ -1499,17 +1157,12 @@ function consultarSocio(id){
 
 
   const url =
-
     API_URL +
-
     "?api=1" +
-
     "&id=" +
     encodeURIComponent(id) +
-
     "&callback=" +
     encodeURIComponent(callbackName) +
-
     "&t=" +
     Date.now();
 
@@ -1549,9 +1202,12 @@ function consultarSocio(id){
 
   const timeout =
     setTimeout(
+
       function(){
 
-        if(terminado) return;
+        if(terminado){
+          return;
+        }
 
 
         console.error(
@@ -1570,35 +1226,39 @@ function consultarSocio(id){
         procesando = false;
 
       },
+
       15000
+
     );
 
 
-  document.body.appendChild(script);
+  document.body.appendChild(
+    script
+  );
 
 }
 
 
 /* =====================================================
-   MOSTRAR CARGANDO
+   CARGANDO
 ===================================================== */
 
 function mostrarCargando(){
 
   resultado.innerHTML =
 
-    '<div class="cargando">' +
+    '<div class="socio-card">' +
 
-      '<div class="cargando-contenido">' +
+      '<div class="acceso">' +
 
-        '🔍<br><br>' +
+        '🔍' +
+
+        '<br><br>' +
 
         'VERIFICANDO SOCIO...' +
 
         '<small>' +
-
           'Consultando membresía' +
-
         '</small>' +
 
       '</div>' +
@@ -1620,9 +1280,7 @@ function mostrarResultado(respuesta){
       "NO SE RECIBIÓ RESPUESTA"
     );
 
-
     procesando = false;
-
 
     return;
 
@@ -1634,10 +1292,6 @@ function mostrarResultado(respuesta){
     respuesta
   );
 
-
-  /* ================================================
-     SOCIO NO ENCONTRADO
-  ================================================= */
 
   if(!respuesta.encontrado){
 
@@ -1657,15 +1311,10 @@ function mostrarResultado(respuesta){
 
     finalizarConsulta();
 
-
     return;
 
   }
 
-
-  /* ================================================
-     SOCIO ENCONTRADO
-  ================================================= */
 
   entradasHoy++;
 
@@ -1688,10 +1337,6 @@ function mostrarResultado(respuesta){
   actualizarEstadisticas();
 
 
-  /* ================================================
-     FOTO
-  ================================================= */
-
   let fotoHTML = "";
 
 
@@ -1709,30 +1354,20 @@ function mostrarResultado(respuesta){
 
       '<div class="foto-container">' +
 
-        '<img ' +
+        '<img class="foto" src="data:' +
 
-          'class="foto" ' +
+        tipo +
 
-          'src="data:' +
+        ';base64,' +
 
-          tipo +
+        respuesta.foto.datos +
 
-          ';base64,' +
-
-          respuesta.foto.datos +
-
-          '" ' +
-
-          'alt="Foto del socio">' +
+        '" alt="Foto del socio">' +
 
       '</div>';
 
   }
 
-
-  /* ================================================
-     ESTADO
-  ================================================= */
 
   const claseEstado =
     permitido
@@ -1754,29 +1389,20 @@ function mostrarResultado(respuesta){
 
   const mensaje =
     permitido
-
       ? "Entrada registrada correctamente"
-
       : "Membresía vencida";
 
-
-  /* ================================================
-     TARJETA RESULTADO
-  ================================================= */
 
   resultado.innerHTML =
 
     '<div class="socio-card">' +
 
-
       '<div class="socio-contenido">' +
-
 
         fotoHTML +
 
 
         '<div class="datos">' +
-
 
           '<div class="nombre">' +
 
@@ -1838,7 +1464,6 @@ function mostrarResultado(respuesta){
 
 
         '</div>' +
-
 
       '</div>' +
 
@@ -1919,9 +1544,13 @@ function mostrarError(mensaje){
 
     '<div class="error">' +
 
-      '🔴<br><br>' +
+      '🔴' +
 
-      escaparHTML(mensaje) +
+      '<br><br>' +
+
+      escaparHTML(
+        mensaje
+      ) +
 
     '</div>';
 
@@ -1936,13 +1565,11 @@ async function finalizarConsulta(){
 
   procesando = false;
 
-
   idManual.value = "";
 
 
   estadoCamara.innerText =
     "🟢 LISTO PARA ESCANEAR";
-
 
   estadoCamara.style.color =
     "#00ed45";
@@ -1958,7 +1585,7 @@ async function finalizarConsulta(){
 
 
 /* =====================================================
-   ACTUALIZAR ESTADISTICAS
+   ESTADISTICAS
 ===================================================== */
 
 function actualizarEstadisticas(){
@@ -2001,13 +1628,16 @@ function buscarManual(){
       "INGRESÁ EL ID DEL SOCIO"
     );
 
-
     return;
 
   }
 
 
-  if(procesando) return;
+  if(procesando){
+
+    return;
+
+  }
 
 
   procesando = true;
@@ -2046,10 +1676,6 @@ document
   );
 
 
-/* =====================================================
-   ENTER
-===================================================== */
-
 idManual.addEventListener(
   "keydown",
   function(event){
@@ -2065,7 +1691,7 @@ idManual.addEventListener(
 
 
 /* =====================================================
-   CARGA INICIAL
+   AL CARGAR
 ===================================================== */
 
 window.addEventListener(
@@ -2074,7 +1700,6 @@ window.addEventListener(
 
     estadoCamara.innerText =
       "⚪ TOCÁ «ABRIR CÁMARA»";
-
 
     estadoCamara.style.color =
       "#aaa";
@@ -2086,4 +1711,3 @@ window.addEventListener(
 
 </body>
 </html>
-```
