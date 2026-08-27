@@ -118,10 +118,12 @@ body{min-height:100vh}
     gap: 12px;
     width: 100%;
     align-items: stretch;
+    box-sizing: border-box;
 }
 .paneles .scanner-card,
 .paneles #resultado {
     width: 100%;
+    min-width: 0;
     box-sizing: border-box;
 }
 
@@ -541,6 +543,11 @@ body{min-height:100vh}
 
 <div class="titulo">CONTROL DE ACCESO</div>
 
+
+<div class="paneles">
+
+    <!-- ESCÁNER -->
+    <div class="scanner-card">
 <div class="scanner-card">
   <div class="scanner-titulo">📷 ESCÁNER QR</div>
 
@@ -564,14 +571,6 @@ body{min-height:100vh}
     </div>
   </div>
 </div>
-
-<div class="paneles">
-
-    <!-- ESCÁNER -->
-    <div class="scanner-card">
-        ...
-        <div id="reader"></div>
-        ...
     </div>
 
     <!-- RESULTADO -->
