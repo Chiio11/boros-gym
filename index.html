@@ -513,11 +513,30 @@ body{
   display:block;
 }
 
-.datos{
+.dato {
+    display: flex !important;
+    flex-direction: column !important;
+    margin: 0 !important;
+    padding: 13px 0 !important;
+    border-bottom: 1px solid #333 !important;
+    gap: 5px !important;
+}
 
-  flex:1;
+.dato-label {
+    display: block !important;
+    color: #aaa !important;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    letter-spacing: 1.5px !important;
+    text-transform: uppercase !important;
+}
 
-  min-width:0;
+.dato-valor {
+    display: block !important;
+    color: #fff !important;
+    font-size: 21px !important;
+    font-weight: 800 !important;
+    line-height: 1.2 !important;
 }
 
 .nombre{
@@ -2285,44 +2304,48 @@ function mostrarResultado(respuesta){
           '</div>' +
 
 
-          '<div class="dato">' +
+         '<div class="dato">' +
 
-            '<span>PLAN</span>' +
+    '<span class="dato-label">ID SOCIO</span>' +
 
-            escaparHTML(
-              respuesta.plan || ""
-            ) +
+    '<span class="dato-valor">' +
+        escaparHTML(respuesta.id || "") +
+    '</span>' +
 
-          '</div>' +
-
-
-          '<div class="dato">' +
-
-            '<span>VENCIMIENTO</span>' +
-
-            escaparHTML(
-              respuesta.vencimiento || ""
-            ) +
-
-          '</div>' +
+'</div>' +
 
 
-          '<div class="dato">' +
+'<div class="dato">' +
 
-            '<span>DNI</span>' +
+    '<span class="dato-label">PLAN</span>' +
 
-            escaparHTML(
-              respuesta.dni || ""
-            ) +
+    '<span class="dato-valor">' +
+        escaparHTML(respuesta.plan || "") +
+    '</span>' +
 
-          '</div>' +
-
-
-        '</div>' +
+'</div>' +
 
 
-      '</div>' +
+'<div class="dato">' +
 
+    '<span class="dato-label">VENCIMIENTO</span>' +
+
+    '<span class="dato-valor">' +
+        escaparHTML(respuesta.vencimiento || "") +
+    '</span>' +
+
+'</div>' +
+
+
+'<div class="dato">' +
+
+    '<span class="dato-label">DNI</span>' +
+
+    '<span class="dato-valor">' +
+        escaparHTML(respuesta.dni || "") +
+    '</span>' +
+
+'</div>' +
 
       /* =================================================
          CERTIFICADO
