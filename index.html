@@ -15,6 +15,10 @@
 
 <style>
 
+/* =====================================================
+   GENERAL
+===================================================== */
+
 *{
   box-sizing:border-box;
 }
@@ -62,7 +66,7 @@ body{
 
 
 /* =====================================================
-   TITULO CONTROL DE ACCESO
+   TITULO
 ===================================================== */
 
 .titulo{
@@ -86,17 +90,22 @@ body{
 .titulo::before,
 .titulo::after{
   content:"";
+
   height:2px;
+
   background:#ff1515;
-  box-shadow:0 0 8px rgba(255,0,0,.45);
+
+  box-shadow:
+    0 0 8px rgba(255,0,0,.45);
 
   flex:1 1 120px;
+
   max-width:140px;
 }
 
 
 /* =====================================================
-   PANELES ESCANER + RESULTADO
+   PANELES
 ===================================================== */
 
 .paneles{
@@ -119,9 +128,11 @@ body{
 ===================================================== */
 
 .scanner-card{
+
   width:100%;
 
   border:2px solid #d90000;
+
   border-radius:18px;
 
   padding:18px;
@@ -144,9 +155,11 @@ body{
 ===================================================== */
 
 .scanner-titulo{
+
   display:flex;
 
   align-items:center;
+
   justify-content:center;
 
   gap:10px;
@@ -245,6 +258,7 @@ body{
 }
 
 .boton{
+
   border:none;
 
   border-radius:9px;
@@ -271,7 +285,6 @@ body{
 
 .boton.secundario{
   background:#111;
-
   border:1px solid #555;
 }
 
@@ -305,6 +318,7 @@ body{
 }
 
 #idManual{
+
   flex:1;
 
   min-width:0;
@@ -325,6 +339,7 @@ body{
 }
 
 #buscarManual{
+
   background:#ed1c24;
 
   color:#fff;
@@ -350,12 +365,13 @@ body{
 #resultado{
   width:100%;
   height:100%;
-
   min-width:0;
 }
 
 .socio-card{
+
   width:100%;
+
   height:100%;
 
   min-height:100%;
@@ -380,20 +396,22 @@ body{
 
 
 /* =====================================================
-   TITULO RESULTADO
+   CABECERA RESULTADO
 ===================================================== */
 
 .resultado-header{
+
   display:flex;
 
   align-items:center;
+
   justify-content:center;
 
   gap:10px;
 
   padding-bottom:13px;
 
-  margin-bottom:10px;
+  margin-bottom:14px;
 
   border-bottom:1px solid #421010;
 
@@ -416,6 +434,7 @@ body{
 ===================================================== */
 
 .resultado-inicial{
+
   min-height:300px;
 
   display:flex;
@@ -430,6 +449,7 @@ body{
 }
 
 .resultado-inicial i{
+
   font-size:72px;
 
   color:#555;
@@ -438,6 +458,7 @@ body{
 }
 
 .resultado-titulo{
+
   font-size:clamp(22px,3.5vw,34px);
 
   font-weight:900;
@@ -446,6 +467,7 @@ body{
 }
 
 .resultado-subtitulo{
+
   margin-top:8px;
 
   color:#777;
@@ -459,20 +481,25 @@ body{
 ===================================================== */
 
 .socio-contenido{
-  display:flex;
+
+  display:grid;
+
+  grid-template-columns:180px minmax(0,1fr);
 
   align-items:center;
 
-  gap:20px;
+  gap:22px;
 }
 
 .foto-container{
+
   width:180px;
 
   flex-shrink:0;
 }
 
 .foto{
+
   width:100%;
 
   aspect-ratio:1/1;
@@ -482,34 +509,44 @@ body{
   border-radius:15px;
 
   border:2px solid #e51b23;
+
+  display:block;
 }
 
 .datos{
+
   flex:1;
+
+  min-width:0;
 }
 
 .nombre{
-  font-size:clamp(24px,4vw,36px);
+
+  font-size:clamp(24px,3vw,36px);
 
   font-weight:900;
 
-  margin-bottom:15px;
+  margin-bottom:12px;
+
+  line-height:1.05;
 }
 
 .dato{
-  padding:9px 0;
+
+  padding:8px 0;
 
   border-bottom:1px solid #292929;
 
-  font-size:18px;
+  font-size:17px;
 }
 
 .dato span{
+
   display:block;
 
   color:#777;
 
-  font-size:11px;
+  font-size:10px;
 
   font-weight:bold;
 
@@ -520,36 +557,128 @@ body{
 
 
 /* =====================================================
-   ESTADO DE ACCESO
+   CERTIFICADO MEDICO
+===================================================== */
+
+.certificado{
+
+  margin-top:16px;
+
+  padding:13px 15px;
+
+  border:2px solid #555;
+
+  border-radius:13px;
+
+  background:rgba(255,255,255,.025);
+
+  box-shadow:
+    inset 0 0 14px rgba(255,255,255,.015);
+}
+
+.certificado-titulo{
+
+  font-size:12px;
+
+  font-weight:900;
+
+  letter-spacing:.5px;
+
+  margin-bottom:7px;
+}
+
+.certificado-estado{
+
+  font-size:17px;
+
+  font-weight:900;
+
+  margin-bottom:7px;
+}
+
+.certificado-presentado{
+
+  border-color:#00a832;
+
+  background:rgba(0,180,60,.055);
+}
+
+.certificado-presentado
+.certificado-estado{
+
+  color:#00ed45;
+}
+
+.certificado-pendiente{
+
+  border-color:#b00000;
+
+  background:rgba(180,0,0,.055);
+}
+
+.certificado-pendiente
+.certificado-estado{
+
+  color:#ff3030;
+}
+
+.certificado-fecha{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  gap:10px;
+
+  font-size:11px;
+
+  margin-top:4px;
+
+  color:#ddd;
+}
+
+.certificado-fecha span{
+
+  font-weight:700;
+
+  color:#aaa;
+}
+
+
+/* =====================================================
+   ACCESO
 ===================================================== */
 
 .acceso{
-  margin-top:20px;
 
-  padding:20px;
+  margin-top:15px;
 
-  border-radius:15px;
+  padding:16px;
+
+  border-radius:14px;
 
   text-align:center;
 
-  font-size:clamp(24px,4vw,36px);
+  font-size:clamp(23px,3.5vw,34px);
 
   font-weight:900;
 }
 
 .acceso small{
+
   display:block;
 
-  margin-top:8px;
+  margin-top:7px;
 
   color:#aaa;
 
-  font-size:15px;
+  font-size:14px;
 
   font-weight:normal;
 }
 
 .permitido{
+
   color:#00ed45;
 
   border:2px solid #00a832;
@@ -558,6 +687,7 @@ body{
 }
 
 .denegado{
+
   color:#ff3030;
 
   border:2px solid #b00000;
@@ -571,6 +701,7 @@ body{
 ===================================================== */
 
 .error{
+
   height:100%;
 
   min-height:300px;
@@ -606,6 +737,7 @@ body{
 ===================================================== */
 
 .estadisticas{
+
   display:grid;
 
   grid-template-columns:
@@ -617,6 +749,7 @@ body{
 }
 
 .estadistica{
+
   background:#080808;
 
   border:1px solid #333;
@@ -637,6 +770,7 @@ body{
 }
 
 .icono-estadistica{
+
   font-size:38px;
 
   color:#ff2020;
@@ -657,6 +791,7 @@ body{
 }
 
 .estadistica-titulo{
+
   color:#aaa;
 
   font-size:10px;
@@ -669,6 +804,7 @@ body{
 }
 
 .numero{
+
   display:block;
 
   color:#fff;
@@ -694,6 +830,7 @@ body{
 ===================================================== */
 
 .footer{
+
   text-align:center;
 
   margin-top:20px;
@@ -716,173 +853,102 @@ body{
     padding:10px 10px 30px;
   }
 
-
-  /* LOGO */
-
   .logo{
     margin-bottom:10px;
   }
 
   .logo img{
     width:92vw;
-
     max-width:500px;
-
     max-height:330px;
   }
 
-
-  /* TITULO */
-
   .titulo{
     font-size:27px;
-
     gap:9px;
-
     margin:8px 0 18px;
-
-    white-space:nowrap;
   }
 
   .titulo::before,
   .titulo::after{
     flex:1 1 30px;
-
     max-width:80px;
   }
 
-
-  /* PANELES */
-
   .paneles{
-    display:grid;
-
     grid-template-columns:
       minmax(0,1fr)
       minmax(0,1fr);
 
     gap:8px;
-
-    align-items:stretch;
   }
 
-
-  /* ESCANER */
-
-  .scanner-card{
+  .scanner-card,
+  .socio-card{
     padding:10px;
-
     border-radius:16px;
   }
 
-  .scanner-titulo{
+  .scanner-titulo,
+  .resultado-header{
+
     font-size:19px;
 
     gap:6px;
 
     padding-bottom:10px;
 
-    margin-bottom:10px;
+    margin-bottom:8px;
   }
-
-  .scanner-titulo i{
-    font-size:20px;
-  }
-
-
-  /* CAMARA */
 
   .estado{
     font-size:16px;
-
     line-height:1.2;
-
     margin-top:10px;
   }
 
   .ayuda{
     font-size:10px;
-
     line-height:1.3;
   }
 
-
-  /* BOTONES */
-
   .controles{
     gap:5px;
-
     margin-top:10px;
   }
 
   .boton{
     padding:9px 7px;
-
     font-size:10px;
-
     border-radius:8px;
   }
 
-
-  /* BUSQUEDA */
-
   .manual{
     margin-top:11px;
-
     padding-top:10px;
   }
 
   .manual-titulo{
     font-size:9px;
-
     line-height:1.3;
-
     margin-bottom:7px;
   }
 
   .manual-contenedor{
-    display:flex;
-
-    flex-direction:row;
-
     gap:4px;
   }
 
   #idManual{
     padding:9px 7px;
-
     font-size:11px;
-
     width:60%;
   }
 
   #buscarManual{
     min-height:38px;
-
     padding:0 8px;
-
     font-size:10px;
-
     flex:1;
-  }
-
-
-  /* RESULTADO */
-
-  .socio-card{
-    padding:10px;
-
-    border-radius:16px;
-  }
-
-  .resultado-header{
-    font-size:19px;
-
-    gap:6px;
-
-    padding-bottom:10px;
-
-    margin-bottom:5px;
   }
 
   .resultado-inicial{
@@ -891,50 +957,51 @@ body{
 
   .resultado-inicial i{
     font-size:58px;
-
     margin-bottom:18px;
   }
 
   .resultado-titulo{
     font-size:19px;
-
     line-height:1.2;
   }
 
   .resultado-subtitulo{
     font-size:9px;
-
     line-height:1.3;
   }
 
-
-  /* SOCIO */
-
   .socio-contenido{
-    flex-direction:column;
 
-    gap:10px;
+    grid-template-columns:1fr;
+
+    gap:9px;
   }
 
   .foto-container{
+
     width:80%;
 
     max-width:140px;
+
+    margin:auto;
   }
 
   .datos{
+
     width:100%;
 
     text-align:center;
   }
 
   .nombre{
+
     font-size:18px;
 
-    margin-bottom:8px;
+    margin-bottom:7px;
   }
 
   .dato{
+
     font-size:11px;
 
     padding:5px 0;
@@ -942,8 +1009,35 @@ body{
     text-align:left;
   }
 
+  .certificado{
+
+    margin-top:9px;
+
+    padding:8px 9px;
+  }
+
+  .certificado-titulo{
+
+    font-size:9px;
+
+    margin-bottom:5px;
+  }
+
+  .certificado-estado{
+
+    font-size:12px;
+
+    margin-bottom:5px;
+  }
+
+  .certificado-fecha{
+
+    font-size:8px;
+  }
+
   .acceso{
-    margin-top:10px;
+
+    margin-top:9px;
 
     padding:10px 5px;
 
@@ -954,16 +1048,15 @@ body{
     font-size:9px;
   }
 
-
-  /* ESTADISTICAS */
-
   .estadisticas{
+
     gap:6px;
 
     margin-top:10px;
   }
 
   .estadistica{
+
     min-height:72px;
 
     padding:8px 3px;
@@ -979,7 +1072,6 @@ body{
 
   .estadistica-titulo{
     font-size:8px;
-
     letter-spacing:.5px;
   }
 
@@ -987,17 +1079,11 @@ body{
     font-size:27px;
   }
 
-
-  /* FOOTER */
-
   .footer{
     font-size:10px;
-
     letter-spacing:2px;
-
     margin-top:14px;
   }
-
 }
 
 
@@ -1036,62 +1122,8 @@ body{
   .numero{
     font-size:24px;
   }
-
-}
-/* =========================================
-   CERTIFICADO MÉDICO
-========================================= */
-
-.certificado {
-    margin-top: 14px;
-    padding: 14px 16px;
-    border: 1px solid #555;
-    border-radius: 12px;
-    background: rgba(255,255,255,0.03);
 }
 
-.certificado-titulo {
-    font-size: 14px;
-    font-weight: 800;
-    margin-bottom: 8px;
-    text-transform: uppercase;
-}
-
-.certificado-estado {
-    font-size: 18px;
-    font-weight: 900;
-    margin-bottom: 8px;
-}
-
-.certificado-presentado {
-    border-color: #00ed45;
-}
-
-.certificado-presentado .certificado-estado {
-    color: #00ed45;
-}
-
-.certificado-pendiente {
-    border-color: #ff1f3d;
-}
-
-.certificado-pendiente .certificado-estado {
-    color: #ff1f3d;
-}
-
-.certificado-fecha {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    font-size: 12px;
-    margin-top: 5px;
-    color: #ddd;
-}
-
-.certificado-fecha span {
-    font-weight: 700;
-}
-  
 </style>
 </head>
 
@@ -1101,253 +1133,175 @@ body{
 <div class="contenedor">
 
 
-  <!-- =====================================================
-       LOGO
-  ====================================================== -->
+<!-- =====================================================
+     LOGO
+===================================================== -->
 
-  <div class="logo">
+<div class="logo">
 
-    <img
-      src="Sticker borde blanco.png"
-      alt="BOROS Fitness Gym">
+  <img
+    src="Sticker borde blanco.png"
+    alt="BOROS Fitness Gym"
+  >
+
+</div>
+
+
+<!-- =====================================================
+     TITULO
+===================================================== -->
+
+<div class="titulo">
+
+  CONTROL DE ACCESO
+
+</div>
+
+
+<!-- =====================================================
+     ESCANER + RESULTADO
+===================================================== -->
+
+<div class="paneles">
+
+
+<!-- ===================================================
+     ESCANER
+==================================================== -->
+
+<div class="scanner-card">
+
+  <div class="scanner-titulo">
+
+    <i class="fa-solid fa-camera"></i>
+
+    <span>ESCÁNER QR</span>
 
   </div>
 
 
-  <!-- =====================================================
-       TITULO
-  ====================================================== -->
+  <div id="reader"></div>
 
-  <div class="titulo">
-    CONTROL DE ACCESO
-  </div>
 
+  <div
+    id="estadoCamara"
+    class="estado"
+  >
 
-  <!-- =====================================================
-       ESCANER + RESULTADO
-  ====================================================== -->
-
-  <div class="paneles">
-
-
-    <!-- ===================================================
-         ESCANER
-    ==================================================== -->
-
-    <div class="scanner-card">
-
-      <div class="scanner-titulo">
-
-        <i class="fa-solid fa-camera"></i>
-
-        <span>ESCÁNER QR</span>
-
-      </div>
-
-
-      <div id="reader"></div>
-
-
-      <div
-        id="estadoCamara"
-        class="estado">
-
-        ⚪ TOCÁ «ABRIR CÁMARA»
-
-      </div>
-
-
-      <div class="ayuda">
-
-        Presentá el QR del socio frente a la cámara
-
-      </div>
-
-
-      <div class="controles">
-
-        <button
-          class="boton"
-          id="abrirCamara">
-
-          <i class="fa-solid fa-camera"></i>
-          ABRIR CÁMARA
-
-        </button>
-
-
-        <button
-          class="boton secundario"
-          id="detenerCamara">
-
-          <i class="fa-solid fa-stop"></i>
-          DETENER
-
-        </button>
-
-      </div>
-
-
-      <!-- ===============================================
-           BUSQUEDA MANUAL
-      ================================================ -->
-
-      <div class="manual">
-
-        <div class="manual-titulo">
-
-          Si el QR no funciona,
-          ingresá el ID del socio manualmente
-
-        </div>
-
-
-        <div class="manual-contenedor">
-
-          <input
-            id="idManual"
-            type="text"
-            placeholder="Ejemplo: B001"
-            autocomplete="off">
-
-
-          <button id="buscarManual">
-
-            <i class="fa-solid fa-magnifying-glass"></i>
-            BUSCAR
-
-          </button>
-
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <!-- =================================================
-         RESULTADO
-    ================================================== -->
-
-    <div id="resultado">
-
-      <div class="socio-card">
-
-
-        <div class="resultado-header">
-
-          <i class="fa-solid fa-user"></i>
-
-          <span>RESULTADO</span>
-
-        </div>
-
-
-        <div class="resultado-inicial">
-
-          <i class="fa-solid fa-circle-user"></i>
-
-          <div class="resultado-titulo">
-
-            ESCANEÁ UN QR
-
-          </div>
-
-          <div class="resultado-subtitulo">
-
-            o buscá un socio manualmente
-            <br>
-            para ver el resultado
-
-          </div>
-
-        </div>
-
-
-      </div>
-
-    </div>
-
+    ⚪ TOCÁ «ABRIR CÁMARA»
 
   </div>
 
 
-  <!-- =====================================================
-       ESTADISTICAS
-  ====================================================== -->
+  <div class="ayuda">
 
-  <div class="estadisticas">
+    Presentá el QR del socio frente a la cámara
 
-
-    <!-- ENTRADAS -->
-
-    <div class="estadistica">
-
-      <i class="fa-solid fa-arrow-right-to-bracket icono-estadistica"></i>
-
-      <div class="estadistica-info">
-
-        <div class="estadistica-titulo">
-          ENTRADAS HOY
-        </div>
-
-        <span
-          id="entradasHoy"
-          class="numero">
-
-          0
-
-        </span>
-
-      </div>
-
-    </div>
+  </div>
 
 
-    <!-- PERMITIDAS -->
+  <div class="controles">
 
-    <div class="estadistica">
+    <button
+      class="boton"
+      id="abrirCamara"
+    >
 
-      <i class="fa-solid fa-user-check icono-estadistica verde"></i>
+      <i class="fa-solid fa-camera"></i>
 
-      <div class="estadistica-info">
+      ABRIR CÁMARA
 
-        <div class="estadistica-titulo">
-          PERMITIDAS
-        </div>
+    </button>
 
-        <span
-          id="permitidas"
-          class="numero verde">
 
-          0
+    <button
+      class="boton secundario"
+      id="detenerCamara"
+    >
 
-        </span>
+      <i class="fa-solid fa-stop"></i>
 
-      </div>
+      DETENER
+
+    </button>
+
+  </div>
+
+
+  <!-- BUSQUEDA MANUAL -->
+
+  <div class="manual">
+
+    <div class="manual-titulo">
+
+      Si el QR no funciona,<br>
+
+      ingresá el ID del socio manualmente
 
     </div>
 
 
-    <!-- DENEGADAS -->
+    <div class="manual-contenedor">
 
-    <div class="estadistica">
+      <input
+        id="idManual"
+        type="text"
+        placeholder="Ejemplo: B001"
+        autocomplete="off"
+      >
 
-      <i class="fa-solid fa-user-xmark icono-estadistica rojo"></i>
 
-      <div class="estadistica-info">
+      <button id="buscarManual">
 
-        <div class="estadistica-titulo">
-          DENEGADAS
-        </div>
+        <i class="fa-solid fa-magnifying-glass"></i>
 
-        <span
-          id="denegadas"
-          class="numero rojo">
+        BUSCAR
 
-          0
+      </button>
 
-        </span>
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- =================================================
+     RESULTADO
+================================================== -->
+
+<div id="resultado">
+
+  <div class="socio-card">
+
+
+    <div class="resultado-header">
+
+      <i class="fa-solid fa-user"></i>
+
+      <span>RESULTADO</span>
+
+    </div>
+
+
+    <div class="resultado-inicial">
+
+      <i class="fa-solid fa-circle-user"></i>
+
+      <div class="resultado-titulo">
+
+        ESCANEÁ UN QR
+
+      </div>
+
+
+      <div class="resultado-subtitulo">
+
+        o buscá un socio manualmente
+
+        <br>
+
+        para ver el resultado
 
       </div>
 
@@ -1356,16 +1310,121 @@ body{
 
   </div>
 
+</div>
 
-  <!-- =====================================================
-       FOOTER
-  ====================================================== -->
 
-  <div class="footer">
+</div>
 
-   • FUERZA • DISCIPLINA • RESULTADOS
+
+<!-- =====================================================
+     ESTADISTICAS
+===================================================== -->
+
+<div class="estadisticas">
+
+
+  <!-- ENTRADAS -->
+
+  <div class="estadistica">
+
+    <i
+      class="fa-solid fa-arrow-right-to-bracket icono-estadistica"
+    ></i>
+
+    <div class="estadistica-info">
+
+      <div class="estadistica-titulo">
+
+        ENTRADAS HOY
+
+      </div>
+
+      <span
+        id="entradasHoy"
+        class="numero"
+      >
+
+        0
+
+      </span>
+
+    </div>
 
   </div>
+
+
+  <!-- PERMITIDAS -->
+
+  <div class="estadistica">
+
+    <i
+      class="fa-solid fa-user-check icono-estadistica verde"
+    ></i>
+
+    <div class="estadistica-info">
+
+      <div class="estadistica-titulo">
+
+        PERMITIDAS
+
+      </div>
+
+      <span
+        id="permitidas"
+        class="numero verde"
+      >
+
+        0
+
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <!-- DENEGADAS -->
+
+  <div class="estadistica">
+
+    <i
+      class="fa-solid fa-user-xmark icono-estadistica rojo"
+    ></i>
+
+    <div class="estadistica-info">
+
+      <div class="estadistica-titulo">
+
+        DENEGADAS
+
+      </div>
+
+      <span
+        id="denegadas"
+        class="numero rojo"
+      >
+
+        0
+
+      </span>
+
+    </div>
+
+  </div>
+
+
+</div>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<div class="footer">
+
+  • FUERZA • DISCIPLINA • RESULTADOS
+
+</div>
 
 
 </div>
@@ -1420,7 +1479,9 @@ document.getElementById("idManual");
 async function iniciarCamara(){
 
   if(camaraActiva){
+
     return;
+
   }
 
 
@@ -1437,12 +1498,18 @@ async function iniciarCamara(){
     if(scanner){
 
       try{
+
         await scanner.stop();
+
       }catch(e){}
 
+
       try{
+
         scanner.clear();
+
       }catch(e){}
+
 
       scanner = null;
 
@@ -1491,7 +1558,9 @@ async function iniciarCamara(){
       function(decodedText){
 
         if(procesando){
+
           return;
+
         }
 
 
@@ -1573,13 +1642,15 @@ async function iniciarCamara(){
 
 
 /* =====================================================
-   DETENER CÁMARA
+   DETENER CAMARA
 ===================================================== */
 
 async function detenerCamara(){
 
   if(!scanner){
+
     return;
+
   }
 
 
@@ -1590,6 +1661,7 @@ async function detenerCamara(){
       await scanner.stop();
 
     }
+
 
     scanner.clear();
 
@@ -1636,6 +1708,7 @@ function procesarQR(textoQR){
 
   try{
 
+
     if(
       id.startsWith("http://") ||
       id.startsWith("https://")
@@ -1656,6 +1729,7 @@ function procesarQR(textoQR){
       }
 
     }
+
 
   }catch(error){
 
@@ -1698,7 +1772,6 @@ function procesarQR(textoQR){
 
 /* =====================================================
    CONSULTAR SOCIO
-   JSONP
 ===================================================== */
 
 function consultarSocio(id){
@@ -1737,7 +1810,9 @@ function consultarSocio(id){
   function limpiar(){
 
     if(terminado){
+
       return;
+
     }
 
 
@@ -1850,7 +1925,9 @@ function consultarSocio(id){
       function(){
 
         if(terminado){
+
           return;
+
         }
 
 
@@ -1890,10 +1967,15 @@ function consultarSocio(id){
 function cabeceraResultado(){
 
   return `
+
     <div class="resultado-header">
+
       <i class="fa-solid fa-user"></i>
+
       <span>RESULTADO</span>
+
     </div>
+
   `;
 
 }
@@ -1934,7 +2016,6 @@ function mostrarCargando(){
 }
 
 
-
 /* =====================================================
    MOSTRAR RESULTADO
 ===================================================== */
@@ -1946,6 +2027,7 @@ function mostrarResultado(respuesta){
     mostrarError(
       "NO SE RECIBIÓ RESPUESTA"
     );
+
 
     procesando = false;
 
@@ -1960,9 +2042,9 @@ function mostrarResultado(respuesta){
   );
 
 
-  /* =========================================
+  /* =================================================
      SOCIO NO ENCONTRADO
-  ========================================= */
+  ================================================= */
 
   if(!respuesta.encontrado){
 
@@ -1986,9 +2068,9 @@ function mostrarResultado(respuesta){
   }
 
 
-  /* =========================================
-     ESTADÍSTICAS
-  ========================================= */
+  /* =================================================
+     ESTADISTICAS
+  ================================================= */
 
   entradasHoy++;
 
@@ -2011,9 +2093,9 @@ function mostrarResultado(respuesta){
   actualizarEstadisticas();
 
 
-  /* =========================================
+  /* =================================================
      FOTO
-  ========================================= */
+  ================================================= */
 
   let fotoHTML = "";
 
@@ -2032,36 +2114,54 @@ function mostrarResultado(respuesta){
 
       '<div class="foto-container">' +
 
-        '<img class="foto" src="data:' +
-        tipo +
-        ';base64,' +
-        respuesta.foto.datos +
-        '" alt="Foto del socio">' +
+        '<img ' +
+
+          'class="foto" ' +
+
+          'src="data:' +
+          tipo +
+          ';base64,' +
+          respuesta.foto.datos +
+
+          '" ' +
+
+          'alt="Foto del socio"' +
+
+        '>' +
 
       '</div>';
 
   }
 
 
-  /* =========================================
-     ESTADO DE ACCESO
-  ========================================= */
+  /* =================================================
+     ESTADO ACCESO
+  ================================================= */
 
   const claseEstado =
+
     permitido
+
       ? "permitido"
+
       : "denegado";
 
 
   const icono =
+
     permitido
+
       ? "🟢"
+
       : "🔴";
 
 
   const texto =
+
     permitido
+
       ? "ACCESO PERMITIDO"
+
       : "ACCESO DENEGADO";
 
 
@@ -2074,6 +2174,7 @@ function mostrarResultado(respuesta){
       "Entrada registrada correctamente";
 
   }else{
+
 
     if(
       respuesta.estadoCertificado ===
@@ -2093,11 +2194,12 @@ function mostrarResultado(respuesta){
   }
 
 
-  /* =========================================
-     CERTIFICADO MÉDICO
-  ========================================= */
+  /* =================================================
+     CERTIFICADO MEDICO
+  ================================================= */
 
   const estadoCertificado =
+
     String(
       respuesta.estadoCertificado ||
       "CERTIFICADO PENDIENTE"
@@ -2105,39 +2207,44 @@ function mostrarResultado(respuesta){
 
 
   const certificadoPresentado =
+
     estadoCertificado ===
     "PRESENTADO";
 
 
   const claseCertificado =
+
     certificadoPresentado
+
       ? "certificado-presentado"
+
       : "certificado-pendiente";
 
 
   const iconoCertificado =
+
     certificadoPresentado
+
       ? "🟢"
+
       : "🔴";
 
 
-  /* =========================================
-     FECHAS DEL CERTIFICADO
-  ========================================= */
-
   const fechaCertificado =
+
     respuesta.fechaCertificado ||
     "—";
 
 
   const fechaLimiteCertificado =
+
     respuesta.fechaLimiteCertificado ||
     "—";
 
 
-  /* =========================================
-     MOSTRAR RESULTADO
-  ========================================= */
+  /* =================================================
+     RESULTADO FINAL
+  ================================================= */
 
   resultado.innerHTML =
 
@@ -2225,9 +2332,9 @@ function mostrarResultado(respuesta){
       '</div>' +
 
 
-      /* =====================================
-         CERTIFICADO MÉDICO
-      ===================================== */
+      /* =================================================
+         CERTIFICADO
+      ================================================= */
 
       '<div class="certificado ' +
         claseCertificado +
@@ -2244,7 +2351,9 @@ function mostrarResultado(respuesta){
         '<div class="certificado-estado">' +
 
           iconoCertificado +
+
           " " +
+
           escaparHTML(
             estadoCertificado
           ) +
@@ -2277,9 +2386,9 @@ function mostrarResultado(respuesta){
       '</div>' +
 
 
-      /* =====================================
+      /* =================================================
          ACCESO
-      ===================================== */
+      ================================================= */
 
       '<div class="acceso ' +
         claseEstado +
@@ -2312,6 +2421,7 @@ function mostrarResultado(respuesta){
   );
 
 }
+
 
 /* =====================================================
    ESCAPAR HTML
@@ -2397,13 +2507,6 @@ async function finalizarConsulta(){
   estadoCamara.style.color =
     "#00ed45";
 
-
-  if(!camaraActiva){
-
-    return;
-
-  }
-
 }
 
 
@@ -2440,6 +2543,7 @@ function actualizarEstadisticas(){
 function buscarManual(){
 
   const id =
+
     idManual.value
       .trim()
       .toUpperCase();
