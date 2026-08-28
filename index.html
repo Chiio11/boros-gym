@@ -1038,7 +1038,60 @@ body{
   }
 
 }
+/* =========================================
+   CERTIFICADO MÉDICO
+========================================= */
 
+.certificado {
+    margin-top: 14px;
+    padding: 14px 16px;
+    border: 1px solid #555;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.03);
+}
+
+.certificado-titulo {
+    font-size: 14px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.certificado-estado {
+    font-size: 18px;
+    font-weight: 900;
+    margin-bottom: 8px;
+}
+
+.certificado-presentado {
+    border-color: #00ed45;
+}
+
+.certificado-presentado .certificado-estado {
+    color: #00ed45;
+}
+
+.certificado-pendiente {
+    border-color: #ff1f3d;
+}
+
+.certificado-pendiente .certificado-estado {
+    color: #ff1f3d;
+}
+
+.certificado-fecha {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    font-size: 12px;
+    margin-top: 5px;
+    color: #ddd;
+}
+
+.certificado-fecha span {
+    font-weight: 700;
+}
+  
 </style>
 </head>
 
@@ -1881,6 +1934,7 @@ function mostrarCargando(){
 }
 
 
+
 /* =====================================================
    MOSTRAR RESULTADO
 ===================================================== */
@@ -1906,12 +1960,15 @@ function mostrarResultado(respuesta){
   );
 
 
+  /* =========================================
+     SOCIO NO ENCONTRADO
+  ========================================= */
+
   if(!respuesta.encontrado){
 
     entradasHoy++;
 
     denegadas++;
-
 
     actualizarEstadisticas();
 
@@ -1928,6 +1985,10 @@ function mostrarResultado(respuesta){
 
   }
 
+
+  /* =========================================
+     ESTADÍSTICAS
+  ========================================= */
 
   entradasHoy++;
 
@@ -1950,6 +2011,10 @@ function mostrarResultado(respuesta){
   actualizarEstadisticas();
 
 
+  /* =========================================
+     FOTO
+  ========================================= */
+
   let fotoHTML = "";
 
 
@@ -1968,19 +2033,19 @@ function mostrarResultado(respuesta){
       '<div class="foto-container">' +
 
         '<img class="foto" src="data:' +
-
         tipo +
-
         ';base64,' +
-
         respuesta.foto.datos +
-
         '" alt="Foto del socio">' +
 
       '</div>';
 
   }
 
+
+  /* =========================================
+     ESTADO DE ACCESO
+  ========================================= */
 
   const claseEstado =
     permitido
@@ -2000,24 +2065,100 @@ function mostrarResultado(respuesta){
       : "ACCESO DENEGADO";
 
 
-  const mensaje =
-    permitido
-      ? "Entrada registrada correctamente"
-      : "Membresía vencida";
+  let mensaje;
 
+
+  if(permitido){
+
+    mensaje =
+      "Entrada registrada correctamente";
+
+  }else{
+
+    if(
+      respuesta.estadoCertificado ===
+      "CERTIFICADO PENDIENTE"
+    ){
+
+      mensaje =
+        "Certificado médico pendiente";
+
+    }else{
+
+      mensaje =
+        "Membresía vencida";
+
+    }
+
+  }
+
+
+  /* =========================================
+     CERTIFICADO MÉDICO
+  ========================================= */
+
+  const estadoCertificado =
+    String(
+      respuesta.estadoCertificado ||
+      "CERTIFICADO PENDIENTE"
+    ).trim();
+
+
+  const certificadoPresentado =
+    estadoCertificado ===
+    "PRESENTADO";
+
+
+  const claseCertificado =
+    certificadoPresentado
+      ? "certificado-presentado"
+      : "certificado-pendiente";
+
+
+  const iconoCertificado =
+    certificadoPresentado
+      ? "🟢"
+      : "🔴";
+
+
+  /* =========================================
+     FECHAS DEL CERTIFICADO
+  ========================================= */
+
+  const fechaCertificado =
+    respuesta.fechaCertificado ||
+    "—";
+
+
+  const fechaLimiteCertificado =
+    respuesta.fechaLimiteCertificado ||
+    "—";
+
+
+  /* =========================================
+     MOSTRAR RESULTADO
+  ========================================= */
 
   resultado.innerHTML =
 
     '<div class="socio-card">' +
 
+
       cabeceraResultado() +
 
+
       '<div class="socio-contenido">' +
+
+
+        /* FOTO */
 
         fotoHTML +
 
 
+        /* DATOS */
+
         '<div class="datos">' +
+
 
           '<div class="nombre">' +
 
@@ -2080,13 +2221,68 @@ function mostrarResultado(respuesta){
 
         '</div>' +
 
+
       '</div>' +
 
 
+      /* =====================================
+         CERTIFICADO MÉDICO
+      ===================================== */
+
+      '<div class="certificado ' +
+        claseCertificado +
+      '">' +
+
+
+        '<div class="certificado-titulo">' +
+
+          'CERTIFICADO MÉDICO' +
+
+        '</div>' +
+
+
+        '<div class="certificado-estado">' +
+
+          iconoCertificado +
+          " " +
+          escaparHTML(
+            estadoCertificado
+          ) +
+
+        '</div>' +
+
+
+        '<div class="certificado-fecha">' +
+
+          '<span>Fecha:</span>' +
+
+          escaparHTML(
+            fechaCertificado
+          ) +
+
+        '</div>' +
+
+
+        '<div class="certificado-fecha">' +
+
+          '<span>Válido hasta:</span>' +
+
+          escaparHTML(
+            fechaLimiteCertificado
+          ) +
+
+        '</div>' +
+
+
+      '</div>' +
+
+
+      /* =====================================
+         ACCESO
+      ===================================== */
+
       '<div class="acceso ' +
-
         claseEstado +
-
       '">' +
 
         icono +
@@ -2108,12 +2304,14 @@ function mostrarResultado(respuesta){
 
 
   setTimeout(
+
     finalizarConsulta,
+
     5000
+
   );
 
 }
-
 
 /* =====================================================
    ESCAPAR HTML
