@@ -1,17 +1,36 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
 
 <title>Boros Gym - Control de Acceso</title>
 
-<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+
+<!-- =====================================================
+     LIBRERIA QR
+===================================================== -->
+
+<script
+  src="https://unpkg.com/html5-qrcode"
+  type="text/javascript">
+</script>
+
+
+<!-- =====================================================
+     ICONOS
+===================================================== -->
 
 <link
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
 >
+
 
 <style>
 
@@ -25,21 +44,33 @@
 
 html,
 body{
+
   margin:0;
   padding:0;
+
   background:#050505;
+
   color:#fff;
-  font-family:Arial,Helvetica,sans-serif;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
 }
 
 body{
+
   min-height:100vh;
 }
 
 .contenedor{
+
   width:100%;
+
   max-width:1250px;
+
   margin:auto;
+
   padding:18px 18px 35px;
 }
 
@@ -49,18 +80,28 @@ body{
 ===================================================== */
 
 .logo{
+
   width:100%;
+
   text-align:center;
-  margin:0 auto 10px;
+
+  margin:0 auto 8px;
 }
 
 .logo img{
+
   display:block;
+
   width:100%;
+
   max-width:500px;
-  max-height:260px;
+
+  max-height:250px;
+
   height:auto;
+
   object-fit:contain;
+
   margin:auto;
 }
 
@@ -70,28 +111,33 @@ body{
 ===================================================== */
 
 .titulo{
+
   width:100%;
 
   display:flex;
+
   align-items:center;
+
   justify-content:center;
 
   gap:14px;
 
   text-align:center;
 
-  font-size:clamp(24px,3.2vw,36px);
+  font-size:clamp(23px,3vw,34px);
+
   font-weight:900;
 
   letter-spacing:1px;
 
-  margin:5px 0 22px;
+  margin:4px 0 20px;
 
   white-space:nowrap;
 }
 
 .titulo::before,
 .titulo::after{
+
   content:"";
 
   height:2px;
@@ -101,22 +147,22 @@ body{
   box-shadow:
     0 0 8px rgba(255,0,0,.45);
 
-  flex:1 1 80px;
+  flex:1 1 100px;
 
-  max-width:105px;
+  max-width:180px;
 }
 
 
 /* =====================================================
    PANELES
+   AHORA UNO ARRIBA DEL OTRO
 ===================================================== */
 
 .paneles{
+
   display:grid;
 
-  grid-template-columns:
-    minmax(0,1fr)
-    minmax(0,1fr);
+  grid-template-columns:1fr;
 
   gap:18px;
 
@@ -127,7 +173,7 @@ body{
 
 
 /* =====================================================
-   PANEL ESCANER
+   ESCANER
 ===================================================== */
 
 .scanner-card{
@@ -138,7 +184,7 @@ body{
 
   border-radius:18px;
 
-  padding:18px;
+  padding:20px;
 
   background:
     linear-gradient(
@@ -169,13 +215,13 @@ body{
 
   padding-bottom:12px;
 
-  margin-bottom:14px;
+  margin-bottom:15px;
 
   border-bottom:1px solid #421010;
 
   color:#ff2020;
 
-  font-size:clamp(20px,3vw,30px);
+  font-size:clamp(22px,3vw,30px);
 
   font-weight:900;
 
@@ -183,6 +229,7 @@ body{
 }
 
 .scanner-titulo i{
+
   color:#ff2020;
 }
 
@@ -192,13 +239,14 @@ body{
 ===================================================== */
 
 #reader{
+
   width:100%;
 
-  max-width:600px;
+  max-width:760px;
 
   margin:auto;
 
-  border-radius:14px;
+  border-radius:15px;
 
   overflow:hidden;
 
@@ -206,13 +254,16 @@ body{
 }
 
 #reader video{
+
   width:100%!important;
+
   height:auto!important;
 
-  border-radius:12px;
+  border-radius:13px;
 }
 
 #reader img{
+
   max-width:100%;
 }
 
@@ -225,9 +276,9 @@ body{
 
   text-align:center;
 
-  margin-top:14px;
+  margin-top:15px;
 
-  font-size:clamp(16px,2.5vw,23px);
+  font-size:clamp(17px,2.5vw,23px);
 
   font-weight:900;
 
@@ -252,7 +303,7 @@ body{
 
 .controles{
 
-  margin-top:16px;
+  margin-top:17px;
 
   display:flex;
 
@@ -269,7 +320,7 @@ body{
 
   border-radius:9px;
 
-  padding:11px 17px;
+  padding:11px 18px;
 
   font-size:14px;
 
@@ -305,9 +356,9 @@ body{
 
 .manual{
 
-  margin-top:17px;
+  margin-top:18px;
 
-  padding-top:14px;
+  padding-top:15px;
 
   border-top:1px solid #333;
 }
@@ -328,6 +379,10 @@ body{
   display:flex;
 
   gap:7px;
+
+  max-width:760px;
+
+  margin:auto;
 }
 
 #idManual{
@@ -344,9 +399,9 @@ body{
 
   border-radius:9px;
 
-  padding:11px;
+  padding:12px;
 
-  font-size:15px;
+  font-size:16px;
 
   text-transform:uppercase;
 }
@@ -361,7 +416,7 @@ body{
 
   border-radius:9px;
 
-  padding:0 17px;
+  padding:0 20px;
 
   font-size:14px;
 
@@ -379,18 +434,12 @@ body{
 
   width:100%;
 
-  height:100%;
-
   min-width:0;
 }
 
 .socio-card{
 
   width:100%;
-
-  height:100%;
-
-  min-height:100%;
 
   background:
     linear-gradient(
@@ -403,7 +452,7 @@ body{
 
   border-radius:18px;
 
-  padding:18px;
+  padding:20px;
 
   box-shadow:
     0 0 20px rgba(255,0,0,.10),
@@ -427,13 +476,13 @@ body{
 
   padding-bottom:12px;
 
-  margin-bottom:14px;
+  margin-bottom:18px;
 
   border-bottom:1px solid #421010;
 
   color:#ff2020;
 
-  font-size:clamp(20px,3vw,30px);
+  font-size:clamp(22px,3vw,30px);
 
   font-weight:900;
 
@@ -441,6 +490,7 @@ body{
 }
 
 .resultado-header i{
+
   color:#ff2020;
 }
 
@@ -451,7 +501,7 @@ body{
 
 .resultado-inicial{
 
-  min-height:300px;
+  min-height:280px;
 
   display:flex;
 
@@ -466,7 +516,7 @@ body{
 
 .resultado-inicial i{
 
-  font-size:68px;
+  font-size:70px;
 
   color:#555;
 
@@ -475,7 +525,7 @@ body{
 
 .resultado-titulo{
 
-  font-size:clamp(22px,3vw,32px);
+  font-size:clamp(23px,3vw,32px);
 
   font-weight:900;
 
@@ -501,24 +551,30 @@ body{
   display:grid;
 
   grid-template-columns:
-    215px
+    310px
     minmax(0,1fr);
 
-  align-items:center;
+  align-items:start;
 
-  gap:20px;
+  gap:28px;
+
+  width:100%;
 }
 
 
 /* =====================================================
-   FOTO
+   FOTO GRANDE
 ===================================================== */
 
 .foto-container{
 
-  width:215px;
+  width:310px;
+
+  max-width:100%;
 
   flex-shrink:0;
+
+  margin:auto;
 }
 
 .foto{
@@ -529,11 +585,14 @@ body{
 
   object-fit:cover;
 
-  border-radius:15px;
+  border-radius:16px;
 
   border:2px solid #e51b23;
 
   display:block;
+
+  box-shadow:
+    0 0 15px rgba(255,0,0,.12);
 }
 
 
@@ -550,11 +609,11 @@ body{
 
 .nombre{
 
-  font-size:clamp(23px,2.8vw,34px);
+  font-size:clamp(28px,3vw,42px);
 
   font-weight:900;
 
-  margin-bottom:11px;
+  margin-bottom:12px;
 
   line-height:1.05;
 }
@@ -567,11 +626,11 @@ body{
 
   gap:14px;
 
-  padding:9px 0;
+  padding:10px 0;
 
   border-bottom:1px solid #292929;
 
-  min-height:58px;
+  min-height:62px;
 }
 
 .dato-icon{
@@ -584,7 +643,7 @@ body{
 
   color:#ff2020;
 
-  font-size:32px;
+  font-size:30px;
 }
 
 .dato-info{
@@ -612,7 +671,7 @@ body{
 
   letter-spacing:1.5px;
 
-  margin-bottom:3px;
+  margin-bottom:4px;
 
   text-transform:uppercase;
 }
@@ -623,7 +682,7 @@ body{
 
   color:#fff;
 
-  font-size:20px;
+  font-size:21px;
 
   font-weight:800;
 
@@ -639,7 +698,7 @@ body{
 
   display:block;
 
-  padding:9px 0 11px;
+  padding:9px 0 12px;
 }
 
 .dato-id .dato-info{
@@ -661,11 +720,11 @@ body{
 
   justify-content:center;
 
-  min-width:100px;
+  min-width:105px;
 
-  height:50px;
+  height:52px;
 
-  padding:0 15px;
+  padding:0 17px;
 
   background:#ed1c24;
 
@@ -673,7 +732,7 @@ body{
 
   border-radius:10px;
 
-  font-size:25px;
+  font-size:26px;
 
   font-weight:900;
 
@@ -690,9 +749,9 @@ body{
 
 .certificado{
 
-  margin-top:14px;
+  margin-top:15px;
 
-  padding:12px 14px;
+  padding:13px 15px;
 
   border:2px solid #555;
 
@@ -703,18 +762,20 @@ body{
 
 .certificado-titulo{
 
-  font-size:12px;
+  color:#ff2020;
+
+  font-size:13px;
 
   font-weight:900;
 
-  letter-spacing:.5px;
+  letter-spacing:.7px;
 
   margin-bottom:7px;
 }
 
 .certificado-estado{
 
-  font-size:16px;
+  font-size:17px;
 
   font-weight:900;
 
@@ -774,15 +835,15 @@ body{
 
 .acceso{
 
-  margin-top:14px;
+  margin-top:15px;
 
-  padding:14px;
+  padding:15px;
 
   border-radius:13px;
 
   text-align:center;
 
-  font-size:clamp(23px,3.2vw,32px);
+  font-size:clamp(24px,3vw,34px);
 
   font-weight:900;
 }
@@ -825,7 +886,7 @@ body{
 
 .error{
 
-  min-height:300px;
+  min-height:260px;
 
   background:#080000;
 
@@ -970,7 +1031,7 @@ body{
 
   color:#ff2020;
 
-  font-size:20px;
+  font-size:21px;
 
   font-weight:900;
 
@@ -991,10 +1052,12 @@ body{
     padding:10px 10px 25px;
   }
 
+
   .logo{
 
     margin-bottom:5px;
   }
+
 
   .logo img{
 
@@ -1005,6 +1068,7 @@ body{
     max-height:240px;
   }
 
+
   .titulo{
 
     font-size:23px;
@@ -1014,6 +1078,7 @@ body{
     margin:5px 0 15px;
   }
 
+
   .titulo::before,
   .titulo::after{
 
@@ -1022,14 +1087,18 @@ body{
     max-width:70px;
   }
 
+
+  /* ================================================
+     ESCANER ARRIBA
+  ================================================= */
+
   .paneles{
 
-    grid-template-columns:
-      minmax(0,1fr)
-      minmax(0,1fr);
+    grid-template-columns:1fr;
 
-    gap:7px;
+    gap:10px;
   }
+
 
   .scanner-card,
   .socio-card{
@@ -1038,6 +1107,7 @@ body{
 
     border-radius:15px;
   }
+
 
   .scanner-titulo,
   .resultado-header{
@@ -1051,10 +1121,12 @@ body{
     margin-bottom:8px;
   }
 
+
   .scanner-titulo i{
 
     font-size:17px;
   }
+
 
   .estado{
 
@@ -1065,6 +1137,7 @@ body{
     margin-top:9px;
   }
 
+
   .ayuda{
 
     font-size:9px;
@@ -1072,12 +1145,14 @@ body{
     line-height:1.3;
   }
 
+
   .controles{
 
     gap:4px;
 
     margin-top:9px;
   }
+
 
   .boton{
 
@@ -1088,12 +1163,14 @@ body{
     border-radius:7px;
   }
 
+
   .manual{
 
     margin-top:9px;
 
     padding-top:9px;
   }
+
 
   .manual-titulo{
 
@@ -1104,10 +1181,12 @@ body{
     margin-bottom:6px;
   }
 
+
   .manual-contenedor{
 
     gap:4px;
   }
+
 
   #idManual{
 
@@ -1116,6 +1195,7 @@ body{
     font-size:10px;
   }
 
+
   #buscarManual{
 
     padding:0 7px;
@@ -1123,10 +1203,16 @@ body{
     font-size:9px;
   }
 
+
+  /* ================================================
+     RESULTADO
+  ================================================= */
+
   .resultado-inicial{
 
-    min-height:100%;
+    min-height:230px;
   }
+
 
   .resultado-inicial i{
 
@@ -1135,63 +1221,76 @@ body{
     margin-bottom:15px;
   }
 
+
   .resultado-titulo{
 
     font-size:18px;
   }
+
 
   .resultado-subtitulo{
 
     font-size:8px;
   }
 
+
+  /* ================================================
+     FOTO ARRIBA EN CELULAR
+  ================================================= */
+
   .socio-contenido{
 
     grid-template-columns:1fr;
 
-    gap:8px;
+    gap:10px;
   }
+
 
   .foto-container{
 
-    width:88%;
+    width:85%;
 
-    max-width:155px;
+    max-width:260px;
 
     margin:auto;
   }
+
 
   .datos{
 
     width:100%;
   }
 
+
   .nombre{
 
     text-align:center;
 
-    font-size:18px;
+    font-size:20px;
 
-    margin-bottom:6px;
+    margin-bottom:7px;
   }
+
 
   .dato{
 
     gap:6px;
 
-    padding:5px 0;
+    padding:6px 0;
 
-    min-height:40px;
+    min-height:42px;
   }
+
 
   .dato-icon{
 
-    width:25px;
+    width:27px;
 
-    min-width:25px;
+    min-width:27px;
 
-    font-size:18px;
+    font-size:19px;
   }
+
 
   .dato-label{
 
@@ -1202,10 +1301,18 @@ body{
     margin-bottom:2px;
   }
 
+
   .dato-valor{
 
     font-size:13px;
   }
+
+
+  .dato-id{
+
+    padding:6px 0 8px;
+  }
+
 
   .dato-id .dato-info{
 
@@ -1214,18 +1321,20 @@ body{
     gap:4px;
   }
 
+
   .id-badge{
 
     min-width:70px;
 
-    height:33px;
+    height:34px;
 
-    padding:0 7px;
+    padding:0 8px;
 
-    font-size:16px;
+    font-size:17px;
 
     border-radius:7px;
   }
+
 
   .certificado{
 
@@ -1234,12 +1343,14 @@ body{
     padding:8px;
   }
 
+
   .certificado-titulo{
 
     font-size:8px;
 
     margin-bottom:4px;
   }
+
 
   .certificado-estado{
 
@@ -1248,10 +1359,12 @@ body{
     margin-bottom:4px;
   }
 
+
   .certificado-fecha{
 
     font-size:7px;
   }
+
 
   .acceso{
 
@@ -1259,8 +1372,9 @@ body{
 
     padding:9px 4px;
 
-    font-size:16px;
+    font-size:17px;
   }
+
 
   .acceso small{
 
@@ -1269,12 +1383,18 @@ body{
     margin-top:4px;
   }
 
+
+  /* ================================================
+     ESTADISTICAS
+  ================================================= */
+
   .estadisticas{
 
     gap:5px;
 
     margin-top:9px;
   }
+
 
   .estadistica{
 
@@ -1287,10 +1407,12 @@ body{
     border-radius:9px;
   }
 
+
   .icono-estadistica{
 
     font-size:24px;
   }
+
 
   .estadistica-titulo{
 
@@ -1299,10 +1421,16 @@ body{
     letter-spacing:.4px;
   }
 
+
   .numero{
 
     font-size:25px;
   }
+
+
+  /* ================================================
+     FOOTER
+  ================================================= */
 
   .footer{
 
@@ -1312,6 +1440,7 @@ body{
 
     margin-top:12px;
   }
+
 }
 
 
@@ -1326,16 +1455,19 @@ body{
     font-size:21px;
   }
 
+
   .scanner-titulo,
   .resultado-header{
 
     font-size:16px;
   }
 
+
   .estado{
 
     font-size:13px;
   }
+
 
   .boton{
 
@@ -1344,32 +1476,39 @@ body{
     padding:7px 4px;
   }
 
+
   .estadistica{
 
     min-height:63px;
   }
+
 
   .icono-estadistica{
 
     font-size:21px;
   }
 
+
   .numero{
 
     font-size:22px;
   }
 
+
   .footer{
 
     font-size:10px;
   }
+
 }
 
 </style>
+
 </head>
 
 
 <body>
+
 
 <div class="contenedor">
 
@@ -1401,16 +1540,19 @@ body{
 
 <!-- =====================================================
      PANELES
+     ESCANER ARRIBA
+     RESULTADO ABAJO
 ===================================================== -->
 
 <div class="paneles">
 
 
 <!-- =====================================================
-     ESCANER
+     ESCANER QR
 ===================================================== -->
 
 <div class="scanner-card">
+
 
   <div class="scanner-titulo">
 
@@ -1443,6 +1585,7 @@ body{
 
   <div class="controles">
 
+
     <button
       class="boton"
       id="abrirCamara"
@@ -1466,10 +1609,16 @@ body{
 
     </button>
 
+
   </div>
 
 
+  <!-- =================================================
+       BUSQUEDA MANUAL
+  ================================================== -->
+
   <div class="manual">
+
 
     <div class="manual-titulo">
 
@@ -1481,6 +1630,7 @@ body{
 
 
     <div class="manual-contenedor">
+
 
       <input
         id="idManual"
@@ -1498,9 +1648,12 @@ body{
 
       </button>
 
+
     </div>
 
+
   </div>
+
 
 </div>
 
@@ -1511,7 +1664,9 @@ body{
 
 <div id="resultado">
 
+
   <div class="socio-card">
+
 
     <div class="resultado-header">
 
@@ -1524,7 +1679,9 @@ body{
 
     <div class="resultado-inicial">
 
+
       <i class="fa-solid fa-circle-user"></i>
+
 
       <div class="resultado-titulo">
 
@@ -1543,9 +1700,12 @@ body{
 
       </div>
 
+
     </div>
 
+
   </div>
+
 
 </div>
 
@@ -1560,19 +1720,25 @@ body{
 <div class="estadisticas">
 
 
+  <!-- ENTRADAS -->
+
   <div class="estadistica">
+
 
     <i
       class="fa-solid fa-arrow-right-to-bracket icono-estadistica"
     ></i>
 
+
     <div class="estadistica-info">
+
 
       <div class="estadistica-titulo">
 
         ENTRADAS HOY
 
       </div>
+
 
       <span
         id="entradasHoy"
@@ -1583,24 +1749,32 @@ body{
 
       </span>
 
+
     </div>
+
 
   </div>
 
 
+  <!-- PERMITIDAS -->
+
   <div class="estadistica">
+
 
     <i
       class="fa-solid fa-user-check icono-estadistica verde"
     ></i>
 
+
     <div class="estadistica-info">
+
 
       <div class="estadistica-titulo">
 
         PERMITIDAS
 
       </div>
+
 
       <span
         id="permitidas"
@@ -1611,24 +1785,32 @@ body{
 
       </span>
 
+
     </div>
+
 
   </div>
 
 
+  <!-- DENEGADAS -->
+
   <div class="estadistica">
+
 
     <i
       class="fa-solid fa-user-xmark icono-estadistica rojo"
     ></i>
 
+
     <div class="estadistica-info">
+
 
       <div class="estadistica-titulo">
 
         DENEGADAS
 
       </div>
+
 
       <span
         id="denegadas"
@@ -1639,7 +1821,9 @@ body{
 
       </span>
 
+
     </div>
+
 
   </div>
 
@@ -1662,6 +1846,7 @@ body{
 
 
 <script>
+
 
 /* =====================================================
    CONFIGURACION APPS SCRIPT
@@ -1693,13 +1878,19 @@ let denegadas = 0;
 ===================================================== */
 
 const estadoCamara =
-document.getElementById("estadoCamara");
+document.getElementById(
+  "estadoCamara"
+);
 
 const resultado =
-document.getElementById("resultado");
+document.getElementById(
+  "resultado"
+);
 
 const idManual =
-document.getElementById("idManual");
+document.getElementById(
+  "idManual"
+);
 
 
 /* =====================================================
@@ -1708,14 +1899,17 @@ document.getElementById("idManual");
 
 async function iniciarCamara(){
 
+
   if(camaraActiva){
 
     return;
 
   }
 
+
   estadoCamara.innerText =
     "🟡 SOLICITANDO CÁMARA...";
+
 
   estadoCamara.style.color =
     "#ffd000";
@@ -1723,15 +1917,22 @@ async function iniciarCamara(){
 
   try{
 
+
     if(scanner){
 
       try{
+
         await scanner.stop();
+
       }catch(e){}
 
+
       try{
+
         scanner.clear();
+
       }catch(e){}
+
 
       scanner = null;
 
@@ -1739,7 +1940,9 @@ async function iniciarCamara(){
 
 
     scanner =
-      new Html5Qrcode("reader");
+      new Html5Qrcode(
+        "reader"
+      );
 
 
     await scanner.start(
@@ -1748,27 +1951,44 @@ async function iniciarCamara(){
         facingMode:"environment"
       },
 
+
       {
+
         fps:10,
 
-        qrbox:function(width,height){
+
+        qrbox:function(
+          width,
+          height
+        ){
 
           const size =
             Math.floor(
-              Math.min(width,height)*0.75
+              Math.min(
+                width,
+                height
+              ) * .75
             );
 
+
           return{
+
             width:size,
+
             height:size
+
           };
 
         },
 
+
         aspectRatio:1.0
+
       },
 
+
       function(decodedText){
+
 
         if(procesando){
 
@@ -1776,7 +1996,9 @@ async function iniciarCamara(){
 
         }
 
+
         procesando = true;
+
 
         console.log(
           "📷 QR DETECTADO:",
@@ -1787,13 +2009,18 @@ async function iniciarCamara(){
         estadoCamara.innerText =
           "🟡 QR DETECTADO — VERIFICANDO...";
 
+
         estadoCamara.style.color =
           "#ffd000";
 
 
-        procesarQR(decodedText);
+        procesarQR(
+          decodedText
+        );
+
 
       },
+
 
       function(errorMessage){
 
@@ -1814,11 +2041,13 @@ async function iniciarCamara(){
     estadoCamara.innerText =
       "🟢 LISTO PARA ESCANEAR";
 
+
     estadoCamara.style.color =
       "#00ed45";
 
 
   }catch(error){
+
 
     console.error(
       "ERROR CAMARA:",
@@ -1831,6 +2060,7 @@ async function iniciarCamara(){
 
     estadoCamara.innerText =
       "🔴 NO SE PUDO ACCEDER A LA CÁMARA";
+
 
     estadoCamara.style.color =
       "#ff3030";
@@ -1854,6 +2084,7 @@ async function iniciarCamara(){
 
 async function detenerCamara(){
 
+
   if(!scanner){
 
     return;
@@ -1863,15 +2094,19 @@ async function detenerCamara(){
 
   try{
 
+
     if(camaraActiva){
 
       await scanner.stop();
 
     }
 
+
     scanner.clear();
 
+
   }catch(e){
+
 
     console.log(
       "Error deteniendo cámara:",
@@ -1889,6 +2124,7 @@ async function detenerCamara(){
   estadoCamara.innerText =
     "⚪ CÁMARA DETENIDA";
 
+
   estadoCamara.style.color =
     "#aaa";
 
@@ -1899,10 +2135,15 @@ async function detenerCamara(){
    PROCESAR QR
 ===================================================== */
 
-function procesarQR(textoQR){
+function procesarQR(
+  textoQR
+){
+
 
   let id =
-    String(textoQR).trim();
+    String(
+      textoQR
+    ).trim();
 
 
   console.log(
@@ -1913,17 +2154,26 @@ function procesarQR(textoQR){
 
   try{
 
+
     if(
-      id.startsWith("http://") ||
-      id.startsWith("https://")
+      id.startsWith(
+        "http://"
+      ) ||
+
+      id.startsWith(
+        "https://"
+      )
     ){
+
 
       const url =
         new URL(id);
 
 
       const parametro =
-        url.searchParams.get("id");
+        url.searchParams.get(
+          "id"
+        );
 
 
       if(parametro){
@@ -1934,7 +2184,9 @@ function procesarQR(textoQR){
 
     }
 
+
   }catch(error){
+
 
     console.log(
       "El QR no contiene una URL:",
@@ -1945,7 +2197,9 @@ function procesarQR(textoQR){
 
 
   id =
-    id.trim().toUpperCase();
+    id
+      .trim()
+      .toUpperCase();
 
 
   console.log(
@@ -1956,6 +2210,7 @@ function procesarQR(textoQR){
 
   if(!id){
 
+
     mostrarError(
       "NO SE PUDO OBTENER EL ID DEL QR"
     );
@@ -1963,12 +2218,15 @@ function procesarQR(textoQR){
 
     procesando = false;
 
+
     return;
 
   }
 
 
-  consultarSocio(id);
+  consultarSocio(
+    id
+  );
 
 }
 
@@ -1977,9 +2235,13 @@ function procesarQR(textoQR){
    CONSULTAR SOCIO
 ===================================================== */
 
-function consultarSocio(id){
+function consultarSocio(
+  id
+){
+
 
   if(!id){
+
 
     mostrarError(
       "INGRESÁ UN ID DE SOCIO"
@@ -1987,6 +2249,7 @@ function consultarSocio(id){
 
 
     procesando = false;
+
 
     return;
 
@@ -2012,6 +2275,7 @@ function consultarSocio(id){
 
   function limpiar(){
 
+
     if(terminado){
 
       return;
@@ -2022,20 +2286,29 @@ function consultarSocio(id){
     terminado = true;
 
 
-    clearTimeout(timeout);
+    clearTimeout(
+      timeout
+    );
 
 
     try{
 
-      delete window[callbackName];
+      delete window[
+        callbackName
+      ];
 
     }catch(e){}
 
   }
 
 
-  window[callbackName] =
-    function(respuesta){
+  window[
+    callbackName
+  ] =
+    function(
+      respuesta
+    ){
+
 
       console.log(
         "✅ RESPUESTA APPS SCRIPT:",
@@ -2048,11 +2321,14 @@ function consultarSocio(id){
 
       try{
 
+
         mostrarResultado(
           respuesta
         );
 
+
       }catch(error){
+
 
         console.error(
           "ERROR PROCESANDO RESPUESTA:",
@@ -2073,16 +2349,26 @@ function consultarSocio(id){
 
 
   const script =
-    document.createElement("script");
+    document.createElement(
+      "script"
+    );
 
 
   const url =
     API_URL +
+
     "?api=1" +
+
     "&id=" +
-    encodeURIComponent(id) +
+    encodeURIComponent(
+      id
+    ) +
+
     "&callback=" +
-    encodeURIComponent(callbackName) +
+    encodeURIComponent(
+      callbackName
+    ) +
+
     "&t=" +
     Date.now();
 
@@ -2092,8 +2378,15 @@ function consultarSocio(id){
   script.async = true;
 
 
+  console.log(
+    "URL APPS SCRIPT:",
+    url
+  );
+
+
   script.onerror =
     function(){
+
 
       console.error(
         "❌ ERROR CARGANDO APPS SCRIPT:",
@@ -2119,6 +2412,7 @@ function consultarSocio(id){
 
       function(){
 
+
         if(terminado){
 
           return;
@@ -2135,6 +2429,7 @@ function consultarSocio(id){
 
 
         procesando = false;
+
 
       },
 
@@ -2155,6 +2450,7 @@ function consultarSocio(id){
 ===================================================== */
 
 function cabeceraResultado(){
+
 
   return `
 
@@ -2177,15 +2473,20 @@ function cabeceraResultado(){
 
 function mostrarCargando(){
 
+
   resultado.innerHTML =
 
     '<div class="socio-card">' +
 
+
       cabeceraResultado() +
+
 
       '<div class="resultado-inicial">' +
 
+
         '<i class="fa-solid fa-spinner fa-spin"></i>' +
+
 
         '<div class="resultado-titulo">' +
 
@@ -2193,13 +2494,16 @@ function mostrarCargando(){
 
         '</div>' +
 
+
         '<div class="resultado-subtitulo">' +
 
           'Consultando membresía' +
 
         '</div>' +
 
+
       '</div>' +
+
 
     '</div>';
 
@@ -2210,9 +2514,13 @@ function mostrarCargando(){
    MOSTRAR RESULTADO
 ===================================================== */
 
-function mostrarResultado(respuesta){
+function mostrarResultado(
+  respuesta
+){
+
 
   if(!respuesta){
+
 
     mostrarError(
       "NO SE RECIBIÓ RESPUESTA"
@@ -2220,6 +2528,7 @@ function mostrarResultado(respuesta){
 
 
     procesando = false;
+
 
     return;
 
@@ -2232,33 +2541,49 @@ function mostrarResultado(respuesta){
   );
 
 
+  /* ===================================================
+     SOCIO NO ENCONTRADO
+  =================================================== */
+
   if(!respuesta.encontrado){
+
 
     entradasHoy++;
 
     denegadas++;
 
+
     actualizarEstadisticas();
 
 
     mostrarError(
+
       respuesta.mensaje ||
+
       "SOCIO NO ENCONTRADO"
+
     );
 
 
     finalizarConsulta();
+
 
     return;
 
   }
 
 
+  /* ===================================================
+     ESTADISTICAS
+  =================================================== */
+
   entradasHoy++;
 
 
   const permitido =
-    Boolean(respuesta.permitido);
+    Boolean(
+      respuesta.permitido
+    );
 
 
   if(permitido){
@@ -2275,9 +2600,9 @@ function mostrarResultado(respuesta){
   actualizarEstadisticas();
 
 
-  /* =================================================
+  /* ===================================================
      FOTO
-  ================================================= */
+  =================================================== */
 
   let fotoHTML = "";
 
@@ -2286,6 +2611,7 @@ function mostrarResultado(respuesta){
     respuesta.foto &&
     respuesta.foto.datos
   ){
+
 
     const tipo =
       respuesta.foto.tipo ||
@@ -2301,8 +2627,11 @@ function mostrarResultado(respuesta){
           'class="foto" ' +
 
           'src="data:' +
+
           tipo +
+
           ';base64,' +
+
           respuesta.foto.datos +
 
           '" ' +
@@ -2316,28 +2645,34 @@ function mostrarResultado(respuesta){
   }
 
 
-  /* =================================================
+  /* ===================================================
      ESTADO ACCESO
-  ================================================= */
+  =================================================== */
 
   const claseEstado =
 
     permitido
+
       ? "permitido"
+
       : "denegado";
 
 
   const iconoAcceso =
 
     permitido
+
       ? "🟢"
+
       : "🔴";
 
 
   const textoAcceso =
 
     permitido
+
       ? "ACCESO PERMITIDO"
+
       : "ACCESO DENEGADO";
 
 
@@ -2346,20 +2681,26 @@ function mostrarResultado(respuesta){
 
   if(permitido){
 
+
     mensajeAcceso =
       "Entrada registrada correctamente";
 
+
   }else{
+
 
     if(
       respuesta.estadoCertificado ===
       "CERTIFICADO PENDIENTE"
     ){
 
+
       mensajeAcceso =
         "Certificado médico pendiente";
 
+
     }else{
+
 
       mensajeAcceso =
         "Membresía vencida";
@@ -2369,15 +2710,18 @@ function mostrarResultado(respuesta){
   }
 
 
-  /* =================================================
+  /* ===================================================
      CERTIFICADO
-  ================================================= */
+  =================================================== */
 
   const estadoCertificado =
 
     String(
+
       respuesta.estadoCertificado ||
+
       "CERTIFICADO PENDIENTE"
+
     ).trim();
 
 
@@ -2390,46 +2734,60 @@ function mostrarResultado(respuesta){
   const claseCertificado =
 
     certificadoPresentado
+
       ? "certificado-presentado"
+
       : "certificado-pendiente";
 
 
   const iconoCertificado =
 
     certificadoPresentado
+
       ? "🟢"
+
       : "🔴";
 
 
   const fechaCertificado =
 
     respuesta.fechaCertificado ||
+
     "—";
 
 
   const fechaLimiteCertificado =
 
     respuesta.fechaLimiteCertificado ||
+
     "—";
 
 
-  /* =================================================
-     RESULTADO
-  ================================================= */
+  /* ===================================================
+     RESULTADO FINAL
+  =================================================== */
 
   resultado.innerHTML =
 
+
     '<div class="socio-card">' +
+
 
       cabeceraResultado() +
 
+
       '<div class="socio-contenido">' +
+
 
         fotoHTML +
 
+
         '<div class="datos">' +
 
-          /* NOMBRE */
+
+          /* =========================================
+             NOMBRE
+          ========================================== */
 
           '<div class="nombre">' +
 
@@ -2446,17 +2804,22 @@ function mostrarResultado(respuesta){
           '</div>' +
 
 
-          /* ID */
+          /* =========================================
+             ID SOCIO
+          ========================================== */
 
           '<div class="dato dato-id">' +
 
+
             '<div class="dato-info">' +
+
 
               '<span class="dato-label">' +
 
                 'ID SOCIO' +
 
               '</span>' +
+
 
               '<div class="id-badge">' +
 
@@ -2466,24 +2829,32 @@ function mostrarResultado(respuesta){
 
               '</div>' +
 
+
             '</div>' +
+
 
           '</div>' +
 
 
-          /* PLAN */
+          /* =========================================
+             PLAN
+          ========================================== */
 
           '<div class="dato">' +
 
+
             '<i class="fa-solid fa-calendar-days dato-icon"></i>' +
 
+
             '<div class="dato-info">' +
+
 
               '<span class="dato-label">' +
 
                 'PLAN' +
 
               '</span>' +
+
 
               '<span class="dato-valor">' +
 
@@ -2493,24 +2864,32 @@ function mostrarResultado(respuesta){
 
               '</span>' +
 
+
             '</div>' +
+
 
           '</div>' +
 
 
-          /* VENCIMIENTO */
+          /* =========================================
+             VENCIMIENTO
+          ========================================== */
 
           '<div class="dato">' +
 
+
             '<i class="fa-solid fa-calendar-check dato-icon"></i>' +
 
+
             '<div class="dato-info">' +
+
 
               '<span class="dato-label">' +
 
                 'VENCIMIENTO' +
 
               '</span>' +
+
 
               '<span class="dato-valor">' +
 
@@ -2520,24 +2899,32 @@ function mostrarResultado(respuesta){
 
               '</span>' +
 
+
             '</div>' +
+
 
           '</div>' +
 
 
-          /* DNI */
+          /* =========================================
+             DNI
+          ========================================== */
 
           '<div class="dato">' +
 
+
             '<i class="fa-solid fa-address-card dato-icon"></i>' +
 
+
             '<div class="dato-info">' +
+
 
               '<span class="dato-label">' +
 
                 'DNI' +
 
               '</span>' +
+
 
               '<span class="dato-valor">' +
 
@@ -2547,12 +2934,16 @@ function mostrarResultado(respuesta){
 
               '</span>' +
 
+
             '</div>' +
+
 
           '</div>' +
 
 
-          /* CERTIFICADO */
+          /* =========================================
+             CERTIFICADO MEDICO
+          ========================================== */
 
           '<div class="certificado ' +
 
@@ -2560,11 +2951,13 @@ function mostrarResultado(respuesta){
 
           '">' +
 
+
             '<div class="certificado-titulo">' +
 
               'CERTIFICADO MÉDICO' +
 
             '</div>' +
+
 
             '<div class="certificado-estado">' +
 
@@ -2578,6 +2971,7 @@ function mostrarResultado(respuesta){
 
             '</div>' +
 
+
             '<div class="certificado-fecha">' +
 
               '<span>Fecha:</span>' +
@@ -2587,6 +2981,7 @@ function mostrarResultado(respuesta){
               ) +
 
             '</div>' +
+
 
             '<div class="certificado-fecha">' +
 
@@ -2598,10 +2993,13 @@ function mostrarResultado(respuesta){
 
             '</div>' +
 
+
           '</div>' +
 
 
-          /* ACCESO */
+          /* =========================================
+             ACCESO
+          ========================================== */
 
           '<div class="acceso ' +
 
@@ -2609,11 +3007,13 @@ function mostrarResultado(respuesta){
 
           '">' +
 
+
             iconoAcceso +
 
             " " +
 
             textoAcceso +
+
 
             '<small>' +
 
@@ -2621,11 +3021,15 @@ function mostrarResultado(respuesta){
 
             '</small>' +
 
+
           '</div>' +
+
 
         '</div>' +
 
+
       '</div>' +
+
 
     '</div>';
 
@@ -2645,9 +3049,14 @@ function mostrarResultado(respuesta){
    ESCAPAR HTML
 ===================================================== */
 
-function escaparHTML(valor){
+function escaparHTML(
+  valor
+){
 
-  return String(valor)
+
+  return String(
+    valor
+  )
 
     .replace(
       /&/g,
@@ -2681,23 +3090,32 @@ function escaparHTML(valor){
    MOSTRAR ERROR
 ===================================================== */
 
-function mostrarError(mensaje){
+function mostrarError(
+  mensaje
+){
+
 
   resultado.innerHTML =
 
     '<div class="socio-card">' +
 
+
       cabeceraResultado() +
+
 
       '<div class="error">' +
 
+
         '<i class="fa-solid fa-circle-xmark"></i>' +
+
 
         escaparHTML(
           mensaje
         ) +
 
+
       '</div>' +
+
 
     '</div>';
 
@@ -2709,6 +3127,7 @@ function mostrarError(mensaje){
 ===================================================== */
 
 function finalizarConsulta(){
+
 
   procesando = false;
 
@@ -2732,21 +3151,25 @@ function finalizarConsulta(){
 
 function actualizarEstadisticas(){
 
+
   document.getElementById(
     "entradasHoy"
   ).innerText =
+
     entradasHoy;
 
 
   document.getElementById(
     "permitidas"
   ).innerText =
+
     permitidas;
 
 
   document.getElementById(
     "denegadas"
   ).innerText =
+
     denegadas;
 
 }
@@ -2758,18 +3181,23 @@ function actualizarEstadisticas(){
 
 function buscarManual(){
 
+
   const id =
 
     idManual.value
+
       .trim()
+
       .toUpperCase();
 
 
   if(!id){
 
+
     mostrarError(
       "INGRESÁ EL ID DEL SOCIO"
     );
+
 
     return;
 
@@ -2786,7 +3214,9 @@ function buscarManual(){
   procesando = true;
 
 
-  consultarSocio(id);
+  consultarSocio(
+    id
+  );
 
 }
 
@@ -2796,50 +3226,81 @@ function buscarManual(){
 ===================================================== */
 
 document
-  .getElementById("abrirCamara")
+
+  .getElementById(
+    "abrirCamara"
+  )
+
   .addEventListener(
+
     "click",
+
     iniciarCamara
+
   );
 
 
 document
-  .getElementById("detenerCamara")
+
+  .getElementById(
+    "detenerCamara"
+  )
+
   .addEventListener(
+
     "click",
+
     detenerCamara
+
   );
 
 
 document
-  .getElementById("buscarManual")
+
+  .getElementById(
+    "buscarManual"
+  )
+
   .addEventListener(
+
     "click",
+
     buscarManual
+
   );
 
 
 idManual.addEventListener(
+
   "keydown",
+
   function(event){
 
-    if(event.key === "Enter"){
+
+    if(
+      event.key ===
+      "Enter"
+    ){
 
       buscarManual();
 
     }
 
   }
+
 );
 
 
 /* =====================================================
-   AL CARGAR
+   CARGA INICIAL
 ===================================================== */
 
 window.addEventListener(
+
   "load",
+
   function(){
+
 
     estadoCamara.innerText =
       "⚪ TOCÁ «ABRIR CÁMARA»";
@@ -2849,6 +3310,7 @@ window.addEventListener(
       "#aaa";
 
   }
+
 );
 
 </script>
